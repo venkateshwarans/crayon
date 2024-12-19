@@ -3,13 +3,13 @@
   "compilerOptions": {
     /* Type Checking */
     "allowUnreachableCode": false,
-    "exactOptionalPropertyTypes": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
     "strict": true,
+    "jsx": "react-jsx",
 
     /* Emit */
     "declaration": true,
