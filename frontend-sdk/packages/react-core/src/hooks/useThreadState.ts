@@ -1,6 +1,6 @@
 import { useStore } from "zustand";
-import { ThreadState } from "../chat/types";
 import { useChatContext } from "../internal/ChatContext";
+import { ThreadState } from "../types";
 
 export const useThreadState = (): ThreadState => {
   const { threadManager } = useChatContext();
