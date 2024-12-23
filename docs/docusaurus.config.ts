@@ -90,12 +90,12 @@ const config: Config = {
           title: "Docs",
           items: [
             {
-              label: "Tutorial",
-              to: "/docs/tutorials/intro",
+              label: "Docs",
+              to: "/docs",
             },
             {
-              label: "Reference",
-              to: "/docs/reference/intro",
+              label: "JS Reference",
+              to: "/docs/reference/js",
             },
           ],
         },
