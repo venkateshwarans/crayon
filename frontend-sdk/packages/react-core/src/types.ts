@@ -49,6 +49,7 @@ export type ThreadListActions = {
   load: () => void;
   // switch to new thread
   switchToNew: () => void;
+  selectThread: (threadId: string) => void;
   updateThread: (thread: Thread) => void;
   deleteThread: (threadId: string) => void;
 };

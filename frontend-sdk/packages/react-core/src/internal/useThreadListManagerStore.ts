@@ -1,12 +1,10 @@
+import { useEffect, useRef, useState } from "react";
 import { createStore } from "zustand";
 import { ThreadListManager } from "../types";
-import { useEffect, useRef, useState } from "react";
 
 // this is to create zustand store on top of input thread list manager,
 // it enables us to expose dev friendly api using context and not give up on optimisations
-export const useThreadListManagerStore = (
-  inputThreadListManager: ThreadListManager
-) => {
+export const useThreadListManagerStore = (inputThreadListManager: ThreadListManager) => {
   const inputThreadListManagerRef = useRef(inputThreadListManager);
   inputThreadListManagerRef.current = inputThreadListManager;
 
@@ -18,11 +16,10 @@ export const useThreadListManagerStore = (
 
       switchToNew: () => inputThreadListManagerRef.current.switchToNew(),
       load: () => inputThreadListManagerRef.current.load(),
-      updateThread: (...props) =>
-        inputThreadListManagerRef.current.updateThread(...props),
-      deleteThread: (...props) =>
-        inputThreadListManagerRef.current.deleteThread(...props),
-    }))
+      updateThread: (...props) => inputThreadListManagerRef.current.updateThread(...props),
+      deleteThread: (...props) => inputThreadListManagerRef.current.deleteThread(...props),
+      selectThread: (...props) => inputThreadListManagerRef.current.selectThread(...props),
+    })),
   );
 
   useEffect(() => {
