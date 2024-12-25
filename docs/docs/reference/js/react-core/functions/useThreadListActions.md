@@ -1,11 +1,15 @@
-# Function: useThreadListActions()
-
-> **useThreadListActions**(): `ThreadListActions`
+```ts
+function useThreadListActions(): ThreadListActions
+```
 
 ## Returns
 
-`ThreadListActions`
+[`ThreadListActions`](../type-aliases/ThreadListActions.md)
+
+## Remarks
+
+useThreadListActions
 
 ## Defined in
 
-[hooks/useThreadListActions.ts:5](https://github.com/thesysdev/crayonai/blob/17896918821373fefeeea6d878227773c31bc548/frontend-sdk/packages/react-core/src/hooks/useThreadListActions.ts#L5)
+[packages/react-core/src/hooks/useThreadListActions.ts:11](https://github.com/thesysdev/crayonai/blob/6eac6f4f2cad380ceb23505021a977f1a24045b3/frontend-sdk/packages/react-core/src/hooks/useThreadListActions.ts#L11)

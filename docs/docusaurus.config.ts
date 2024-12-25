@@ -4,6 +4,27 @@ import type * as Preset from "@docusaurus/preset-classic";
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
+const typeDocConfig = {
+  sidebar: {
+    autoConfiguration: false,
+  },
+
+  parametersFormat: "htmlTable",
+  interfacePropertiesFormat: "htmlTable",
+  classPropertiesFormat: "htmlTable",
+  propertyMembersFormat: "htmlTable",
+  typeDeclarationFormat: "htmlTable",
+  typeDeclarationVisibility: "compact",
+  useCodeBlocks: true,
+  hidePageHeader: true,
+  hidePageTitle: true,
+  expandObjects: true,
+  expandParameters: true,
+
+  // typedoc options
+  plugin: ["typedoc-plugin-markdown"],
+};
+
 const config: Config = {
   title: "CrayonAI",
   tagline: "Generative UI SDK",
@@ -142,11 +163,10 @@ const config: Config = {
         entryPoints: ["../frontend-sdk/packages/react-core/src/index.ts"],
         tsconfig: "../frontend-sdk/tsconfig.json",
         out: "./docs/reference/js/react-core",
-        sidebar: {
-          autoConfiguration: false,
-        },
+        ...typeDocConfig,
       },
     ],
+
     [
       "docusaurus-plugin-typedoc",
       {
@@ -154,9 +174,7 @@ const config: Config = {
         entryPoints: ["../frontend-sdk/packages/react-ui/src/index.ts"],
         tsconfig: "../frontend-sdk/tsconfig.json",
         out: "./docs/reference/js/react-ui",
-        sidebar: {
-          autoConfiguration: false,
-        },
+        ...typeDocConfig,
       },
     ],
   ],
