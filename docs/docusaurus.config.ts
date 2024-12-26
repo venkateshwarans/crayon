@@ -125,8 +125,7 @@ const config: Config = {
           items: [
             {
               label: "Discord",
-              // TODO: Add Discord invite link
-              href: "https://discordapp.com/invite/thesysdev",
+              href: "https://discord.gg/Pbv5PsqUSv",
             },
             {
               label: "X",
