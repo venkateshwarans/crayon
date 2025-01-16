@@ -7,6 +7,7 @@ export const useScrollToBottom = <T extends HTMLElement | null>(ref: RefObject<T
 
     // Function to scroll to bottom
     const scrollToBottom = () => {
+      debugger;
       element.scrollTop = element.scrollHeight;
     };
 
@@ -16,7 +17,9 @@ export const useScrollToBottom = <T extends HTMLElement | null>(ref: RefObject<T
     });
 
     // Start observing the element
-    observer.observe(element);
+    observer.observe(element, {
+      box: "border-box",
+    });
 
     // Cleanup
     return () => {

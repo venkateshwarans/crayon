@@ -10,5 +10,6 @@ export const useThreadState = (): ThreadState => {
     isDisabled: useStore(threadManager, (store) => store.isDisabled),
     messages: useStore(threadManager, (store) => store.messages),
     error: useStore(threadManager, (store) => store.error),
+    tools: useStore(threadManager, (store) => store.tools),
   };
 };

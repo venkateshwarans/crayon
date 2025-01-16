@@ -1,15 +1,26 @@
 import { useChat } from "ai/react";
-import { ThreadManager } from "../types";
+import { GenUITool, ThreadManager } from "../types";
 
 type UseChatParams = Parameters<typeof useChat>[0] & { id?: never };
 type UseChatReturn = ReturnType<typeof useChat>;
 
 export const useVercelChatManager = (
-  params: UseChatParams
+  params: UseChatParams,
+  tools: GenUITool[],
 ): ThreadManager & { useChatState: UseChatReturn } => {
-  const vercelChatReturn = useChat(params);
-  const { messages, isLoading, addToolResult, append, reload, stop, error } =
-    vercelChatReturn;
+  const toolsMap = tools.reduce(
+    (acc, tool) => {
+      acc[tool.name] = tool;
+      return acc;
+    },
+    {} as Record<string, GenUITool>,
+  );
+
+  const vercelChatReturn = useChat({
+    ...params,
+    body: { ...params.body, tools },
+  });
+  const { messages, isLoading, addToolResult, append, reload, stop, error } = vercelChatReturn;
 
   return {
     messages,
@@ -23,5 +34,6 @@ export const useVercelChatManager = (
     onAddToolResult: addToolResult,
     convertMessage: undefined,
     useChatState: vercelChatReturn,
+    tools: toolsMap,
   };
 };

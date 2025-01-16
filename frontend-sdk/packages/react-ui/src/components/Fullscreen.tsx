@@ -5,6 +5,7 @@ import {
   useThreadState,
 } from "@crayonai/react-core";
 import clsx from "clsx";
+import { PanelLeft, PanelRight, Plus, Search, SendHorizontal } from "lucide-react";
 import { createContext, useContext, useRef, useState } from "react";
 import { useComposerState } from "../hooks/useComposerState";
 import { useScrollToBottom } from "../hooks/useScrollToBottom";
@@ -13,28 +14,43 @@ export const Container = ({
   children,
   className,
 }: React.PropsWithChildren<{ className?: string }>) => {
-  return <div className={clsx("h-screen w-screen", className)}>{children}</div>;
+  return <div className={clsx("cui-fullscreen-container", className)}>{children}</div>;
 };
 
 type SidebarContextType = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  searchText: string;
+  setSearchText: (searchText: string) => void;
 };
 
 export const SidebarContext = createContext<SidebarContextType>({
   isOpen: true,
   setIsOpen: () => {},
+  searchText: "",
+  setSearchText: () => {},
 });
+
+export const useSidebarContext = () => useContext(SidebarContext);
 
 export const SidebarContainer = ({
   children,
   className,
 }: React.PropsWithChildren<{ className?: string }>) => {
   const [isOpen, setIsOpen] = useState(true);
+  const [searchText, setSearchText] = useState("");
 
   return (
-    <SidebarContext.Provider value={{ isOpen, setIsOpen }}>
-      <div className={clsx("w-[264px] h-full border border-black/60 shrink-0", className)}>
+    <SidebarContext.Provider value={{ isOpen, setIsOpen, searchText, setSearchText }}>
+      <div
+        className={clsx(
+          "cui-fullscreen-sidebar",
+          {
+            "cui-fullscreen-sidebar-closed": !isOpen,
+          },
+          className,
+        )}
+      >
         {children}
       </div>
     </SidebarContext.Provider>
@@ -53,10 +69,40 @@ export const SidebarHeader = ({
   const { isOpen, setIsOpen } = useContext(SidebarContext);
 
   return (
-    <div className={clsx("flex items-center p-4 border-b border-black/60", className)}>
-      <img src={logoUrl} alt="Logo" className="h-6 w-6 mr-2" />
-      <h1 className="flex-1">{title}</h1>
-      <button onClick={() => setIsOpen(!isOpen)}>{isOpen ? "←" : "→"}</button>
+    <div className={clsx("cui-fullscreen-sidebar-header", className)}>
+      <div className="cui-fullscreen-sidebar-header-title-icon">
+        <img src={logoUrl} alt="Logo" className="cui-fullscreen-sidebar-logo" />
+        <h1 className="cui-fullscreen-sidebar-title">{title}</h1>
+      </div>
+      <button className="cui-fullscreen-sidebar-header-button" onClick={() => setIsOpen(!isOpen)}>
+        {isOpen ? <PanelRight size={16} /> : <PanelLeft size={16} />}
+      </button>
+    </div>
+  );
+};
+
+export const SearchInput = ({ className }: { className?: string }) => {
+  const { searchText, setSearchText } = useContext(SidebarContext);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  return (
+    <div
+      className={clsx("cui-fullscreen-search-input", className)}
+      onClick={() => {
+        if (inputRef.current) {
+          inputRef.current.focus();
+        }
+      }}
+    >
+      <Search size={16} />
+      <input
+        ref={inputRef}
+        type="text"
+        value={searchText}
+        onChange={(e) => setSearchText(e.target.value)}
+        className="cui-fullscreen-search-input-input"
+        placeholder="Search..."
+      />
     </div>
   );
 };
@@ -65,7 +111,8 @@ export const NewChatButton = ({ className }: { className?: string }) => {
   const { switchToNew } = useThreadListActions();
 
   return (
-    <button onClick={switchToNew} className={clsx("w-full p-2 hover:bg-gray-100", className)}>
+    <button onClick={switchToNew} className={clsx("cui-fullscreen-new-chat-button", className)}>
+      <Plus />
       New Chat
     </button>
   );
@@ -85,7 +132,7 @@ export const ThreadButton = ({
   return (
     <button
       onClick={() => selectThread(id)}
-      className={clsx("w-full p-2 text-left hover:bg-gray-100", className)}
+      className={clsx("cui-fullscreen-thread-button", className)}
     >
       {title}
     </button>
@@ -96,7 +143,14 @@ export const ThreadList = ({ className }: { className?: string }) => {
   const { threads } = useThreadListState();
 
   return (
-    <div className={clsx("flex flex-col", className)}>
+    <div className={clsx("cui-fullscreen-thread-list", className)}>
+      <div className="cui-fullscreen-thread-list-group ">Today</div>
+      <ThreadButton
+        className=""
+        key={123}
+        id={"thread.threadId"}
+        title={"thread.titleosdnfoiwnsofnwornwijrifgjowijrnig"}
+      />
       {threads.map((thread) => (
         <ThreadButton key={thread.threadId} id={thread.threadId} title={thread.title} />
       ))}
@@ -108,11 +162,7 @@ export const ThreadContainer = ({
   children,
   className,
 }: React.PropsWithChildren<{ className?: string }>) => {
-  return (
-    <div className={clsx("flex-grow flex-shrink-1 h-full flex flex-col", className)}>
-      {children}
-    </div>
-  );
+  return <div className={clsx("cui-fullscreen-thread-container", className)}>{children}</div>;
 };
 
 export const ScrollArea = ({
@@ -123,11 +173,8 @@ export const ScrollArea = ({
   useScrollToBottom(ref);
 
   return (
-    <div
-      ref={ref}
-      className={clsx("flex-grow flex-shrink-1 h-full flex flex-col overflow-y-auto", className)}
-    >
-      {children}
+    <div className={clsx("cui-fullscreen-scroll-area", className)}>
+      <div ref={ref}>{children}</div>
     </div>
   );
 };
@@ -136,7 +183,7 @@ export const Messages = ({ className }: { className?: string }) => {
   const thread = useThreadState();
 
   return (
-    <div className={clsx("flex flex-col gap-4 p-4", className)}>
+    <div className={clsx("cui-fullscreen-messages", className)}>
       {thread.messages.map((message) => (
         <Message key={message.id} message={message} />
       ))}
@@ -148,8 +195,10 @@ export const Message = ({ message, className }: { message: any; className?: stri
   return (
     <div
       className={clsx(
-        "p-4 rounded",
-        message.role === "user" ? "bg-blue-100 ml-8" : "bg-gray-100 mr-8",
+        "cui-fullscreen-message",
+        message.role === "user"
+          ? "cui-fullscreen-message-user"
+          : "cui-fullscreen-message-assistant",
         className,
       )}
     >
@@ -174,16 +223,21 @@ export const Composer = ({ className }: { className?: string }) => {
   };
 
   return (
-    <div className={clsx("flex gap-2 p-4 border-t", className)}>
+    <div className={clsx("cui-fullscreen-composer", className)}>
       <textarea
         value={textContent}
         onChange={(e) => setTextContent(e.target.value)}
-        className="flex-1 p-2 border rounded"
+        className="cui-fullscreen-composer-input"
         placeholder="Type your message..."
-        rows={1}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            handleSubmit();
+          }
+        }}
       />
-      <button onClick={handleSubmit} className="px-4 py-2 bg-blue-500 text-white rounded">
-        Send
+      <button onClick={handleSubmit} className="cui-fullscreen-composer-button">
+        <SendHorizontal size={16} />
       </button>
     </div>
   );

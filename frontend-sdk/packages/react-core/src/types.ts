@@ -1,4 +1,5 @@
 import { Message as VercelMessage } from "ai";
+import { z } from "zod";
 
 export type Message = VercelMessage;
 
@@ -7,6 +8,18 @@ export type CreateMessage = Omit<Message, "id"> & {
 };
 
 export type MessageConverter<T = Message> = (message: T) => Message;
+
+export interface GenUITool<T extends z.ZodSchema = z.ZodSchema> {
+  name: string;
+  description: string;
+  parameters: T;
+  Component: React.ComponentType<
+    z.infer<T> & {
+      toolCallId: string;
+      addToolResult: (args: { toolCallId: string; result: unknown }) => void;
+    }
+  >;
+}
 
 export type Thread = {
   threadId: string;
@@ -34,6 +47,7 @@ export type ThreadState<T = Message> = {
   isRunning?: boolean | undefined;
   messages: T[];
   error: Error | null | undefined;
+  tools: { [id: string]: GenUITool };
 };
 
 export type ThreadManager<T = Message> = ThreadState<T> & ThreadActions<T>;

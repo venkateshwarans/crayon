@@ -20,6 +20,7 @@ export const useThreadManagerStore = (inputThreadManager: ThreadManager) => {
       convertMessage: (message) =>
         inputThreadManagerRef.current.convertMessage?.(message) || message,
       onAddToolResult: (props) => inputThreadManagerRef.current.onAddToolResult?.(props),
+      tools: inputThreadManager.tools,
     })),
   );
 
@@ -29,6 +30,7 @@ export const useThreadManagerStore = (inputThreadManager: ThreadManager) => {
       isRunning: inputThreadManager.isRunning,
       messages: inputThreadManager.messages,
       error: inputThreadManager.error,
+      tools: inputThreadManager.tools,
     });
     // no dependency array, since we want to update these values on each rerender
   });
