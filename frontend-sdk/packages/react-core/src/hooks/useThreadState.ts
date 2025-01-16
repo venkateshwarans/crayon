@@ -2,6 +2,12 @@ import { useStore } from "zustand";
 import { useChatContext } from "../internal/ChatContext";
 import { ThreadState } from "../types";
 
+/**
+ * @category Hooks
+ *
+ * @remarks
+ * useThreadState
+ */
 export const useThreadState = (): ThreadState => {
   const { threadManager } = useChatContext();
 
