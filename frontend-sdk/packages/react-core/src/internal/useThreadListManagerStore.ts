@@ -13,8 +13,9 @@ export const useThreadListManagerStore = (inputThreadListManager: ThreadListMana
       threads: inputThreadListManager.threads,
       isLoading: inputThreadListManager.isLoading,
       error: inputThreadListManager.error,
+      selectedThreadId: inputThreadListManager.selectedThreadId,
 
-      switchToNew: () => inputThreadListManagerRef.current.switchToNew(),
+      switchToNewThread: () => inputThreadListManagerRef.current.switchToNewThread(),
       load: () => inputThreadListManagerRef.current.load(),
       updateThread: (...props) => inputThreadListManagerRef.current.updateThread(...props),
       deleteThread: (...props) => inputThreadListManagerRef.current.deleteThread(...props),
