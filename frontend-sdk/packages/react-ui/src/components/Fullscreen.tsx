@@ -108,10 +108,13 @@ export const SearchInput = ({ className }: { className?: string }) => {
 };
 
 export const NewChatButton = ({ className }: { className?: string }) => {
-  const { switchToNew } = useThreadListActions();
+  const { switchToNewThread } = useThreadListActions();
 
   return (
-    <button onClick={switchToNew} className={clsx("cui-fullscreen-new-chat-button", className)}>
+    <button
+      onClick={switchToNewThread}
+      className={clsx("cui-fullscreen-new-chat-button", className)}
+    >
       <Plus />
       New Chat
     </button>
