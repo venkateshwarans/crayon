@@ -18,12 +18,14 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc -p . && pnpm run copy-css",
+    "build": "pnpm run build:tsc && pnpm run build:scss && pnpm run copy-css",
+    "build:tsc": "tsc -p .",
+    "build:scss": "sass src:dist --style compressed --no-source-map",
     "lint": "eslint src --ext .ts,.tsx",
     "format": "prettier --write src",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
-    "copy-css": "node cp-css.js"
+    "copy-css": "node cp-css.js",
+    "watch": "concurrently \"pnpm run build:ts -- --watch\" \"pnpm run build:scss -- --watch\""
   },
   "peerDependencies": {
     "react": "19.0.0-rc-66855b96-20241106",
@@ -36,8 +38,12 @@
     "@crayonai/react-core": "workspace:*"
   },
   "dependencies": {
+    "@radix-ui/react-aspect-ratio": "^1.1.1",
+    "@radix-ui/react-label": "^2.1.1",
+    "@storybook/addon-styling-webpack": "^1.0.1",
     "clsx": "^2.0.0",
-    "lucide-react": "^0.469.0"
+    "lucide-react": "^0.469.0",
+    "sass": "^1.83.4"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.3",

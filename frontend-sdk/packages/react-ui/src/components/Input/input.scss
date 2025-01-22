@@ -1,0 +1,35 @@
+@use "sass:map";
+@use "../../cssUtils" as cssUtils;
+
+.crayon-input {
+  border: 1px solid map.get(cssUtils.$colors, "strokes", "default");
+  border-radius: map.get(cssUtils.$radius, "xs");
+  box-sizing: border-box;
+  width: 100%;
+  gap: map.get(cssUtils.$spacing, "xs");
+
+  &-small {
+    padding: map.get(cssUtils.$spacing, "2xs") map.get(cssUtils.$spacing, "s");
+  }
+
+  &-medium {
+    padding: map.get(cssUtils.$spacing, "xs") map.get(cssUtils.$spacing, "s");
+  }
+
+  &-large {
+    padding: map.get(cssUtils.$spacing, "s");
+  }
+
+  &:focus {
+    outline: none;
+    // border-color: map.get(cssUtils.$colors, "strokes", "interactive-el-hover");
+    border-color: rgb(72, 0, 255);
+  }
+
+  &:disabled {
+    background-color: map.get(cssUtils.$colors, "fills", "container");
+    // border: 1px solid map.get(cssUtils.$colors, "strokes", "default");
+    border: 1px solid red;
+    cursor: not-allowed;
+  }
+}
