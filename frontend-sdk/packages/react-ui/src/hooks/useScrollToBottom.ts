@@ -7,7 +7,6 @@ export const useScrollToBottom = <T extends HTMLElement | null>(ref: RefObject<T
 
     // Function to scroll to bottom
     const scrollToBottom = () => {
-      debugger;
       element.scrollTop = element.scrollHeight;
     };
 

@@ -1,4 +1,6 @@
 import {
+  Message,
+  Thread,
   useThreadActions,
   useThreadListActions,
   useThreadListState,
@@ -6,9 +8,9 @@ import {
 } from "@crayonai/react-core";
 import clsx from "clsx";
 import { PanelLeft, PanelRight, Plus, Search, SendHorizontal } from "lucide-react";
-import { createContext, useContext, useRef, useState } from "react";
-import { useComposerState } from "../hooks/useComposerState";
-import { useScrollToBottom } from "../hooks/useScrollToBottom";
+import { createContext, Fragment, useContext, useEffect, useRef, useState } from "react";
+import { useComposerState } from "../../hooks/useComposerState";
+import { useScrollToBottom } from "../../hooks/useScrollToBottom";
 
 export const Container = ({
   children,
@@ -131,11 +133,18 @@ export const ThreadButton = ({
   className?: string;
 }) => {
   const { selectThread } = useThreadListActions();
+  const { selectedThreadId } = useThreadListState();
 
   return (
     <button
       onClick={() => selectThread(id)}
-      className={clsx("cui-fullscreen-thread-button", className)}
+      className={clsx(
+        "cui-fullscreen-thread-button",
+        {
+          "cui-fullscreen-thread-button-selected": selectedThreadId === id,
+        },
+        className,
+      )}
     >
       {title}
     </button>
@@ -144,19 +153,80 @@ export const ThreadButton = ({
 
 export const ThreadList = ({ className }: { className?: string }) => {
   const { threads } = useThreadListState();
+  const { load } = useThreadListActions();
+  const { searchText } = useContext(SidebarContext);
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  const groupThreads = () => {
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const last7Days = new Date(today);
+    last7Days.setDate(last7Days.getDate() - 7);
+    const last30Days = new Date(today);
+    last30Days.setDate(last30Days.getDate() - 30);
+    const thisYear = new Date(today);
+    thisYear.setMonth(0, 1);
+
+    return threads.reduce(
+      (groups, thread) => {
+        const threadDate = new Date(thread.createdAt);
+
+        if (threadDate >= today) {
+          groups.today = [...(groups.today || []), thread];
+        } else if (threadDate >= yesterday) {
+          groups.yesterday = [...(groups.yesterday || []), thread];
+        } else if (threadDate >= last7Days) {
+          groups.last7Days = [...(groups.last7Days || []), thread];
+        } else if (threadDate >= last30Days) {
+          groups.last30Days = [...(groups.last30Days || []), thread];
+        } else if (threadDate >= thisYear) {
+          groups.thisYear = [...(groups.thisYear || []), thread];
+        } else {
+          groups.older = [...(groups.older || []), thread];
+        }
+
+        return groups;
+      },
+      {
+        today: [] as Thread[],
+        yesterday: [] as Thread[],
+        last7Days: [] as Thread[],
+        last30Days: [] as Thread[],
+        thisYear: [] as Thread[],
+        older: [] as Thread[],
+      },
+    );
+  };
+
+  const groupedThreads = groupThreads();
+  const groupLabels: { [key in keyof typeof groupedThreads]: string } = {
+    today: "Today",
+    yesterday: "Yesterday",
+    last7Days: "Previous 7 Days",
+    last30Days: "Previous 30 Days",
+    thisYear: "This Year",
+    older: "Older",
+  };
 
   return (
     <div className={clsx("cui-fullscreen-thread-list", className)}>
-      <div className="cui-fullscreen-thread-list-group ">Today</div>
-      <ThreadButton
-        className=""
-        key={123}
-        id={"thread.threadId"}
-        title={"thread.titleosdnfoiwnsofnwornwijrifgjowijrnig"}
-      />
-      {threads.map((thread) => (
-        <ThreadButton key={thread.threadId} id={thread.threadId} title={thread.title} />
-      ))}
+      {Object.entries(groupedThreads)
+        .filter(([_, groupThreads]) => groupThreads.length > 0)
+        .map(([group, groupThreads]) => (
+          <Fragment key={group}>
+            <div className="cui-fullscreen-thread-list-group">
+              {groupLabels[group as keyof typeof groupLabels]}
+            </div>
+            {groupThreads.map((thread) => (
+              <ThreadButton key={thread.threadId} id={thread.threadId} title={thread.title} />
+            ))}
+          </Fragment>
+        ))}
     </div>
   );
 };
@@ -183,18 +253,18 @@ export const ScrollArea = ({
 };
 
 export const Messages = ({ className }: { className?: string }) => {
-  const thread = useThreadState();
+  const { messages } = useThreadState();
 
   return (
     <div className={clsx("cui-fullscreen-messages", className)}>
-      {thread.messages.map((message) => (
-        <Message key={message.id} message={message} />
+      {messages.map((message) => (
+        <RenderMessage key={message.id} message={message} />
       ))}
     </div>
   );
 };
 
-export const Message = ({ message, className }: { message: any; className?: string }) => {
+export const RenderMessage = ({ message, className }: { message: Message; className?: string }) => {
   return (
     <div
       className={clsx(
@@ -205,21 +275,21 @@ export const Message = ({ message, className }: { message: any; className?: stri
         className,
       )}
     >
-      {message.content}
+      {message.message}
     </div>
   );
 };
 
 export const Composer = ({ className }: { className?: string }) => {
   const { textContent, setTextContent } = useComposerState();
-  const { onNew } = useThreadActions();
+  const { addMessages } = useThreadActions();
 
   const handleSubmit = () => {
     if (!textContent.trim()) return;
 
-    onNew({
+    addMessages({
       role: "user",
-      content: textContent,
+      message: textContent,
     });
 
     setTextContent("");

@@ -4,29 +4,38 @@
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./styles/*": {
+      "default": "./dist/styles/*"
+    }
+  },
   "files": [
     "dist"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc -p .",
+    "build": "tsc -p . && pnpm run copy-css",
     "lint": "eslint src --ext .ts,.tsx",
     "format": "prettier --write src",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "copy-css": "node cp-css.js"
   },
   "peerDependencies": {
-    "ai": "^4.0.3",
     "react": "19.0.0-rc-66855b96-20241106",
     "react-dom": "19.0.0-rc-66855b96-20241106",
     "tailwind-merge": "^2.5.4",
     "tailwindcss": "^3.0.0",
     "tailwindcss-animate": "^1.0.7",
     "tiny-invariant": "^1.3.3",
-    "zustand": "^5.0.2"
+    "zustand": "^5.0.2",
+    "@crayonai/react-core": "workspace:*"
   },
   "dependencies": {
-    "@crayonai/react-core": "workspace:*",
     "clsx": "^2.0.0",
     "lucide-react": "^0.469.0"
   },
