@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from "react";
-import { createStore } from "zustand";
+import { createStore, useStore } from "zustand";
 import { CreateMessage, Message, ResponseTemplate, ThreadManager } from "./types";
 
 type Props = {
@@ -31,7 +31,6 @@ export const useThreadManager = (props: Props): ThreadManager => {
         addMessages: async (...messages: CreateMessage[]) => {
           const abortController = new AbortController();
           const threadManager = store.getState();
-
           if (threadManager.isRunning) {
             return;
           }
@@ -42,11 +41,15 @@ export const useThreadManager = (props: Props): ThreadManager => {
           });
 
           try {
-            await propsRef.current.onAddMessages({
+            const newMessages = await propsRef.current.onAddMessages({
               messages,
               threadManager: store.getState(),
               abortController: new AbortController(),
             });
+
+            set((store) => ({
+              messages: [...store.messages, ...newMessages],
+            }));
           } finally {
             set({ abortController: null, isRunning: false });
           }
@@ -101,5 +104,5 @@ export const useThreadManager = (props: Props): ThreadManager => {
     }
   }, [props.threadId]);
 
-  return store.getState();
+  return useStore(store);
 };

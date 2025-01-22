@@ -32,10 +32,10 @@ export type AssistantMessage = common & {
   };
 };
 
+export type Message = UserMessage | AssistantMessage;
+
 /**
  * Represents a message being created, with an optional ID
  * @extends Omit<Message, "id">
  */
-export type Message = UserMessage | AssistantMessage;
-
 export type CreateMessage = Omit<Message, "id">;

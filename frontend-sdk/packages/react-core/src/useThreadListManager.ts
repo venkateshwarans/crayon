@@ -11,9 +11,7 @@ type Props = {
   onSelectThread: (threadId: string) => void;
 };
 
-type DefaultManager = ThreadListManager & {
-  addNew: (thread: Thread) => void;
-};
+type DefaultManager = ThreadListManager;
 
 export const useThreadListManager = (props: Props): DefaultManager => {
   const propsRef = useRef(props);
@@ -46,7 +44,6 @@ export const useThreadListManager = (props: Props): DefaultManager => {
         },
         // todo: implement
         loadMore: () => {},
-        switchToNew: () => propsRef.current.onSwitchToNew(),
         load: () => {
           set({ isLoading: true });
           propsRef.current
@@ -85,8 +82,10 @@ export const useThreadListManager = (props: Props): DefaultManager => {
               updateThreadRunningStatus(thread.threadId, false);
             });
         },
-        addNew: (thread: Thread) => {},
-        switchToNewThread: () => propsRef.current.onSwitchToNew(),
+        switchToNewThread: () => {
+          set({ selectedThreadId: null });
+          propsRef.current.onSwitchToNew();
+        },
       };
     });
   }, []);

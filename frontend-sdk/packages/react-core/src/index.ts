@@ -5,5 +5,6 @@ export { useThreadListActions } from "./hooks/useThreadListActions";
 export { useThreadListState } from "./hooks/useThreadListState";
 export { useThreadState } from "./hooks/useThreadState";
 export { useThreadListManager } from "./useThreadListManager";
+export { useThreadManager } from "./useThreadManager";
 
 export * from "./types";

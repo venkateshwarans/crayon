@@ -31,6 +31,7 @@ export const useThreadListManagerStore = (inputThreadListManager: ThreadListMana
       threads: inputThreadListManager.threads,
       isLoading: inputThreadListManager.isLoading,
       error: inputThreadListManager.error,
+      selectedThreadId: inputThreadListManager.selectedThreadId,
     });
     // no dependency array, since we want to update these values on each render
   });
