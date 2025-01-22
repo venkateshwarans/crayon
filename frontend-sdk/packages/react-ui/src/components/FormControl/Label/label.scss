@@ -1,0 +1,7 @@
+@use "sass:map";
+@use "../../../cssUtils.scss" as cssUtils;
+
+.crayon-label {
+  @include cssUtils.typography(label, default);
+  color: map.get(cssUtils.$colors, "text", "primary");
+}
