@@ -152,13 +152,15 @@ export const ThreadButton = ({
 };
 
 export const ThreadList = ({ className }: { className?: string }) => {
-  const { threads } = useThreadListState();
+  let { threads } = useThreadListState();
   const { load } = useThreadListActions();
   const { searchText } = useContext(SidebarContext);
 
   useEffect(() => {
     load();
   }, []);
+
+  threads = threads.filter((thread) => thread.title.includes(searchText));
 
   const groupThreads = () => {
     const now = new Date();
@@ -243,11 +245,12 @@ export const ScrollArea = ({
   className,
 }: React.PropsWithChildren<{ className?: string }>) => {
   const ref = useRef<HTMLDivElement>(null);
-  useScrollToBottom(ref);
+  const { messages } = useThreadState();
+  useScrollToBottom(ref, messages.length);
 
   return (
-    <div className={clsx("cui-fullscreen-scroll-area", className)}>
-      <div ref={ref}>{children}</div>
+    <div ref={ref} className={clsx("cui-fullscreen-scroll-area", className)}>
+      {children}
     </div>
   );
 };
