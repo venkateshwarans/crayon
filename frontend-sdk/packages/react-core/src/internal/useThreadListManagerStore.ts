@@ -9,18 +9,21 @@ export const useThreadListManagerStore = (inputThreadListManager: ThreadListMana
   inputThreadListManagerRef.current = inputThreadListManager;
 
   const [threadListManagerStore] = useState(() =>
-    createStore<ThreadListManager>(() => ({
-      threads: inputThreadListManager.threads,
-      isLoading: inputThreadListManager.isLoading,
-      error: inputThreadListManager.error,
-      selectedThreadId: inputThreadListManager.selectedThreadId,
+    createStore<ThreadListManager>(() => {
+      return {
+        threads: inputThreadListManagerRef.current.threads,
+        isLoading: inputThreadListManagerRef.current.isLoading,
+        error: inputThreadListManagerRef.current.error,
+        selectedThreadId: inputThreadListManagerRef.current.selectedThreadId,
 
-      switchToNewThread: () => inputThreadListManagerRef.current.switchToNewThread(),
-      load: () => inputThreadListManagerRef.current.load(),
-      updateThread: (...props) => inputThreadListManagerRef.current.updateThread(...props),
-      deleteThread: (...props) => inputThreadListManagerRef.current.deleteThread(...props),
-      selectThread: (...props) => inputThreadListManagerRef.current.selectThread(...props),
-    })),
+        switchToNewThread: () => inputThreadListManagerRef.current.switchToNewThread(),
+        load: () => inputThreadListManagerRef.current.load(),
+        updateThread: (...props) => inputThreadListManagerRef.current.updateThread(...props),
+        deleteThread: (...props) => inputThreadListManagerRef.current.deleteThread(...props),
+        selectThread: (...props) => inputThreadListManagerRef.current.selectThread(...props),
+        loadMore: () => inputThreadListManagerRef.current.loadMore(),
+      };
+    }),
   );
 
   useEffect(() => {

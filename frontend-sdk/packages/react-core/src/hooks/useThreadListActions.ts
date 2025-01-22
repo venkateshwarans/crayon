@@ -10,11 +10,13 @@ import { ThreadListActions } from "../types";
  */
 export const useThreadListActions = (): ThreadListActions => {
   const { threadListManager } = useChatContext();
+
   return {
     load: useStore(threadListManager, (store) => store.load),
-    switchToNew: useStore(threadListManager, (store) => store.switchToNew),
+    switchToNewThread: useStore(threadListManager, (store) => store.switchToNewThread),
     selectThread: useStore(threadListManager, (store) => store.selectThread),
     deleteThread: useStore(threadListManager, (store) => store.deleteThread),
     updateThread: useStore(threadListManager, (store) => store.updateThread),
+    loadMore: useStore(threadListManager, (store) => store.loadMore),
   };
 };

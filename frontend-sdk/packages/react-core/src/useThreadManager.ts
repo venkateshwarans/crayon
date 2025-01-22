@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef } from "react";
 import { createStore } from "zustand";
-import { CreateMessage, Message, ThreadManager } from "./types";
+import { CreateMessage, Message, ResponseTemplate, ThreadManager } from "./types";
 
 type Props = {
   threadId: string | null;
@@ -10,6 +10,7 @@ type Props = {
     threadManager: ThreadManager;
     abortController: AbortController;
   }) => Promise<Message[]>;
+  responseTemplates: ResponseTemplate[];
 };
 
 export const useThreadManager = (props: Props): ThreadManager => {
@@ -65,6 +66,13 @@ export const useThreadManager = (props: Props): ThreadManager => {
             abortController.abort();
           }
         },
+        responseTemplates: propsRef.current.responseTemplates.reduce(
+          (acc, template) => {
+            acc[template.name] = template;
+            return acc;
+          },
+          {} as { [name: string]: ResponseTemplate },
+        ),
       };
     });
   }, [propsRef]);

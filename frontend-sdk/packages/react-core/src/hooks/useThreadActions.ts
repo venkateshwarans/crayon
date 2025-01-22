@@ -12,10 +12,8 @@ export const useThreadActions = (): ThreadActions => {
   const { threadManager } = useChatContext();
 
   return {
-    onNew: useStore(threadManager, (store) => store.onNew),
-    onReload: useStore(threadManager, (store) => store.onReload),
+    addMessages: useStore(threadManager, (store) => store.addMessages),
+    updateMessage: useStore(threadManager, (store) => store.updateMessage),
     onCancel: useStore(threadManager, (store) => store.onCancel),
-    onAddToolResult: useStore(threadManager, (store) => store.onAddToolResult),
-    convertMessage: useStore(threadManager, (store) => store.convertMessage),
   };
 };

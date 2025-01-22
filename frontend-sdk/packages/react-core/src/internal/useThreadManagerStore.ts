@@ -15,12 +15,10 @@ export const useThreadManagerStore = (inputThreadManager: ThreadManager) => {
       messages: inputThreadManager.messages,
       error: inputThreadManager.error,
 
-      onNew: (...props) => inputThreadManagerRef.current.onNew(...props),
+      responseTemplates: inputThreadManagerRef.current.responseTemplates,
       onCancel: () => inputThreadManagerRef.current.onCancel?.(),
-      convertMessage: (message) =>
-        inputThreadManagerRef.current.convertMessage?.(message) || message,
-      onAddToolResult: (props) => inputThreadManagerRef.current.onAddToolResult?.(props),
-      tools: inputThreadManager.tools,
+      addMessages: (...props) => inputThreadManagerRef.current.addMessages(...props),
+      updateMessage: (...props) => inputThreadManagerRef.current.updateMessage(...props),
     })),
   );
 
@@ -30,10 +28,13 @@ export const useThreadManagerStore = (inputThreadManager: ThreadManager) => {
       isRunning: inputThreadManager.isRunning,
       messages: inputThreadManager.messages,
       error: inputThreadManager.error,
-      tools: inputThreadManager.tools,
     });
     // no dependency array, since we want to update these values on each rerender
   });
+
+  if (inputThreadManagerRef.current.responseTemplates !== inputThreadManager.responseTemplates) {
+    throw new Error("memoize response templates");
+  }
 
   return threadManagerStore;
 };

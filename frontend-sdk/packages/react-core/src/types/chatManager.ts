@@ -1,4 +1,5 @@
 import { CreateMessage, Message } from "./message";
+import { ResponseTemplate } from "./responseTemplate";
 
 /**
  * Represents a chat thread
@@ -33,6 +34,9 @@ export type ThreadState = {
   isRunning?: boolean | undefined;
   messages: Message[];
   error: Error | null | undefined;
+  responseTemplates: {
+    [name: string]: ResponseTemplate;
+  };
 };
 
 /**
@@ -56,6 +60,7 @@ export type ThreadListState = {
  */
 export type ThreadListActions = {
   load: () => void;
+  // todo: remove
   loadMore: () => void;
   switchToNewThread: () => void;
   selectThread: (threadId: string) => void;
@@ -72,6 +77,6 @@ export type ThreadListManager = ThreadListState & ThreadListActions;
  * Main chat manager combining thread and thread list management
  */
 export type ChatManager = {
-  threadListManager?: ThreadListManager;
+  threadListManager: ThreadListManager;
   threadManager: ThreadManager;
 };
