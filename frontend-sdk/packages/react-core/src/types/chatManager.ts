@@ -20,9 +20,11 @@ export type Thread = {
  * @template T - The message type used in the thread
  */
 export type ThreadActions = {
-  addMessages: (...messages: CreateMessage[]) => Promise<void>;
+  processMessage: (message: CreateMessage) => Promise<void>;
+  appendMessages: (...messages: Message[]) => void;
   updateMessage: (message: Message) => void;
   onCancel: () => void;
+  setMessages: (messages: Message[]) => void;
 };
 
 /**

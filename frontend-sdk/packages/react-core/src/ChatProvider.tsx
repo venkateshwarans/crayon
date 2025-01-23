@@ -1,9 +1,8 @@
-import { useMemo } from "react";
+import { FC, useMemo } from "react";
 import { ChatContext } from "./internal/ChatContext";
-import { ChatManager } from "./types";
 import { useThreadListManagerStore } from "./internal/useThreadListManagerStore";
 import { useThreadManagerStore } from "./internal/useThreadManagerStore";
-import { FC } from "react";
+import { ChatManager } from "./types";
 
 /**
  * @category Components

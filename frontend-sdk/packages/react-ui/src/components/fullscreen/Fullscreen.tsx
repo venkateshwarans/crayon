@@ -4,6 +4,7 @@ import {
   useThreadActions,
   useThreadListActions,
   useThreadListState,
+  useThreadManagerSelector,
   useThreadState,
 } from "@crayonai/react-core";
 import clsx from "clsx";
@@ -267,7 +268,29 @@ export const Messages = ({ className }: { className?: string }) => {
   );
 };
 
+const FallbackTemplate = () => {
+  return <div>Unable to render the response</div>;
+};
+
 export const RenderMessage = ({ message, className }: { message: Message; className?: string }) => {
+  const responseTemplates = useThreadManagerSelector((store) => store.responseTemplates);
+
+  if (message.role === "assistant" && message.responseTemplate) {
+    const Fallback = responseTemplates["fallback"]?.Component || FallbackTemplate;
+
+    const Template = responseTemplates[message.responseTemplate.name];
+
+    return (
+      <div className="cui-fullscreen-message cui-fullscreen-message-assistant">
+        {Template ? (
+          <Template.Component {...message.responseTemplate.templateProps} />
+        ) : (
+          <Fallback {...message.responseTemplate.templateProps} />
+        )}
+      </div>
+    );
+  }
+
   return (
     <div
       className={clsx(
@@ -285,7 +308,7 @@ export const RenderMessage = ({ message, className }: { message: Message; classN
 
 export const Composer = ({ className }: { className?: string }) => {
   const { textContent, setTextContent } = useComposerState();
-  const { addMessages } = useThreadActions();
+  const { processMessage: addMessages } = useThreadActions();
 
   const handleSubmit = () => {
     if (!textContent.trim()) return;

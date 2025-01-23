@@ -17,8 +17,10 @@ export const useThreadManagerStore = (inputThreadManager: ThreadManager) => {
 
       responseTemplates: inputThreadManagerRef.current.responseTemplates,
       onCancel: () => inputThreadManagerRef.current.onCancel?.(),
-      addMessages: (...props) => inputThreadManagerRef.current.addMessages(...props),
+      processMessage: (...props) => inputThreadManagerRef.current.processMessage(...props),
       updateMessage: (...props) => inputThreadManagerRef.current.updateMessage(...props),
+      appendMessages: (...props) => inputThreadManagerRef.current.appendMessages(...props),
+      setMessages: (...props) => inputThreadManagerRef.current.setMessages(...props),
     })),
   );
 
