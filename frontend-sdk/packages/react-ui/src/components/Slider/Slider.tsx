@@ -9,11 +9,15 @@ export interface SliderProps extends React.ComponentPropsWithoutRef<typeof Slide
   disabled?: boolean;
   onValueChange: (value: number | number[]) => void;
   value: number[];
-  defaultValue?: number[];
+  className?: string;
+  style?: React.CSSProperties;
 }
 
-export const Slider = forwardRef<HTMLDivElement, SliderProps>(
-  ({ variant, min, max, step, disabled, onValueChange, value, defaultValue }, ref) => {
+export const Slider = forwardRef<React.ComponentRef<typeof SliderPrimitive.Root>, SliderProps>(
+  (
+    { variant, min, max, step, disabled, onValueChange, value, className, style, ...props },
+    ref,
+  ) => {
     const [internalValue, setInternalValue] = useState(variant === "range" ? [min, max] : value);
 
     useEffect(() => {
@@ -107,7 +111,7 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(
         disabled={disabled}
         key={variant}
         value={Array.isArray(internalValue) ? internalValue : [internalValue]}
-        defaultValue={defaultValue}
+        style={style}
       >
         <SliderPrimitive.Track className="slider-track">
           <SliderPrimitive.Range className="slider-range" />
