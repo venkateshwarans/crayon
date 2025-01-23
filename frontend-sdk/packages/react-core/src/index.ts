@@ -3,6 +3,7 @@ export { ChatProvider } from "./ChatProvider";
 export { useThreadActions } from "./hooks/useThreadActions";
 export { useThreadListActions } from "./hooks/useThreadListActions";
 export { useThreadListState } from "./hooks/useThreadListState";
+export { useThreadManagerSelector } from "./hooks/useThreadManagerSelector";
 export { useThreadState } from "./hooks/useThreadState";
 export { useThreadListManager } from "./useThreadListManager";
 export { useThreadManager } from "./useThreadManager";

@@ -5,8 +5,8 @@ import { CreateMessage, Message, ResponseTemplate, ThreadManager } from "./types
 type Props = {
   threadId: string | null;
   loadThread: (threadId: string) => Promise<Message[]>;
-  onAddMessages: (props: {
-    messages: CreateMessage[];
+  onProcessMessage: (props: {
+    message: CreateMessage;
     threadManager: ThreadManager;
     abortController: AbortController;
   }) => Promise<Message[]>;
@@ -28,7 +28,13 @@ export const useThreadManager = (props: Props): ThreadManager => {
         error: null,
         abortController: null,
         isRunning: false,
-        addMessages: async (...messages: CreateMessage[]) => {
+        setMessages: (messages: Message[]) => {
+          set({ messages });
+        },
+        appendMessages: (...messages: Message[]) => {
+          set({ messages: [...store.getState().messages, ...messages] });
+        },
+        processMessage: async (message: CreateMessage) => {
           const abortController = new AbortController();
           const threadManager = store.getState();
           if (threadManager.isRunning) {
@@ -41,15 +47,13 @@ export const useThreadManager = (props: Props): ThreadManager => {
           });
 
           try {
-            const newMessages = await propsRef.current.onAddMessages({
-              messages,
+            const newMessages = await propsRef.current.onProcessMessage({
+              message,
               threadManager: store.getState(),
               abortController: new AbortController(),
             });
 
-            set((store) => ({
-              messages: [...store.messages, ...newMessages],
-            }));
+            store.getState().appendMessages(...newMessages);
           } finally {
             set({ abortController: null, isRunning: false });
           }
