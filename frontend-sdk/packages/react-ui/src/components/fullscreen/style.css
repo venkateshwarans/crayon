@@ -18,7 +18,6 @@
   flex-direction: column;
   gap: 0.5rem;
   background-color: rgb(255, 255, 255);
-  transition: width 1s ease-in-out;
   white-space: nowrap;
   overflow: hidden;
 }
