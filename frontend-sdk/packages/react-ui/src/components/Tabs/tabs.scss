@@ -30,7 +30,7 @@
 }
 
 .crayon-tabs-content {
-  padding: map.get(cssUtils.$spacing, "s");
+  padding: map.get(cssUtils.$spacing, "l");
   border: 1px solid map.get(cssUtils.$colors, "strokes", "default");
   background-color: map.get(cssUtils.$colors, "fills", "background");
   border-radius: map.get(cssUtils.$radius, "s");
