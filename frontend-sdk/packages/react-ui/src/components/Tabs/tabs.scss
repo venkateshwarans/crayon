@@ -1,0 +1,38 @@
+@use "sass:map";
+@use "../../cssUtils" as cssUtils;
+
+.crayon-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: map.get(cssUtils.$spacing, "2xs");
+}
+
+.crayon-tabs-list {
+  display: flex;
+  flex-direction: row;
+  gap: map.get(cssUtils.$spacing, "s");
+  border: 1px solid map.get(cssUtils.$colors, "strokes", "default");
+  padding: map.get(cssUtils.$spacing, "xs");
+  border-radius: map.get(cssUtils.$radius, "s");
+  background-color: map.get(cssUtils.$colors, "fills", "container");
+}
+
+.crayon-tabs-trigger {
+  padding: map.get(cssUtils.$spacing, "2xs");
+  border: 1px solid map.get(cssUtils.$colors, "strokes", "default");
+  border-radius: map.get(cssUtils.$radius, "s");
+  width: 100%;
+  background-color: map.get(cssUtils.$colors, "fills", "container");
+  @include cssUtils.typography(label, default);
+  &[data-state="active"] {
+    background-color: map.get(cssUtils.$colors, "fills", "background");
+  }
+}
+
+.crayon-tabs-content {
+  padding: map.get(cssUtils.$spacing, "s");
+  border: 1px solid map.get(cssUtils.$colors, "strokes", "default");
+  background-color: map.get(cssUtils.$colors, "fills", "background");
+  border-radius: map.get(cssUtils.$radius, "s");
+  @include cssUtils.typography(body, default);
+}
