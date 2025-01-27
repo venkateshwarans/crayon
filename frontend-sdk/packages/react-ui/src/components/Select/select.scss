@@ -3,7 +3,7 @@
 
 .crayon-select-trigger {
   background-color: map.get(cssUtils.$colors, "fills", "background");
-  color: map.get(cssUtils.$colors, "strokes", "primary");
+  color: map.get(cssUtils.$colors, "text", "primary");
   @include cssUtils.typography(label, default);
   border: 1px solid map.get(cssUtils.$colors, "strokes", "default");
   outline: none;

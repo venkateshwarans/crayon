@@ -1,0 +1,155 @@
+@use "sass:map";
+@use "../../cssUtils" as cssUtils;
+
+/* reset */
+button,
+h3 {
+  all: unset;
+}
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+.crayon-accordion {
+  border-radius: 6px;
+  background-color: map.get(cssUtils.$colors, "fills", "background");
+  box-shadow: map.get(cssUtils.$shadow, "m");
+  border: 1px solid map.get(cssUtils.$colors, "fills", "border");
+}
+
+.crayon-accordion-item {
+  overflow: hidden;
+  border-bottom: 1px solid map.get(cssUtils.$colors, "fills", "border");
+
+  &-card {
+    .crayon-accordion-trigger {
+      background-color: map.get(cssUtils.$colors, "fills", "background");
+
+      &:hover {
+        background-color: map.get(cssUtils.$colors, "fills", "background-hover");
+      }
+    }
+
+    .crayon-accordion-content {
+      background-color: map.get(cssUtils.$colors, "fills", "background");
+
+      &-wrapper {
+        padding: map.get(cssUtils.$spacing, "l");
+        gap: map.get(cssUtils.$spacing, "l");
+      }
+    }
+  }
+
+  &-sunk {
+    .crayon-accordion-trigger {
+      background-color: map.get(cssUtils.$colors, "fills", "sunk");
+
+      &:hover {
+        background-color: map.get(cssUtils.$colors, "fills", "background-hover");
+      }
+    }
+
+    .crayon-accordion-content {
+      background-color: map.get(cssUtils.$colors, "fills", "sunk");
+
+      &-wrapper {
+        padding: map.get(cssUtils.$spacing, "l");
+        gap: map.get(cssUtils.$spacing, "l");
+      }
+    }
+  }
+  &:first-child {
+    margin-top: 0;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+  }
+  &:last-child {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom: none;
+  }
+  &:focus-within {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.crayon-accordion-header {
+  display: flex;
+}
+
+.crayon-accordion-trigger {
+  @include cssUtils.typography("body", "default");
+  background-color: transparent;
+  padding: map.get(cssUtils.$spacing, "xs");
+  width: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: map.get(cssUtils.$colors, "fills", "text");
+  box-shadow: 0 1px 0 map.get(cssUtils.$colors, "fills", "border");
+  background-color: map.get(cssUtils.$colors, "fills", "background");
+
+  &-content {
+    display: flex;
+    align-items: center;
+    color: map.get(cssUtils.$colors, "text", "primary");
+    gap: map.get(cssUtils.$spacing, "xs");
+    svg {
+      height: 14px;
+      width: 14px;
+    }
+  }
+
+  &:hover {
+    background-color: map.get(cssUtils.$colors, "fills", "background-hover");
+  }
+  &-icon {
+    color: map.get(cssUtils.$colors, "text", "primary");
+    @include cssUtils.typography("primary", "default");
+    height: 14px;
+    width: 14px;
+    transition: transform 300ms cubic-bezier(0.87, 0, 0.13, 1);
+  }
+  &[data-state="open"] {
+    .crayon-accordion-trigger-icon {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.crayon-accordion-content {
+  overflow: hidden;
+  color: map.get(cssUtils.$colors, "fills", "text");
+  background-color: map.get(cssUtils.$colors, "fills", "background");
+
+  &[data-state="open"] {
+    animation: slideDown 300ms cubic-bezier(0.87, 0, 0.13, 1);
+  }
+  &[data-state="closed"] {
+    animation: slideUp 300ms cubic-bezier(0.87, 0, 0.13, 1);
+  }
+  &-wrapper {
+    padding: map.get(cssUtils.$spacing, "l");
+  }
+}
+
+@keyframes slideDown {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
