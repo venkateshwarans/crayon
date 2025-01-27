@@ -85,3 +85,66 @@ export const CustomStyling: Story = {
     </Tabs>
   ),
 };
+
+export const Clear: Story = {
+  render: () => (
+    <Tabs defaultValue="tab1" variant="clear">
+      <TabsList className="custom-tabs-list">
+        <TabsTrigger value="tab1" className="custom-trigger">
+          Tab 1
+        </TabsTrigger>
+        <TabsTrigger value="tab2" className="custom-trigger">
+          Tab 2
+        </TabsTrigger>
+      </TabsList>
+      <TabsContent value="tab1" className="custom-content">
+        <p>Content with custom styling.</p>
+      </TabsContent>
+      <TabsContent value="tab2" className="custom-content">
+        <p>More content with custom styling.</p>
+      </TabsContent>
+    </Tabs>
+  ),
+};
+
+export const Card: Story = {
+  render: () => (
+    <Tabs defaultValue="tab1" variant="card">
+      <TabsList className="custom-tabs-list">
+        <TabsTrigger value="tab1" className="custom-trigger">
+          Tab 1
+        </TabsTrigger>
+        <TabsTrigger value="tab2" className="custom-trigger">
+          Tab 2
+        </TabsTrigger>
+      </TabsList>
+      <TabsContent value="tab1" className="custom-content">
+        <p>Content with custom styling.</p>
+      </TabsContent>
+      <TabsContent value="tab2" className="custom-content">
+        <p>More content with custom styling.</p>
+      </TabsContent>
+    </Tabs>
+  ),
+};
+
+export const Sunk: Story = {
+  render: () => (
+    <Tabs defaultValue="tab1" variant="sunk">
+      <TabsList className="custom-tabs-list">
+        <TabsTrigger value="tab1" className="custom-trigger">
+          Tab 1
+        </TabsTrigger>
+        <TabsTrigger value="tab2" className="custom-trigger">
+          Tab 2
+        </TabsTrigger>
+      </TabsList>
+      <TabsContent value="tab1" className="custom-content">
+        <p>Content with custom styling.</p>
+      </TabsContent>
+      <TabsContent value="tab2" className="custom-content">
+        <p>More content with custom styling.</p>
+      </TabsContent>
+    </Tabs>
+  ),
+};

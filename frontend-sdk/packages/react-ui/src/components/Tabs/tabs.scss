@@ -1,10 +1,41 @@
 @use "sass:map";
 @use "../../cssUtils" as cssUtils;
 
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 .crayon-tabs {
   display: flex;
   flex-direction: column;
   gap: map.get(cssUtils.$spacing, "2xs");
+
+  &-clear {
+    .crayon-tabs-content {
+      padding: map.get(cssUtils.$spacing, "3xs") map.get(cssUtils.$spacing, "xs");
+      border: transparent;
+    }
+  }
+
+  &-card {
+    .crayon-tabs-content {
+      padding: map.get(cssUtils.$spacing, "l");
+      border: 1px solid map.get(cssUtils.$colors, "strokes", "default");
+    }
+  }
+
+  &-sunk {
+    .crayon-tabs-list {
+      background-color: map.get(cssUtils.$colors, "fills", "sunk");
+    }
+    .crayon-tabs-content {
+      padding: map.get(cssUtils.$spacing, "l");
+      border: 1px solid map.get(cssUtils.$colors, "strokes", "default");
+      background-color: map.get(cssUtils.$colors, "fills", "sunk");
+    }
+  }
 }
 
 .crayon-tabs-list {
@@ -19,7 +50,7 @@
 
 .crayon-tabs-trigger {
   padding: map.get(cssUtils.$spacing, "2xs");
-  border: 1px solid map.get(cssUtils.$colors, "strokes", "default");
+  border: 1px solid transparent;
   border-radius: map.get(cssUtils.$radius, "s");
   width: 100%;
   background-color: map.get(cssUtils.$colors, "fills", "container");
