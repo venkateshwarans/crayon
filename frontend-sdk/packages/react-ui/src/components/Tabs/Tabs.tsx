@@ -39,20 +39,24 @@ export interface TabsTriggerProps
   extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger> {
   className?: string;
   style?: React.CSSProperties;
-  children?: React.ReactNode;
+  value: string;
+  icon?: React.ReactNode;
+  text: React.ReactNode;
 }
 
 export const TabsTrigger = forwardRef<
   React.ComponentRef<typeof TabsPrimitive.Trigger>,
   TabsTriggerProps
->(({ className, style, children, ...props }, ref) => (
+>(({ className, style, icon, text, value, ...props }, ref) => (
   <TabsPrimitive.Trigger
     ref={ref}
     className={clsx("crayon-tabs-trigger", className)}
     style={style}
+    value={value}
     {...props}
   >
-    {children}
+    {icon}
+    {text}
   </TabsPrimitive.Trigger>
 ));
 

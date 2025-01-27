@@ -45,6 +45,11 @@
 }
 
 .crayon-tabs-trigger {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: map.get(cssUtils.$spacing, "2xs");
   box-sizing: border-box;
   padding: map.get(cssUtils.$spacing, "2xs");
   border: 1px solid transparent;
@@ -54,6 +59,10 @@
   @include cssUtils.typography(label, default);
   &[data-state="active"] {
     background-color: map.get(cssUtils.$colors, "fills", "background");
+  }
+  & svg {
+    width: 14px;
+    height: 14px;
   }
 }
 
