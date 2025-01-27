@@ -44,12 +44,12 @@ export interface AccordionTriggerProps
   className?: string;
   style?: React.CSSProperties;
   icon?: React.ReactNode;
-  children?: React.ReactNode;
+  text: React.ReactNode;
 }
 export const AccordionTrigger = forwardRef<
   React.ComponentRef<typeof AccordionPrimitive.Trigger>,
   AccordionTriggerProps
->(({ className, style, children, icon, ...props }, ref) => (
+>(({ className, style, text, icon, ...props }, ref) => (
   <AccordionPrimitive.Header className={clsx("crayon-accordion-header")}>
     <AccordionPrimitive.Trigger
       ref={ref}
@@ -59,7 +59,7 @@ export const AccordionTrigger = forwardRef<
     >
       <div className="crayon-accordion-trigger-content">
         {icon}
-        {children}
+        {text}
       </div>
       <ChevronDownIcon className="crayon-accordion-trigger-icon" />
     </AccordionPrimitive.Trigger>
