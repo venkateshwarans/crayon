@@ -1,13 +1,8 @@
 @use "sass:map";
 @use "../../cssUtils" as cssUtils;
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 .crayon-tabs {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: map.get(cssUtils.$spacing, "2xs");
@@ -39,6 +34,7 @@
 }
 
 .crayon-tabs-list {
+  box-sizing: border-box;
   display: flex;
   flex-direction: row;
   gap: map.get(cssUtils.$spacing, "s");
@@ -49,6 +45,7 @@
 }
 
 .crayon-tabs-trigger {
+  box-sizing: border-box;
   padding: map.get(cssUtils.$spacing, "2xs");
   border: 1px solid transparent;
   border-radius: map.get(cssUtils.$radius, "s");
@@ -61,6 +58,7 @@
 }
 
 .crayon-tabs-content {
+  box-sizing: border-box;
   padding: map.get(cssUtils.$spacing, "l");
   border: 1px solid map.get(cssUtils.$colors, "strokes", "default");
   background-color: map.get(cssUtils.$colors, "fills", "background");

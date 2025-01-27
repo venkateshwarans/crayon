@@ -89,19 +89,22 @@ export const CustomStyling: Story = {
 export const Clear: Story = {
   render: () => (
     <Tabs defaultValue="tab1" variant="clear">
-      <TabsList className="custom-tabs-list">
-        <TabsTrigger value="tab1" className="custom-trigger">
-          Tab 1
-        </TabsTrigger>
-        <TabsTrigger value="tab2" className="custom-trigger">
-          Tab 2
-        </TabsTrigger>
+      <TabsList>
+        <TabsTrigger value="tab1">Account</TabsTrigger>
+        <TabsTrigger value="tab2">Password</TabsTrigger>
+        <TabsTrigger value="tab3">Settings</TabsTrigger>
       </TabsList>
-      <TabsContent value="tab1" className="custom-content">
-        <p>Content with custom styling.</p>
+      <TabsContent value="tab1">
+        <h3>Account Settings</h3>
+        <p>Manage your account preferences here.</p>
       </TabsContent>
-      <TabsContent value="tab2" className="custom-content">
-        <p>More content with custom styling.</p>
+      <TabsContent value="tab2">
+        <h3>Password Settings</h3>
+        <p>Change your password and security settings.</p>
+      </TabsContent>
+      <TabsContent value="tab3">
+        <h3>General Settings</h3>
+        <p>Configure your application settings.</p>
       </TabsContent>
     </Tabs>
   ),
@@ -109,20 +112,23 @@ export const Clear: Story = {
 
 export const Card: Story = {
   render: () => (
-    <Tabs defaultValue="tab1" variant="card">
-      <TabsList className="custom-tabs-list">
-        <TabsTrigger value="tab1" className="custom-trigger">
-          Tab 1
-        </TabsTrigger>
-        <TabsTrigger value="tab2" className="custom-trigger">
-          Tab 2
-        </TabsTrigger>
+    <Tabs defaultValue="tab2" variant="card">
+      <TabsList>
+        <TabsTrigger value="tab1">Account</TabsTrigger>
+        <TabsTrigger value="tab2">Password</TabsTrigger>
+        <TabsTrigger value="tab3">Settings</TabsTrigger>
       </TabsList>
-      <TabsContent value="tab1" className="custom-content">
-        <p>Content with custom styling.</p>
+      <TabsContent value="tab1">
+        <h3>Account Settings</h3>
+        <p>Manage your account preferences here.</p>
       </TabsContent>
-      <TabsContent value="tab2" className="custom-content">
-        <p>More content with custom styling.</p>
+      <TabsContent value="tab2">
+        <h3>Password Settings</h3>
+        <p>Change your password and security settings.</p>
+      </TabsContent>
+      <TabsContent value="tab3">
+        <h3>General Settings</h3>
+        <p>Configure your application settings.</p>
       </TabsContent>
     </Tabs>
   ),
@@ -130,20 +136,23 @@ export const Card: Story = {
 
 export const Sunk: Story = {
   render: () => (
-    <Tabs defaultValue="tab1" variant="sunk">
-      <TabsList className="custom-tabs-list">
-        <TabsTrigger value="tab1" className="custom-trigger">
-          Tab 1
-        </TabsTrigger>
-        <TabsTrigger value="tab2" className="custom-trigger">
-          Tab 2
-        </TabsTrigger>
+    <Tabs defaultValue="tab3" variant="sunk">
+      <TabsList>
+        <TabsTrigger value="tab1">Account</TabsTrigger>
+        <TabsTrigger value="tab2">Password</TabsTrigger>
+        <TabsTrigger value="tab3">Settings</TabsTrigger>
       </TabsList>
-      <TabsContent value="tab1" className="custom-content">
-        <p>Content with custom styling.</p>
+      <TabsContent value="tab1">
+        <h3>Account Settings</h3>
+        <p>Manage your account preferences here.</p>
       </TabsContent>
-      <TabsContent value="tab2" className="custom-content">
-        <p>More content with custom styling.</p>
+      <TabsContent value="tab2">
+        <h3>Password Settings</h3>
+        <p>Change your password and security settings.</p>
+      </TabsContent>
+      <TabsContent value="tab3">
+        <h3>General Settings</h3>
+        <p>Configure your application settings.</p>
       </TabsContent>
     </Tabs>
   ),
