@@ -6,12 +6,9 @@ button,
 h3 {
   all: unset;
 }
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
+
 .crayon-accordion {
+  box-sizing: border-box;
   border-radius: 6px;
   background-color: map.get(cssUtils.$colors, "fills", "background");
   box-shadow: map.get(cssUtils.$shadow, "m");
@@ -19,6 +16,7 @@ h3 {
 }
 
 .crayon-accordion-item {
+  box-sizing: border-box;
   overflow: hidden;
   border-bottom: 1px solid map.get(cssUtils.$colors, "fills", "border");
 
@@ -80,6 +78,7 @@ h3 {
 }
 
 .crayon-accordion-trigger {
+  box-sizing: border-box;
   @include cssUtils.typography("body", "default");
   background-color: transparent;
   padding: map.get(cssUtils.$spacing, "xs");
@@ -132,7 +131,9 @@ h3 {
     animation: slideUp 300ms cubic-bezier(0.87, 0, 0.13, 1);
   }
   &-wrapper {
+    box-sizing: border-box;
     padding: map.get(cssUtils.$spacing, "l");
+    gap: map.get(cssUtils.$spacing, "l");
   }
 }
 

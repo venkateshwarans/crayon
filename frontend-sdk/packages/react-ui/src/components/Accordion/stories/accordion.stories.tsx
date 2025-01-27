@@ -54,15 +54,15 @@ export const SingleOpen: Story = {
 export const Multiple: Story = {
   render: () => (
     <Accordion type="multiple">
-      <AccordionItem value="item-1" variant="card">
+      <AccordionItem value="item-1">
         <AccordionTrigger>Accordion Trigger</AccordionTrigger>
         <AccordionContent>Accordion Content</AccordionContent>
       </AccordionItem>
-      <AccordionItem value="item-2" variant="sunk">
+      <AccordionItem value="item-2">
         <AccordionTrigger>Accordion Trigger</AccordionTrigger>
         <AccordionContent>Accordion Content</AccordionContent>
       </AccordionItem>
-      <AccordionItem value="item-3" variant="card">
+      <AccordionItem value="item-3">
         <AccordionTrigger>Accordion Trigger</AccordionTrigger>
         <AccordionContent>Accordion Content</AccordionContent>
       </AccordionItem>
@@ -73,15 +73,15 @@ export const Multiple: Story = {
 export const MultipleOpen: Story = {
   render: () => (
     <Accordion type="multiple" defaultValue={["item-1", "item-2"]}>
-      <AccordionItem value="item-1" variant="card">
+      <AccordionItem value="item-1">
         <AccordionTrigger>Accordion Trigger</AccordionTrigger>
         <AccordionContent>Accordion Content</AccordionContent>
       </AccordionItem>
-      <AccordionItem value="item-2" variant="sunk">
+      <AccordionItem value="item-2">
         <AccordionTrigger>Accordion Trigger</AccordionTrigger>
         <AccordionContent>Accordion Content</AccordionContent>
       </AccordionItem>
-      <AccordionItem value="item-3" variant="card">
+      <AccordionItem value="item-3">
         <AccordionTrigger>Accordion Trigger</AccordionTrigger>
         <AccordionContent>Accordion Content</AccordionContent>
       </AccordionItem>
