@@ -65,12 +65,14 @@
     }
 
     &-value {
+      @include cssUtils.typography(label, small);
       position: absolute;
       top: -30px;
       left: 50%;
+      border-radius: map.get(cssUtils.$radius, "2xs");
       transform: translateX(-50%);
-      background-color: map.get(cssUtils.$colors, "fills", "brand-el");
-      color: map.get(cssUtils.$colors, "fills", "brand");
+      background-color: map.get(cssUtils.$colors, "fills", "container");
+      color: map.get(cssUtils.$colors, "text", "primary");
       padding: map.get(cssUtils.$spacing, "2xs") map.get(cssUtils.$spacing, "3xs");
       border-radius: map.get(cssUtils.$radius, "sm");
       box-shadow: map.get(cssUtils.$shadow, "m");
