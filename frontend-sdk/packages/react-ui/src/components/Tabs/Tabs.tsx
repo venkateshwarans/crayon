@@ -5,13 +5,14 @@ import React, { forwardRef } from "react";
 export interface TabsProps extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root> {
   className?: string;
   style?: React.CSSProperties;
+  variant?: "clear" | "card" | "sunk";
 }
 
 export const Tabs = forwardRef<React.ComponentRef<typeof TabsPrimitive.Root>, TabsProps>(
-  ({ className, style, ...props }, ref) => (
+  ({ className, style, variant = "clear", ...props }, ref) => (
     <TabsPrimitive.Root
       ref={ref}
-      className={clsx("crayon-tabs", className)}
+      className={clsx("crayon-tabs", className, `crayon-tabs-${variant}`)}
       style={style}
       {...props}
     />
