@@ -65,10 +65,15 @@
 }
 
 .crayon-tabs-content {
-  gap: map.get(cssUtils.$spacing, "l");
   box-sizing: border-box;
   padding: map.get(cssUtils.$spacing, "l");
   border: 1px solid transparent;
   border-radius: map.get(cssUtils.$radius, "m");
   @include cssUtils.typography(body, default);
+
+  &-inner {
+    display: flex;
+    flex-direction: column;
+    gap: map.get(cssUtils.$spacing, "l");
+  }
 }
