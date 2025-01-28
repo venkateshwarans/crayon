@@ -1,5 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Settings, ShieldCheck, UserRound } from "lucide-react";
+import { Bell, Settings, ShieldCheck, UserRound } from "lucide-react";
+import { Header } from "../../Header";
+import "../../Header/header.scss";
+import { IconButton } from "../../IconButton";
+import "../../IconButton/iconButton.scss";
+import { Image } from "../../Image";
+import "../../Image/image.scss";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../Tabs";
 import "../tabs.scss";
 
@@ -28,16 +34,28 @@ export const Default: Story = {
         <TabsTrigger value="tab3" text="Settings" />
       </TabsList>
       <TabsContent value="tab1">
-        <h3>Account Settings</h3>
-        <p>Manage your account preferences here.</p>
+        <Header
+          title="Title"
+          subtitle="Subtitle"
+          actions={[<IconButton variant="tertiary" size="small" icon={<Bell />} />]}
+        />
+        <Image src="https://picsum.photos/200/300" alt="Image" scale="fill" />
       </TabsContent>
       <TabsContent value="tab2">
-        <h3>Password Settings</h3>
-        <p>Change your password and security settings.</p>
+        <Header
+          title="Title"
+          subtitle="Subtitle"
+          actions={[<IconButton variant="tertiary" size="small" icon={<Bell />} />]}
+        />
+        <Image src="https://picsum.photos/300/400" alt="Image" scale="fill" />
       </TabsContent>
       <TabsContent value="tab3">
-        <h3>General Settings</h3>
-        <p>Configure your application settings.</p>
+        <Header
+          title="Title"
+          subtitle="Subtitle"
+          actions={[<IconButton variant="tertiary" size="small" icon={<Bell />} />]}
+        />
+        <Image src="https://picsum.photos/400/500" alt="Image" scale="fill" />
       </TabsContent>
     </Tabs>
   ),
@@ -52,13 +70,28 @@ export const Disabled: Story = {
         <TabsTrigger value="tab3" text="Another Tab" />
       </TabsList>
       <TabsContent value="tab1">
-        <p>This is the content for the active tab.</p>
+        <Header
+          title="Title"
+          subtitle="Subtitle"
+          actions={[<IconButton variant="tertiary" size="small" icon={<Bell />} />]}
+        />
+        <Image src="https://picsum.photos/200/300" alt="Image" scale="fill" />
       </TabsContent>
       <TabsContent value="tab2">
-        <p>This content won't be accessible.</p>
+        <Header
+          title="Title"
+          subtitle="Subtitle"
+          actions={[<IconButton variant="tertiary" size="small" icon={<Bell />} />]}
+        />
+        <Image src="https://picsum.photos/300/400" alt="Image" scale="fill" />
       </TabsContent>
       <TabsContent value="tab3">
-        <p>This is another tab's content.</p>
+        <Header
+          title="Title"
+          subtitle="Subtitle"
+          actions={[<IconButton variant="tertiary" size="small" icon={<Bell />} />]}
+        />
+        <Image src="https://picsum.photos/400/500" alt="Image" scale="fill" />
       </TabsContent>
     </Tabs>
   ),
@@ -72,10 +105,20 @@ export const CustomStyling: Story = {
         <TabsTrigger value="tab2" text="Tab 2" />
       </TabsList>
       <TabsContent value="tab1" className="custom-content">
-        <p>Content with custom styling.</p>
+        <Header
+          title="Title"
+          subtitle="Subtitle"
+          actions={[<IconButton variant="tertiary" size="small" icon={<Bell />} />]}
+        />
+        <Image src="https://picsum.photos/200/300" alt="Image" scale="fill" />
       </TabsContent>
       <TabsContent value="tab2" className="custom-content">
-        <p>More content with custom styling.</p>
+        <Header
+          title="Title"
+          subtitle="Subtitle"
+          actions={[<IconButton variant="tertiary" size="small" icon={<Bell />} />]}
+        />
+        <Image src="https://picsum.photos/300/400" alt="Image" scale="fill" />
       </TabsContent>
     </Tabs>
   ),
@@ -90,16 +133,28 @@ export const WithIcon: Story = {
         <TabsTrigger value="tab3" text="Settings" icon={<Settings />} />
       </TabsList>
       <TabsContent value="tab1">
-        <h3>Account Settings</h3>
-        <p>Manage your account preferences here.</p>
+        <Header
+          title="Title"
+          subtitle="Subtitle"
+          actions={[<IconButton variant="tertiary" size="small" icon={<Bell />} />]}
+        />
+        <Image src="https://picsum.photos/200/300" alt="Image" scale="fill" />
       </TabsContent>
       <TabsContent value="tab2">
-        <h3>Password Settings</h3>
-        <p>Change your password and security settings.</p>
+        <Header
+          title="Title"
+          subtitle="Subtitle"
+          actions={[<IconButton variant="tertiary" size="small" icon={<Bell />} />]}
+        />
+        <Image src="https://picsum.photos/300/400" alt="Image" scale="fill" />
       </TabsContent>
       <TabsContent value="tab3">
-        <h3>General Settings</h3>
-        <p>Configure your application settings.</p>
+        <Header
+          title="Title"
+          subtitle="Subtitle"
+          actions={[<IconButton variant="tertiary" size="small" icon={<Bell />} />]}
+        />
+        <Image src="https://picsum.photos/400/500" alt="Image" scale="fill" />
       </TabsContent>
     </Tabs>
   ),
@@ -114,16 +169,28 @@ export const Clear: Story = {
         <TabsTrigger value="tab3" text="Settings" />
       </TabsList>
       <TabsContent value="tab1">
-        <h3>Account Settings</h3>
-        <p>Manage your account preferences here.</p>
+        <Header
+          title="Title"
+          subtitle="Subtitle"
+          actions={[<IconButton variant="tertiary" size="small" icon={<Bell />} />]}
+        />
+        <Image src="https://picsum.photos/200/300" alt="Image" scale="fill" />
       </TabsContent>
       <TabsContent value="tab2">
-        <h3>Password Settings</h3>
-        <p>Change your password and security settings.</p>
+        <Header
+          title="Title"
+          subtitle="Subtitle"
+          actions={[<IconButton variant="tertiary" size="small" icon={<Bell />} />]}
+        />
+        <Image src="https://picsum.photos/300/400" alt="Image" scale="fill" />
       </TabsContent>
       <TabsContent value="tab3">
-        <h3>General Settings</h3>
-        <p>Configure your application settings.</p>
+        <Header
+          title="Title"
+          subtitle="Subtitle"
+          actions={[<IconButton variant="tertiary" size="small" icon={<Bell />} />]}
+        />
+        <Image src="https://picsum.photos/400/500" alt="Image" scale="fill" />
       </TabsContent>
     </Tabs>
   ),
@@ -138,16 +205,28 @@ export const Card: Story = {
         <TabsTrigger value="tab3" text="Settings" />
       </TabsList>
       <TabsContent value="tab1">
-        <h3>Account Settings</h3>
-        <p>Manage your account preferences here.</p>
+        <Header
+          title="Title"
+          subtitle="Subtitle"
+          actions={[<IconButton variant="tertiary" size="small" icon={<Bell />} />]}
+        />
+        <Image src="https://picsum.photos/200/300" alt="Image" scale="fill" />
       </TabsContent>
       <TabsContent value="tab2">
-        <h3>Password Settings</h3>
-        <p>Change your password and security settings.</p>
+        <Header
+          title="Title"
+          subtitle="Subtitle"
+          actions={[<IconButton variant="tertiary" size="small" icon={<Bell />} />]}
+        />
+        <Image src="https://picsum.photos/300/400" alt="Image" scale="fill" />
       </TabsContent>
       <TabsContent value="tab3">
-        <h3>General Settings</h3>
-        <p>Configure your application settings.</p>
+        <Header
+          title="Title"
+          subtitle="Subtitle"
+          actions={[<IconButton variant="tertiary" size="small" icon={<Bell />} />]}
+        />
+        <Image src="https://picsum.photos/400/500" alt="Image" scale="fill" />
       </TabsContent>
     </Tabs>
   ),
@@ -162,16 +241,28 @@ export const Sunk: Story = {
         <TabsTrigger value="tab3" text="Settings" />
       </TabsList>
       <TabsContent value="tab1">
-        <h3>Account Settings</h3>
-        <p>Manage your account preferences here.</p>
+        <Header
+          title="Title"
+          subtitle="Subtitle"
+          actions={[<IconButton variant="tertiary" size="small" icon={<Bell />} />]}
+        />
+        <Image src="https://picsum.photos/200/300" alt="Image" scale="fill" />
       </TabsContent>
       <TabsContent value="tab2">
-        <h3>Password Settings</h3>
-        <p>Change your password and security settings.</p>
+        <Header
+          title="Title"
+          subtitle="Subtitle"
+          actions={[<IconButton variant="tertiary" size="small" icon={<Bell />} />]}
+        />
+        <Image src="https://picsum.photos/300/400" alt="Image" scale="fill" />
       </TabsContent>
       <TabsContent value="tab3">
-        <h3>General Settings</h3>
-        <p>Configure your application settings.</p>
+        <Header
+          title="Title"
+          subtitle="Subtitle"
+          actions={[<IconButton variant="tertiary" size="small" icon={<Bell />} />]}
+        />
+        <Image src="https://picsum.photos/400/500" alt="Image" scale="fill" />
       </TabsContent>
     </Tabs>
   ),

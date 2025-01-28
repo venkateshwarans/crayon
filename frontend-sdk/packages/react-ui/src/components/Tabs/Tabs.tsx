@@ -77,6 +77,6 @@ export const TabsContent = forwardRef<
     style={style}
     {...props}
   >
-    {children}
+    <div className="crayon-tabs-content-inner">{children}</div>
   </TabsPrimitive.Content>
 ));
