@@ -1,5 +1,5 @@
 <a href="https://www.crayonai.org">
-  <img src="https://crayonai.org/img/social-card.jpg" alt="crayonai"/>
+  <img src="https://crayonai.org/img/social-card.png" alt="crayonai"/>
 </a>
 
 <p align="center">
