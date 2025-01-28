@@ -2,14 +2,8 @@ name: Build
 
 on:
   push:
-    paths:
-      - 'frontend-sdk/packages/react-core/**'
-      - 'frontend-sdk/packages/react-ui/**'
     branches: [ main ]
   pull_request:
-    paths:
-      - 'frontend-sdk/packages/react-core/**'
-      - 'frontend-sdk/packages/react-ui/**'
     branches: [ main ]
 
 jobs:
