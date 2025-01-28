@@ -25,6 +25,7 @@
     }
   }
   &-item {
+    @include cssUtils.typography(body, default);
     display: flex;
     flex-direction: column;
     gap: map.get(cssUtils.$spacing, "s");

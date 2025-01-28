@@ -1,6 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Bell, ChevronLeft, ChevronRight } from "lucide-react";
+import { Header } from "../../Header";
+import "../../Header/header.scss";
+import { IconButton } from "../../IconButton";
 import "../../IconButton/iconButton.scss";
+import { Image } from "../../Image";
+import "../../Image/image.scss";
 import {
   Carousel,
   CarouselContent,
@@ -28,22 +33,12 @@ export const Default: Story = {
       <CarouselContent>
         {Array.from({ length: 10 }).map((_, index) => (
           <CarouselItem key={index}>
-            <div style={{ padding: "0.25rem" }}>
-              <div
-                style={{
-                  display: "flex",
-                  aspectRatio: "1/1",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: "0.5rem",
-                  border: "1px solid rgb(229, 231, 235)",
-                  backgroundColor: "white",
-                  padding: "0.5rem",
-                }}
-              >
-                <span style={{ fontSize: "1.875rem", fontWeight: 600 }}>{index + 1}</span>
-              </div>
-            </div>
+            <Header
+              title="Title"
+              subtitle="Subtitle"
+              actions={[<IconButton variant="tertiary" size="small" icon={<Bell />} />]}
+            />
+            <Image src="https://picsum.photos/200/300" alt="Image" scale="fill" />
           </CarouselItem>
         ))}
       </CarouselContent>
@@ -59,22 +54,12 @@ export const MultipleItems: Story = {
       <CarouselContent>
         {Array.from({ length: 10 }).map((_, index) => (
           <CarouselItem key={index}>
-            <div style={{ padding: "0.25rem" }}>
-              <div
-                style={{
-                  display: "flex",
-                  aspectRatio: "1/1",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: "0.5rem",
-                  border: "1px solid rgb(229, 231, 235)",
-                  backgroundColor: "white",
-                  padding: "0.5rem",
-                }}
-              >
-                <span style={{ fontSize: "1.875rem", fontWeight: 600 }}>{index + 1}</span>
-              </div>
-            </div>
+            <Header
+              title="Title"
+              subtitle="Subtitle"
+              actions={[<IconButton variant="tertiary" size="small" icon={<Bell />} />]}
+            />
+            <Image src="https://picsum.photos/200/300" alt="Image" scale="fill" />
           </CarouselItem>
         ))}
       </CarouselContent>
@@ -86,34 +71,41 @@ export const MultipleItems: Story = {
 
 export const WithWrappingDiv: Story = {
   render: () => (
-    <Carousel
-      style={{ width: "100%", maxWidth: "28rem" }}
-      hasWrappingDivForCards
-      showButtons={false}
-    >
+    <Carousel style={{ width: "100%", maxWidth: "28rem" }} hasWrappingDivForCards>
       <CarouselContent>
         <div style={{ display: "flex" }}>
           {Array.from({ length: 20 }).map((_, index) => (
             <CarouselItem key={index}>
-              <div style={{ padding: "0.25rem" }}>
-                <div
-                  style={{
-                    display: "flex",
-                    aspectRatio: "1/1",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    borderRadius: "0.5rem",
-                    border: "1px solid rgb(229, 231, 235)",
-                    backgroundColor: "white",
-                    padding: "0.5rem",
-                  }}
-                >
-                  <span style={{ fontSize: "1.875rem", fontWeight: 600 }}>{index + 1}</span>
-                </div>
-              </div>
+              <Header
+                title="Title"
+                subtitle="Subtitle"
+                actions={[<IconButton variant="tertiary" size="small" icon={<Bell />} />]}
+              />
+              <Image src="https://picsum.photos/200/300" alt="Image" scale="fill" />
             </CarouselItem>
           ))}
         </div>
+      </CarouselContent>
+      <CarouselPrevious icon={<ChevronLeft />} />
+      <CarouselNext icon={<ChevronRight />} />
+    </Carousel>
+  ),
+};
+
+export const WithNoButtons: Story = {
+  render: () => (
+    <Carousel style={{ width: "100%", maxWidth: "28rem" }} showButtons={false}>
+      <CarouselContent style={{ gap: "1rem" }}>
+        {Array.from({ length: 10 }).map((_, index) => (
+          <CarouselItem key={index}>
+            <Header
+              title="Title"
+              subtitle="Subtitle"
+              actions={[<IconButton variant="tertiary" size="small" icon={<Bell />} />]}
+            />
+            <Image src="https://picsum.photos/200/300" alt="Image" scale="fill" />
+          </CarouselItem>
+        ))}
       </CarouselContent>
       <CarouselPrevious icon={<ChevronLeft />} />
       <CarouselNext icon={<ChevronRight />} />
@@ -127,24 +119,12 @@ export const CustomStyling: Story = {
       <CarouselContent style={{ gap: "1rem" }}>
         {Array.from({ length: 10 }).map((_, index) => (
           <CarouselItem key={index}>
-            <div style={{ padding: "0.25rem" }}>
-              <div
-                style={{
-                  display: "flex",
-                  aspectRatio: "16/9",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: "0.75rem",
-                  border: "1px solid rgb(229, 231, 235)",
-                  background: "linear-gradient(to right, rgb(59, 130, 246), rgb(168, 85, 247))",
-                  padding: "1.5rem",
-                }}
-              >
-                <span style={{ fontSize: "2.25rem", fontWeight: 700, color: "white" }}>
-                  {index + 1}
-                </span>
-              </div>
-            </div>
+            <Header
+              title="Title"
+              subtitle="Subtitle"
+              actions={[<IconButton variant="tertiary" size="small" icon={<Bell />} />]}
+            />
+            <Image src="https://picsum.photos/200/300" alt="Image" scale="fill" />
           </CarouselItem>
         ))}
       </CarouselContent>
