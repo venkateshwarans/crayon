@@ -73,4 +73,4 @@ function SidebarHeader(__namedParameters: {
 
 ## Defined in
 
-[packages/react-ui/src/components/fullscreen/Fullscreen.tsx:63](https://github.com/thesysdev/crayonai/blob/b70189f61d5ac903b473d12565e61a38c72453b2/frontend-sdk/packages/react-ui/src/components/fullscreen/Fullscreen.tsx#L63)
+[packages/react-ui/src/components/fullscreen/Fullscreen.tsx:63](https://github.com/thesysdev/crayonai/blob/f566456db11ebf0674916d45b40423bef47282cf/frontend-sdk/packages/react-ui/src/components/fullscreen/Fullscreen.tsx#L63)

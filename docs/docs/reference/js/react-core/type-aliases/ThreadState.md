@@ -40,7 +40,7 @@ Represents the state of a thread
 </td>
 <td>
 
-[packages/react-core/src/types/chatManager.ts:38](https://github.com/thesysdev/crayonai/blob/b70189f61d5ac903b473d12565e61a38c72453b2/frontend-sdk/packages/react-core/src/types/chatManager.ts#L38)
+[packages/react-core/src/types/chatManager.ts:38](https://github.com/thesysdev/crayonai/blob/f566456db11ebf0674916d45b40423bef47282cf/frontend-sdk/packages/react-core/src/types/chatManager.ts#L38)
 
 </td>
 </tr>
@@ -62,7 +62,7 @@ Represents the state of a thread
 </td>
 <td>
 
-[packages/react-core/src/types/chatManager.ts:34](https://github.com/thesysdev/crayonai/blob/b70189f61d5ac903b473d12565e61a38c72453b2/frontend-sdk/packages/react-core/src/types/chatManager.ts#L34)
+[packages/react-core/src/types/chatManager.ts:34](https://github.com/thesysdev/crayonai/blob/f566456db11ebf0674916d45b40423bef47282cf/frontend-sdk/packages/react-core/src/types/chatManager.ts#L34)
 
 </td>
 </tr>
@@ -84,7 +84,7 @@ Indicates if the thread is currently processing and controls should be disabled
 </td>
 <td>
 
-[packages/react-core/src/types/chatManager.ts:36](https://github.com/thesysdev/crayonai/blob/b70189f61d5ac903b473d12565e61a38c72453b2/frontend-sdk/packages/react-core/src/types/chatManager.ts#L36)
+[packages/react-core/src/types/chatManager.ts:36](https://github.com/thesysdev/crayonai/blob/f566456db11ebf0674916d45b40423bef47282cf/frontend-sdk/packages/react-core/src/types/chatManager.ts#L36)
 
 </td>
 </tr>
@@ -106,7 +106,7 @@ Indicates if the thread is currently processing and controls should be disabled
 </td>
 <td>
 
-[packages/react-core/src/types/chatManager.ts:37](https://github.com/thesysdev/crayonai/blob/b70189f61d5ac903b473d12565e61a38c72453b2/frontend-sdk/packages/react-core/src/types/chatManager.ts#L37)
+[packages/react-core/src/types/chatManager.ts:37](https://github.com/thesysdev/crayonai/blob/f566456db11ebf0674916d45b40423bef47282cf/frontend-sdk/packages/react-core/src/types/chatManager.ts#L37)
 
 </td>
 </tr>
@@ -128,7 +128,7 @@ Indicates if the thread is currently processing and controls should be disabled
 </td>
 <td>
 
-[packages/react-core/src/types/chatManager.ts:39](https://github.com/thesysdev/crayonai/blob/b70189f61d5ac903b473d12565e61a38c72453b2/frontend-sdk/packages/react-core/src/types/chatManager.ts#L39)
+[packages/react-core/src/types/chatManager.ts:39](https://github.com/thesysdev/crayonai/blob/f566456db11ebf0674916d45b40423bef47282cf/frontend-sdk/packages/react-core/src/types/chatManager.ts#L39)
 
 </td>
 </tr>
@@ -137,4 +137,4 @@ Indicates if the thread is currently processing and controls should be disabled
 
 ## Defined in
 
-[packages/react-core/src/types/chatManager.ts:33](https://github.com/thesysdev/crayonai/blob/b70189f61d5ac903b473d12565e61a38c72453b2/frontend-sdk/packages/react-core/src/types/chatManager.ts#L33)
+[packages/react-core/src/types/chatManager.ts:33](https://github.com/thesysdev/crayonai/blob/f566456db11ebf0674916d45b40423bef47282cf/frontend-sdk/packages/react-core/src/types/chatManager.ts#L33)

@@ -72,7 +72,7 @@ const config: Config = {
     colorMode: {
       respectPrefersColorScheme: true,
     },
-    image: "img/social-card.jpg",
+    image: "img/social-card.png",
     navbar: {
       title: "CrayonAI",
       logo: {
