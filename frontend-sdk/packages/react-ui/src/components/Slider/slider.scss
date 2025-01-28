@@ -1,0 +1,105 @@
+@use "sass:map";
+@use "../../cssUtils" as cssUtils;
+
+.slider {
+  &-root {
+    position: relative;
+    display: flex;
+    height: 20px;
+    width: 100%;
+    min-width: 100px;
+    max-width: 100%;
+    touch-action: none;
+    user-select: none;
+    align-items: center;
+  }
+
+  &-track {
+    position: relative;
+    height: 6px;
+    flex-grow: 1;
+    border-radius: map.get(cssUtils.$radius, "full");
+    background-color: map.get(cssUtils.$colors, "fills", "sunk");
+  }
+
+  &-range {
+    position: absolute;
+    height: 100%;
+    border-radius: map.get(cssUtils.$radius, "full");
+    background-color: map.get(cssUtils.$colors, "fills", "brand-el");
+  }
+
+  &-thumb {
+    outline: none;
+
+    &-handle {
+      display: block;
+      width: 16px;
+      height: 16px;
+      border-radius: map.get(cssUtils.$radius, "3xs");
+      outline: 1px solid map.get(cssUtils.$colors, "strokes", "default");
+      background-color: map.get(cssUtils.$colors, "fills", "container");
+      overflow: hidden;
+      box-shadow: map.get(cssUtils.$shadow, "s");
+
+      &-inner {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        background-color: map.get(cssUtils.$colors, "fills", "container");
+        transition: background-color 0.2s;
+
+        &:hover {
+          background-color: map.get(cssUtils.$colors, "fills", "container-hover");
+        }
+
+        &-dot {
+          width: 4px;
+          height: 4px;
+          border-radius: map.get(cssUtils.$radius, "full");
+          background-color: map.get(cssUtils.$colors, "fills", "brand-el");
+        }
+      }
+    }
+
+    &-value {
+      @include cssUtils.typography(label, small);
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      border-radius: map.get(cssUtils.$radius, "2xs");
+      transform: translateX(-50%);
+      background-color: map.get(cssUtils.$colors, "fills", "container");
+      color: map.get(cssUtils.$colors, "text", "primary");
+      padding: map.get(cssUtils.$spacing, "2xs") map.get(cssUtils.$spacing, "3xs");
+      border-radius: map.get(cssUtils.$radius, "sm");
+      box-shadow: map.get(cssUtils.$shadow, "m");
+      opacity: 0;
+      transition: opacity 0.2s;
+
+      .slider-thumb-handle:hover &,
+      .slider-thumb-handle:focus & {
+        opacity: 1;
+      }
+    }
+  }
+
+  &-dots {
+    &-dot {
+      position: absolute;
+      top: 1px;
+      width: 4px;
+      height: 4px;
+      border-radius: map.get(cssUtils.$radius, "full");
+      background-color: map.get(cssUtils.$colors, "fills", "container");
+      transform: translateX(-50%);
+    }
+  }
+
+  &--disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
