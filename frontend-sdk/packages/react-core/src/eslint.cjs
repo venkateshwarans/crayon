@@ -1,4 +1,4 @@
 /** @type {import("eslint").ESLint.ConfigData} */
 module.exports = {
-  extends: ["../../eslint.cjs"]
+  extends: ["../../eslint.cjs"],
 };
