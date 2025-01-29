@@ -2,8 +2,9 @@
 @use "../../cssUtils" as cssUtils;
 
 .crayon-follow-up-item {
-  @include cssUtils.typography(primary, default);
   @include cssUtils.button-reset;
+  @include cssUtils.typography(primary, default);
+  box-sizing: border-box;
   padding: map.get(cssUtils.$spacing, "xs") map.get(cssUtils.$spacing, "s");
   border-bottom: 1px solid map.get(cssUtils.$colors, "strokes", "default");
   background-color: transparent;

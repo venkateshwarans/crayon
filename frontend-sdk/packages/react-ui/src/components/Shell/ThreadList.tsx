@@ -1,18 +1,14 @@
 import { Thread, useThreadListActions, useThreadListState } from "@crayonai/react-core";
 import clsx from "clsx";
-import { Fragment, useContext, useEffect } from "react";
-import { SidebarContext } from "../fullscreen/Fullscreen";
+import { Fragment, useEffect } from "react";
 
 export const ThreadList = ({ className }: { className?: string }) => {
   let { threads } = useThreadListState();
   const { load } = useThreadListActions();
-  const { searchText } = useContext(SidebarContext);
 
   useEffect(() => {
     load();
   }, []);
-
-  threads = threads.filter((thread) => thread.title.includes(searchText));
 
   const groupThreads = () => {
     const now = new Date();
