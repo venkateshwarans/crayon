@@ -48,6 +48,7 @@
     "sass": "^1.83.4"
   },
   "devDependencies": {
+    "vite": "^5.0.0",
     "@chromatic-com/storybook": "^3.2.3",
     "@storybook/addon-essentials": "^8.4.7",
     "@storybook/addon-interactions": "^8.4.7",

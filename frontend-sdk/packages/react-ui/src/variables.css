@@ -8,7 +8,7 @@ body {
   --brand-el-hover-fills: #000000;
   --container-fills: #ffffff;
   /* need to provide the opacity */
-  --overlay-fills: #000000;
+  --overlay-fills: rgba(0, 0, 0, 0.4);
   --sunk-fills: #000000a1;
   --container-hover-fills: #ffffff;
   --danger-fills: #7f56d9;
@@ -182,7 +182,7 @@ body {
   --brand-el-hover-fills: #000000;
   --container-fills: #ffffff;
   /* need to provide the opacity */
-  --overlay-fills: #000000;
+  --overlay-fills: rgba(0, 0, 0, 0.4);
   --sunk-fills: #000000;
   --container-hover-fills: #ffffff;
   --danger-fills: #7f56d9;
