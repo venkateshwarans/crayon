@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Download, Monitor, TabletSmartphone, TrendingUp } from "lucide-react";
-import "../BarChart/barChart.scss";
 import "../charts.scss";
 
 import { Button } from "../../Button";

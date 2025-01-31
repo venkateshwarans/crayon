@@ -1,1 +1,1 @@
-export * from "./BarChart.js";
+export * from "./BarChart";
