@@ -12,6 +12,8 @@ import { LineChart } from "../LineChart";
 import { PieChart } from "../PieChart";
 import "../PieChart/pieChart.scss";
 import { RadarChart } from "../RadarChart";
+import { RadialChart } from "../RadialChart";
+
 const chartData = [
   { month: "January", desktop: 186, mobile: 80 },
   { month: "February", desktop: 305, mobile: 200 },
@@ -49,6 +51,15 @@ const radarChartData = [
 ];
 
 const pieChartData = [
+  { month: "January", desktop: 186 },
+  { month: "February", desktop: 305 },
+  { month: "March", desktop: 237 },
+  { month: "April", desktop: 73 },
+  { month: "May", desktop: 209 },
+  { month: "June", desktop: 214 },
+];
+
+const radialChartData = [
   { month: "January", desktop: 186 },
   { month: "February", desktop: 305 },
   { month: "March", desktop: 237 },
@@ -193,6 +204,32 @@ const PieChartComponent = () => {
   );
 };
 
+const RadialChartComponent = () => {
+  return (
+    <Card style={{ width: "500px" }}>
+      <Header
+        actions={[
+          <IconButton variant="tertiary" key="download-btn" size="small" icon={<TrendingUp />} />,
+        ]}
+        title="Pie Chart - Multiple"
+        subtitle="January - June 2024"
+      />
+      <RadialChart
+        data={pieChartData}
+        categoryKey="month"
+        dataKey="desktop"
+        theme="vivid"
+        format="percentage"
+        variant="circular"
+        width={460}
+        height={400}
+      />
+      <Footer>
+        <Button iconRight={<Download />}>Download</Button>
+      </Footer>
+    </Card>
+  );
+};
 const meta = {
   title: "Components/Charts/BarChart",
   component: BarChartComponent,
@@ -228,4 +265,9 @@ export const RadarChartStory: Story = {
 export const PieChartStory: Story = {
   name: "Pie Chart",
   render: () => <PieChartComponent />,
+};
+
+export const RadialChartStory: Story = {
+  name: "Radial Chart",
+  render: () => <RadialChartComponent />,
 };
