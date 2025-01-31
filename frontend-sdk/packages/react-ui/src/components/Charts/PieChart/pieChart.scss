@@ -1,0 +1,10 @@
+@use "sass:map";
+@use "../../../cssUtils.scss" as cssUtils;
+
+.crayon-pie-chart {
+  &-container {
+    min-height: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

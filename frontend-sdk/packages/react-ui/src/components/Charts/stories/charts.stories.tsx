@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Download, Monitor, TabletSmartphone, TrendingUp } from "lucide-react";
-import "../charts.scss";
-
 import { Button } from "../../Button";
 import { Card } from "../../Card";
 import { Footer } from "../../Footer/Footer";
@@ -9,7 +7,10 @@ import { Header } from "../../Header";
 import { IconButton } from "../../IconButton";
 import { AreaChart } from "../AreaChart";
 import { BarChart } from "../BarChart";
+import "../charts.scss";
 import { LineChart } from "../LineChart";
+import { PieChart } from "../PieChart";
+import "../PieChart/pieChart.scss";
 import { RadarChart } from "../RadarChart";
 const chartData = [
   { month: "January", desktop: 186, mobile: 80 },
@@ -45,6 +46,15 @@ const radarChartData = [
   { month: "April", desktop: 73, mobile: 190 },
   { month: "May", desktop: 209, mobile: 130 },
   { month: "June", desktop: 214, mobile: 140 },
+];
+
+const pieChartData = [
+  { month: "January", desktop: 186 },
+  { month: "February", desktop: 305 },
+  { month: "March", desktop: 237 },
+  { month: "April", desktop: 73 },
+  { month: "May", desktop: 209 },
+  { month: "June", desktop: 214 },
 ];
 
 const icons = {
@@ -147,7 +157,7 @@ const RadarChartComponent = () => {
         icons={icons}
         variant="area"
         width={460}
-        height={300}
+        height={400}
         strokeWidth={3}
         areaOpacity={1}
       />
@@ -157,6 +167,32 @@ const RadarChartComponent = () => {
     </Card>
   );
 };
+
+const PieChartComponent = () => {
+  return (
+    <Card style={{ width: "500px" }}>
+      <Header
+        actions={[
+          <IconButton variant="tertiary" key="download-btn" size="small" icon={<TrendingUp />} />,
+        ]}
+        title="Pie Chart - Multiple"
+        subtitle="January - June 2024"
+      />
+      <PieChart
+        data={pieChartData}
+        categoryKey="month"
+        dataKey="desktop"
+        theme="vivid"
+        format="percentage"
+        variant="donut"
+      />
+      <Footer>
+        <Button iconRight={<Download />}>Download</Button>
+      </Footer>
+    </Card>
+  );
+};
+
 const meta = {
   title: "Components/Charts/BarChart",
   component: BarChartComponent,
@@ -187,4 +223,9 @@ export const LineChartStory: Story = {
 export const RadarChartStory: Story = {
   name: "Radar Chart",
   render: () => <RadarChartComponent />,
+};
+
+export const PieChartStory: Story = {
+  name: "Pie Chart",
+  render: () => <PieChartComponent />,
 };
