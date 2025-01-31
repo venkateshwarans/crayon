@@ -43,7 +43,7 @@ export const PieChart = <T extends PieChartData>({
   format = "number",
   legend = true,
   label = true,
-  outerRadius = 100,
+  outerRadius = 120,
   innerRadius = variant === "donut" ? 60 : 0,
   width = 800,
   height = 400,
