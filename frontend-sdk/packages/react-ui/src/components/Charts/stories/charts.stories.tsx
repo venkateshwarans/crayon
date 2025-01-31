@@ -211,7 +211,7 @@ const RadialChartComponent = () => {
         actions={[
           <IconButton variant="tertiary" key="download-btn" size="small" icon={<TrendingUp />} />,
         ]}
-        title="Pie Chart - Multiple"
+        title="Radial Chart - Multiple"
         subtitle="January - June 2024"
       />
       <RadialChart
