@@ -1,5 +1,5 @@
 import React from "react";
-import { Area, LabelList, AreaChart as RechartsAreaChart, XAxis } from "recharts";
+import { LabelList, Line, LineChart as RechartsLineChart, XAxis } from "recharts";
 import {
   ChartConfig,
   ChartContainer,
@@ -11,9 +11,9 @@ import {
 import { cartesianGrid } from "../cartesianGrid";
 import { getDistributedColors, getPalette } from "../utils/PalletUtils";
 
-type AreaChartData = Array<Record<string, string | number>>;
+type LineChartData = Array<Record<string, string | number>>;
 
-interface AreaChartProps<T extends AreaChartData> {
+interface LineChartProps<T extends LineChartData> {
   data: T;
   categoryKey: keyof T[number];
   theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid";
@@ -23,11 +23,11 @@ interface AreaChartProps<T extends AreaChartData> {
   legend?: boolean;
   width?: number;
   height?: number;
-  opacity?: number;
+  strokeWidth?: number;
   icons?: Partial<Record<keyof T[number], React.ComponentType>>;
 }
 
-export const AreaChart = <T extends AreaChartData>({
+export const LineChart = <T extends LineChartData>({
   data,
   categoryKey,
   theme = "ocean",
@@ -37,9 +37,9 @@ export const AreaChart = <T extends AreaChartData>({
   legend = true,
   width = 800,
   height = 400,
-  opacity = 0.5,
+  strokeWidth = 2,
   icons = {},
-}: AreaChartProps<T>) => {
+}: LineChartProps<T>) => {
   // excluding the categoryKey
   const dataKeys = Object.keys(data[0] || {}).filter((key) => key !== categoryKey);
 
@@ -68,7 +68,7 @@ export const AreaChart = <T extends AreaChartData>({
 
   return (
     <ChartContainer config={chartConfig}>
-      <RechartsAreaChart
+      <RechartsLineChart
         accessibilityLayer
         width={width}
         height={height}
@@ -89,20 +89,18 @@ export const AreaChart = <T extends AreaChartData>({
           textAnchor="middle"
           tickFormatter={(value) => value.slice(0, 4)}
         />
-
-        <ChartTooltip content={<ChartTooltipContent indicator="dot" />} />
+        <ChartTooltip content={<ChartTooltipContent indicator="line" />} />
         {dataKeys.map((key) => {
           const color = `var(--color-${key})`;
           if (label) {
             return (
-              <Area
+              <Line
                 key={key}
                 dataKey={key}
                 type={variant}
                 stroke={color}
                 fill={color}
-                fillOpacity={opacity}
-                stackId="a"
+                strokeWidth={strokeWidth}
                 dot={{
                   fill: color,
                 }}
@@ -118,29 +116,25 @@ export const AreaChart = <T extends AreaChartData>({
                     fontSize={12}
                   />
                 )}
-              </Area>
+              </Line>
             );
           }
           return (
-            <Area
+            <Line
               key={key}
               dataKey={key}
               type={variant}
               stroke={color}
               fill={color}
-              fillOpacity={opacity}
-              stackId="a"
+              strokeWidth={strokeWidth}
               dot={{
                 fill: color,
-              }}
-              activeDot={{
-                r: 6,
               }}
             />
           );
         })}
         {legend && <ChartLegend content={<ChartLegendContent />} />}
-      </RechartsAreaChart>
+      </RechartsLineChart>
     </ChartContainer>
   );
 };

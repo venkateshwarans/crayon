@@ -7,9 +7,9 @@ import { Card } from "../../Card";
 import { Footer } from "../../Footer/Footer";
 import { Header } from "../../Header";
 import { IconButton } from "../../IconButton";
-import { AreaChart } from "../AreaChart/AreaChart";
+import { AreaChart } from "../AreaChart";
 import { BarChart } from "../BarChart";
-
+import { LineChart } from "../LineChart";
 const chartData = [
   { month: "January", desktop: 186, mobile: 80 },
   { month: "February", desktop: 305, mobile: 200 },
@@ -26,6 +26,15 @@ const areaChartData = [
   { month: "April", desktop: 180, mobile: 160 },
   { month: "May", desktop: 250, mobile: 120 },
   { month: "June", desktop: 300, mobile: 180 },
+];
+
+const lineChartData = [
+  { month: "January", desktop: 186, mobile: 80 },
+  { month: "February", desktop: 305, mobile: 200 },
+  { month: "March", desktop: 237, mobile: 120 },
+  { month: "April", desktop: 73, mobile: 190 },
+  { month: "May", desktop: 209, mobile: 130 },
+  { month: "June", desktop: 214, mobile: 140 },
 ];
 
 const icons = {
@@ -84,6 +93,33 @@ const AreaChartComponent = () => {
   );
 };
 
+const LineChartComponent = () => {
+  return (
+    <Card style={{ width: "500px" }}>
+      <Header
+        actions={[
+          <IconButton variant="tertiary" key="download-btn" size="small" icon={<TrendingUp />} />,
+        ]}
+        title="Line Chart - Multiple"
+        subtitle="January - June 2024"
+      />
+      <LineChart
+        data={lineChartData}
+        categoryKey="month"
+        theme="emerald"
+        icons={icons}
+        variant="step"
+        width={460}
+        height={300}
+        strokeWidth={3}
+      />
+      <Footer>
+        <Button iconRight={<Download />}>Download</Button>
+      </Footer>
+    </Card>
+  );
+};
+
 const meta = {
   title: "Components/Charts/BarChart",
   component: BarChartComponent,
@@ -104,4 +140,9 @@ export const BarChartStory: Story = {
 export const AreaChartStory: Story = {
   name: "Area Chart",
   render: () => <AreaChartComponent />,
+};
+
+export const LineChartStory: Story = {
+  name: "Line Chart",
+  render: () => <LineChartComponent />,
 };
