@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Download, TrendingUp } from "lucide-react";
-import { Bar, BarChart, XAxis } from "recharts";
+import { Download, Monitor, TabletSmartphone, TrendingUp } from "lucide-react";
+import "../BarChart/barChart.scss";
 import "../charts.scss";
 
 import { Button } from "../../Button";
@@ -8,8 +8,7 @@ import { Card } from "../../Card";
 import { Footer } from "../../Footer/Footer";
 import { Header } from "../../Header";
 import { IconButton } from "../../IconButton";
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "../Charts";
-import { cartesianGrid } from "../cartesianGrid";
+import { BarChart } from "../BarChart";
 
 const chartData = [
   { month: "January", desktop: 186, mobile: 80 },
@@ -20,16 +19,10 @@ const chartData = [
   { month: "June", desktop: 214, mobile: 140 },
 ];
 
-const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "red",
-  },
-  mobile: {
-    label: "Mobile",
-    color: "green",
-  },
-} satisfies ChartConfig;
+const icons = {
+  desktop: Monitor,
+  mobile: TabletSmartphone,
+} as const;
 
 const BarChartComponent = () => {
   return (
@@ -41,23 +34,13 @@ const BarChartComponent = () => {
         title="Bar Chart - Multiple"
         subtitle="January - June 2024"
       />
-      <>
-        <ChartContainer config={chartConfig}>
-          <BarChart accessibilityLayer data={chartData}>
-            {cartesianGrid()}
-            <XAxis
-              dataKey="month"
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
-            />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
-            <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
-          </BarChart>
-        </ChartContainer>
-      </>
+      <BarChart
+        data={chartData}
+        categoryKey="month"
+        theme="spectrum"
+        icons={icons}
+        variant="stacked"
+      />
       <Footer>
         <Button iconRight={<Download />}>Download</Button>
       </Footer>

@@ -58,6 +58,7 @@
     border: 1px solid map.get(cssUtils.$colors, "strokes", "default");
     background-color: map.get(cssUtils.$colors, "fills", "container");
     box-shadow: map.get(cssUtils.$shadow, "small");
+    text-transform: capitalize;
 
     &-label {
       @include cssUtils.typography(label, default);
@@ -79,6 +80,7 @@
       border: 1px solid map.get(cssUtils.$colors, "strokes", "default");
       background-color: map.get(cssUtils.$colors, "fills", "container");
       box-shadow: map.get(cssUtils.$shadow, "small");
+      text-transform: capitalize;
 
       &-item {
         display: flex;
@@ -165,6 +167,7 @@
     align-items: center;
     justify-content: center;
     gap: 16px;
+    text-transform: capitalize;
 
     &--top {
       padding-bottom: map.get(cssUtils.$spacing, "s");
@@ -207,4 +210,8 @@
 
 .crayon-chart-cartesian-grid {
   stroke: map.get(cssUtils.$colors, "strokes", "default");
+}
+
+.crayon-chart-label-list {
+  fill: map.get(cssUtils.$colors, "fills", "secondary");
 }
