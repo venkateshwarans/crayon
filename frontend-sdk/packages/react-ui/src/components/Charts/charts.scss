@@ -212,6 +212,10 @@
   stroke: map.get(cssUtils.$colors, "strokes", "default");
 }
 
+.crayon-chart-polar-grid {
+  stroke: map.get(cssUtils.$colors, "strokes", "default");
+}
+
 .crayon-chart-label-list {
   fill: map.get(cssUtils.$colors, "fills", "secondary");
 }

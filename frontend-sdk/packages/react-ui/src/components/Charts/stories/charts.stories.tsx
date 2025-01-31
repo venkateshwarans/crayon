@@ -10,6 +10,7 @@ import { IconButton } from "../../IconButton";
 import { AreaChart } from "../AreaChart";
 import { BarChart } from "../BarChart";
 import { LineChart } from "../LineChart";
+import { RaderChart } from "../RaderChart";
 const chartData = [
   { month: "January", desktop: 186, mobile: 80 },
   { month: "February", desktop: 305, mobile: 200 },
@@ -29,6 +30,15 @@ const areaChartData = [
 ];
 
 const lineChartData = [
+  { month: "January", desktop: 186, mobile: 80 },
+  { month: "February", desktop: 305, mobile: 200 },
+  { month: "March", desktop: 237, mobile: 120 },
+  { month: "April", desktop: 73, mobile: 190 },
+  { month: "May", desktop: 209, mobile: 130 },
+  { month: "June", desktop: 214, mobile: 140 },
+];
+
+const radarChartData = [
   { month: "January", desktop: 186, mobile: 80 },
   { month: "February", desktop: 305, mobile: 200 },
   { month: "March", desktop: 237, mobile: 120 },
@@ -120,6 +130,33 @@ const LineChartComponent = () => {
   );
 };
 
+const RaderChartComponent = () => {
+  return (
+    <Card style={{ width: "500px" }}>
+      <Header
+        actions={[
+          <IconButton variant="tertiary" key="download-btn" size="small" icon={<TrendingUp />} />,
+        ]}
+        title="Rader Chart - Multiple"
+        subtitle="January - June 2024"
+      />
+      <RaderChart
+        data={radarChartData}
+        categoryKey="month"
+        theme="vivid"
+        icons={icons}
+        variant="area"
+        width={460}
+        height={300}
+        strokeWidth={3}
+        areaOpacity={1}
+      />
+      <Footer>
+        <Button iconRight={<Download />}>Download</Button>
+      </Footer>
+    </Card>
+  );
+};
 const meta = {
   title: "Components/Charts/BarChart",
   component: BarChartComponent,
@@ -145,4 +182,9 @@ export const AreaChartStory: Story = {
 export const LineChartStory: Story = {
   name: "Line Chart",
   render: () => <LineChartComponent />,
+};
+
+export const RaderChartStory: Story = {
+  name: "Rader Chart",
+  render: () => <RaderChartComponent />,
 };
