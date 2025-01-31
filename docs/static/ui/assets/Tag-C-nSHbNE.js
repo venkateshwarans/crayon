@@ -1,6 +1,0 @@
-import{c as r}from"./createLucideIcon-CVKaca6J.js";import{j as a}from"./jsx-runtime-DR9Q75dM.js";import{c}from"./clsx-B-dksMZM.js";import{r as i}from"./index-DRjF_FHU.js";/**
- * @license lucide-react v0.469.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */const l=r("Heart",[["path",{d:"M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z",key:"c3ymky"}]]),t=i.forwardRef((e,s)=>a.jsxs("div",{ref:s,className:c("crayon-tag",e.className),style:e.styles,children:[e.icon&&a.jsx("span",{className:"crayon-tag-icon",children:e.icon}),a.jsx("span",{className:"crayon-tag-text",children:e.text})]}));t.displayName="Tag";t.__docgenInfo={description:"",methods:[],displayName:"Tag",props:{className:{required:!1,tsType:{name:"string"},description:""},styles:{required:!1,tsType:{name:"ReactCSSProperties",raw:"React.CSSProperties"},description:""},icon:{required:!1,tsType:{name:"ReactReactNode",raw:"React.ReactNode"},description:""},text:{required:!0,tsType:{name:"ReactReactNode",raw:"React.ReactNode"},description:""}}};export{l as H,t as T};
