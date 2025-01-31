@@ -10,7 +10,7 @@ import { IconButton } from "../../IconButton";
 import { AreaChart } from "../AreaChart";
 import { BarChart } from "../BarChart";
 import { LineChart } from "../LineChart";
-import { RaderChart } from "../RaderChart";
+import { RadarChart } from "../RadarChart";
 const chartData = [
   { month: "January", desktop: 186, mobile: 80 },
   { month: "February", desktop: 305, mobile: 200 },
@@ -130,7 +130,7 @@ const LineChartComponent = () => {
   );
 };
 
-const RaderChartComponent = () => {
+const RadarChartComponent = () => {
   return (
     <Card style={{ width: "500px" }}>
       <Header
@@ -140,7 +140,7 @@ const RaderChartComponent = () => {
         title="Rader Chart - Multiple"
         subtitle="January - June 2024"
       />
-      <RaderChart
+      <RadarChart
         data={radarChartData}
         categoryKey="month"
         theme="vivid"
@@ -184,7 +184,7 @@ export const LineChartStory: Story = {
   render: () => <LineChartComponent />,
 };
 
-export const RaderChartStory: Story = {
-  name: "Rader Chart",
-  render: () => <RaderChartComponent />,
+export const RadarChartStory: Story = {
+  name: "Radar Chart",
+  render: () => <RadarChartComponent />,
 };

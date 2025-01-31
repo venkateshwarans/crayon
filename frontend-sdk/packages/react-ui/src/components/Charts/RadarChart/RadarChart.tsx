@@ -10,9 +10,9 @@ import {
 } from "../Charts";
 import { getDistributedColors, getPalette } from "../utils/PalletUtils";
 
-type RaderChartData = Array<Record<string, string | number>>;
+type RadarChartData = Array<Record<string, string | number>>;
 
-interface RaderChartProps<T extends RaderChartData> {
+interface RadarChartProps<T extends RadarChartData> {
   data: T;
   categoryKey: keyof T[number];
   theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid";
@@ -26,7 +26,7 @@ interface RaderChartProps<T extends RaderChartData> {
   icons?: Partial<Record<keyof T[number], React.ComponentType>>;
 }
 
-export const RaderChart = <T extends RaderChartData>({
+export const RadarChart = <T extends RadarChartData>({
   data,
   categoryKey,
   theme = "ocean",
@@ -38,7 +38,7 @@ export const RaderChart = <T extends RaderChartData>({
   strokeWidth = 2,
   areaOpacity = 0.5,
   icons = {},
-}: RaderChartProps<T>) => {
+}: RadarChartProps<T>) => {
   // excluding the categoryKey
   const dataKeys = Object.keys(data[0] || {}).filter((key) => key !== categoryKey);
 
