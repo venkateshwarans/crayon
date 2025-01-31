@@ -72,9 +72,10 @@ const AreaChartComponent = () => {
         categoryKey="month"
         theme="ocean"
         icons={icons}
-        variant="natural"
+        variant="linear"
         width={460}
         height={300}
+        opacity={1}
       />
       <Footer>
         <Button iconRight={<Download />}>Download</Button>
