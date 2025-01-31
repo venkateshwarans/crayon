@@ -90,12 +90,13 @@ export const BarChart = <T extends BarChartData>({
 
         <ChartTooltip content={<ChartTooltipContent />} />
         {dataKeys.map((key) => {
+          const color = `var(--color-${key})`;
           if (label) {
             return (
               <Bar
                 key={key}
                 dataKey={key}
-                fill={`var(--color-${key})`}
+                fill={color}
                 radius={radius}
                 stackId={variant === "stacked" ? "a" : undefined}
               >
@@ -114,7 +115,7 @@ export const BarChart = <T extends BarChartData>({
             <Bar
               key={key}
               dataKey={key}
-              fill={`var(--color-${key})`}
+              fill={color}
               radius={radius}
               stackId={variant === "stacked" ? "a" : undefined}
             />

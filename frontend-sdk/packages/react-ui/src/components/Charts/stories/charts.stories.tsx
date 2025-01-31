@@ -7,6 +7,7 @@ import { Card } from "../../Card";
 import { Footer } from "../../Footer/Footer";
 import { Header } from "../../Header";
 import { IconButton } from "../../IconButton";
+import { AreaChart } from "../AreaChart/AreaChart";
 import { BarChart } from "../BarChart";
 
 const chartData = [
@@ -16,6 +17,15 @@ const chartData = [
   { month: "April", desktop: 73, mobile: 190 },
   { month: "May", desktop: 209, mobile: 130 },
   { month: "June", desktop: 214, mobile: 140 },
+];
+
+const areaChartData = [
+  { month: "January", desktop: 150, mobile: 90 },
+  { month: "February", desktop: 280, mobile: 180 },
+  { month: "March", desktop: 220, mobile: 140 },
+  { month: "April", desktop: 180, mobile: 160 },
+  { month: "May", desktop: 250, mobile: 120 },
+  { month: "June", desktop: 300, mobile: 180 },
 ];
 
 const icons = {
@@ -36,9 +46,35 @@ const BarChartComponent = () => {
       <BarChart
         data={chartData}
         categoryKey="month"
-        theme="spectrum"
+        theme="sunset"
         icons={icons}
         variant="stacked"
+      />
+      <Footer>
+        <Button iconRight={<Download />}>Download</Button>
+      </Footer>
+    </Card>
+  );
+};
+
+const AreaChartComponent = () => {
+  return (
+    <Card style={{ width: "500px" }}>
+      <Header
+        actions={[
+          <IconButton variant="tertiary" key="download-btn" size="small" icon={<TrendingUp />} />,
+        ]}
+        title="Area Chart - Multiple"
+        subtitle="January - June 2024"
+      />
+      <AreaChart
+        data={areaChartData}
+        categoryKey="month"
+        theme="ocean"
+        icons={icons}
+        variant="natural"
+        width={460}
+        height={300}
       />
       <Footer>
         <Button iconRight={<Download />}>Download</Button>
@@ -59,14 +95,12 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+export const BarChartStory: Story = {
+  name: "Bar Chart",
+  render: () => <BarChartComponent />,
+};
 
-export const CustomData: Story = {
-  args: {
-    data: [
-      { month: "July", desktop: 250, mobile: 150 },
-      { month: "August", desktop: 320, mobile: 180 },
-      { month: "September", desktop: 280, mobile: 160 },
-    ],
-  },
+export const AreaChartStory: Story = {
+  name: "Area Chart",
+  render: () => <AreaChartComponent />,
 };
