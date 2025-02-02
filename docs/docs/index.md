@@ -1,6 +1,6 @@
 # Crayon Documentation
 
-> Crayon is a UI toolkit for building AI agents.
+> **Crayon is a UI toolkit for building AI agents.**
 
 ## What is Crayon?
 
@@ -14,6 +14,10 @@ It is extremely lightweight and can be integrated with any HTTP server including
 ### Component Library
 The component library is a set of beautifully designed & accessible UI components that are designed to work together to provide a live & responsive end-user experience for your AI applications. <br />
 It is built on top of headless Radix components and the Shell bridges the core and this component library to provide a seamless developer experience.
+
+## Generative UI & Crayon
+While Crayon is agnostic to the use case, one of the key reasons we made it is to power Generative UI interfaces. <br />
+We believe that Generative UI represents the next paradigm shift in how we interact with AI and we want to make it easier for everyone to build them. See [Generative UI](/docs/concepts/generative-ui) for more details.
 
 ## What can I build with Crayon?
 
@@ -31,14 +35,14 @@ To get an idea of what you can build with Crayon, check out the example [Persona
 - **Backend Agnostic**: Crayon is designed to work with any backend framework and doesn't mandate any specific architecture or data model. It can be adapted to any existing backend by implementing a few simple interfaces.
 - **Batteries Included**: Crayon comes together with a set of components that allow you to build a fully functional agentic interface with minimal effort.
 - **Extremely Lightweight**: Crayon core is designed to be extremely lightweight and doesn't add any overhead to your application beyond a few simple libraries.
-- **Thmemeable, Accessible & Responsive** - Crayon components are designed to be themeable, accessible & responsive across all surfaces and all interaction patterns - Chatbots, Agents, Copilots, etc.
+- **Themeable, Accessible & Responsive** - Crayon components are designed to be themeable, accessible & responsive across all surfaces and all interaction patterns - Chatbots, Agents, Copilots, etc.
 
 
 ## FAQs
 
 ### Why did we build Crayon?
 We believe that the future of AI is not just about creating more powerful LLMs, but also about creating more engaging and accessible applications that can be used by everyone. <br />
-We want to make it easier for developers to build AI applications and we believe that the best way to do this is to create a set of tools that can be used to build AI applications.
+We want to make it easier for developers to build AI applications and we believe that the best way to do this is to create a set of tools that can be adapted into any existing backend framework.
 
 ### Why a new component library?
 We started with off the shelf component libraries but realized that they needed some adaptations
