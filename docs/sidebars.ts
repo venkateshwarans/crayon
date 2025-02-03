@@ -16,7 +16,6 @@ const sidebars: SidebarsConfig = {
   // By default, Docusaurus generates a sidebar from the docs folder structure
   docsSidebar: [
     "index",
-    "what-is-crayon",
     "quickstart",
     {
       type: "category",
