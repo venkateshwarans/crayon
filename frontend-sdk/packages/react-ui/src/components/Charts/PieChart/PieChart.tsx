@@ -1,4 +1,8 @@
+import clsx from "clsx";
+import { debounce } from "lodash-es";
+import { useEffect, useRef, useState } from "react";
 import { Cell, Pie, PieChart as RechartsPieChart } from "recharts";
+import { useLayoutContext } from "../../../context/LayoutContext";
 import {
   ChartConfig,
   ChartContainer,
@@ -43,11 +47,53 @@ export const PieChart = <T extends PieChartData>({
   format = "number",
   legend = true,
   label = true,
-  outerRadius = 120,
-  innerRadius = variant === "donut" ? 60 : 0,
+  outerRadius,
+  innerRadius,
   width = 800,
   height = 400,
 }: PieChartProps<T>) => {
+  const { layout } = useLayoutContext() || {};
+  const [calculatedOuterRadius, setCalculatedOuterRadius] = useState(120);
+  const [calculatedInnerRadius, setCalculatedInnerRadius] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Calculate dynamic radius based on layout
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const resizeObserver = new ResizeObserver(
+      debounce((entries: any) => {
+        const { width } = entries[0].contentRect;
+
+        // Calculate outer radius
+        let newOuterRadius = 120; // default
+        if (layout === "mobile") {
+          newOuterRadius = label ? (width > 300 ? 85 : 75) : width > 300 ? 95 : 80;
+        } else if (layout === "fullscreen") {
+          newOuterRadius = 120;
+        } else if (layout === "tray" || layout === "copilot") {
+          newOuterRadius = 90;
+        }
+
+        // Calculate inner radius for donut
+        let newInnerRadius = 0;
+        if (variant === "donut") {
+          if (layout === "mobile") {
+            newInnerRadius = label ? (width > 300 ? 50 : 30) : width > 300 ? 60 : 50;
+          } else {
+            newInnerRadius = 60;
+          }
+        }
+
+        setCalculatedOuterRadius(outerRadius ?? newOuterRadius);
+        setCalculatedInnerRadius(innerRadius ?? newInnerRadius);
+      }, 100),
+    );
+
+    resizeObserver.observe(containerRef.current);
+    return () => resizeObserver.disconnect();
+  }, [layout, label, variant, outerRadius, innerRadius]);
+
   // Calculate total for percentage calculations
   const total = data.reduce((sum, item) => sum + Number(item[dataKey]), 0);
 
@@ -90,6 +136,7 @@ export const PieChart = <T extends PieChartData>({
           y={y}
           textAnchor={textAnchor}
           dominantBaseline={dominantBaseline}
+          className="fill-t-comp-secondary p-0"
         >
           {formattedValue}
           {format === "percentage" ? "%" : ""}
@@ -99,7 +146,11 @@ export const PieChart = <T extends PieChartData>({
   };
 
   return (
-    <ChartContainer config={chartConfig} className="crayon-pie-chart-container">
+    <ChartContainer
+      ref={containerRef}
+      config={chartConfig}
+      className={clsx("crayon-pie-chart-container", `crayon-pie-chart-container-${layout}`)}
+    >
       <RechartsPieChart width={width} height={height}>
         <ChartTooltip content={<ChartTooltipContent showPercentage={format === "percentage"} />} />
         {legend && <ChartLegend content={<ChartLegendContent nameKey={String(categoryKey)} />} />}
@@ -108,8 +159,8 @@ export const PieChart = <T extends PieChartData>({
           dataKey={format === "percentage" ? "percentage" : String(dataKey)}
           nameKey={String(categoryKey)}
           labelLine={false}
-          outerRadius={outerRadius}
-          innerRadius={innerRadius}
+          outerRadius={calculatedOuterRadius}
+          innerRadius={calculatedInnerRadius}
           label={label ? renderCustomLabel : false}
         >
           {Object.entries(chartConfig).map(([key, config]) => (
