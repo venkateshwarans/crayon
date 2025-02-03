@@ -17,8 +17,7 @@ export interface DatePickerProps {
 }
 
 const DatePicker = (props: DatePickerProps) => {
-
-  const { layout } = useLayoutContext() || {};
+  const { layout } = useLayoutContext();
 
   const {
     mode = "single",
@@ -74,7 +73,11 @@ const DatePicker = (props: DatePickerProps) => {
       setSelectedDateFromParent={selectedDateHandler}
       setSelectedRangeFromParent={selectedRangeHandler}
     >
-      {variant === "docked" ? <DatepickerRenderer className={className} style={style} /> : <FloatingDatePickerRenderer className={className} style={style} />}
+      {variant === "docked" ? (
+        <DatepickerRenderer className={className} style={style} />
+      ) : (
+        <FloatingDatePickerRenderer className={className} style={style} />
+      )}
     </DatePickerProvider>
   );
 };
