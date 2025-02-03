@@ -112,8 +112,8 @@ export const PieChart = <T extends PieChartData>({
           innerRadius={innerRadius}
           label={label ? renderCustomLabel : false}
         >
-          {transformedData.map((_, index) => (
-            <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+          {Object.entries(chartConfig).map(([key, config]) => (
+            <Cell key={key} fill={config.color} />
           ))}
         </Pie>
       </RechartsPieChart>

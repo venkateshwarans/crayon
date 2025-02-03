@@ -51,16 +51,17 @@ export const RadialChart = <T extends RadialChartData>({
   // Calculate total for percentage calculations
   const total = data.reduce((sum, item) => sum + Number(item[dataKey]), 0);
 
-  // Transform data with percentages
-  const transformedData = data.map((item) => ({
-    ...item,
-    percentage: calculatePercentage(Number(item[dataKey as string]), total),
-    originalValue: item[dataKey as string],
-  }));
-
   // Get color palette and distribute colors
   const palette = getPalette(theme);
   const colors = getDistributedColors(palette, data.length);
+
+  // Transform data with percentages
+  const transformedData = data.map((item, index) => ({
+    ...item,
+    percentage: calculatePercentage(Number(item[dataKey as string]), total),
+    originalValue: item[dataKey as string],
+    fill: colors[index],
+  }));
 
   // Create chart configuration
   const chartConfig = data.reduce<ChartConfig>(
@@ -76,6 +77,16 @@ export const RadialChart = <T extends RadialChartData>({
 
   const getFontSize = (dataLength: number) => {
     return dataLength <= 5 ? 12 : 7;
+  };
+
+  const formatLabel = (value: string | number) => {
+    if (format === "percentage") {
+      const item = transformedData.find((d) => String(d.originalValue) === String(value));
+      return item ? `${item.percentage}%` : value;
+    }
+    // For number format, just truncate if too long
+    const stringValue = String(value);
+    return stringValue.length > 8 ? `${stringValue.slice(0, 8)}...` : stringValue;
   };
 
   return (
@@ -116,13 +127,13 @@ export const RadialChart = <T extends RadialChartData>({
           ))}
           {label && (
             <LabelList
-              dataKey={String(categoryKey)}
+              dataKey={String(dataKey)}
               position="insideStart"
               offset={12}
-              fill="#000000"
+              fill="currentColor"
               className="capitalize"
               fontSize={getFontSize(data.length)}
-              formatter={(value: string) => (value.length > 8 ? `${value.slice(0, 8)}...` : value)}
+              formatter={formatLabel}
             />
           )}
         </RadialBar>
