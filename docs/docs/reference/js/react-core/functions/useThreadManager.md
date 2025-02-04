@@ -33,4 +33,4 @@ function useThreadManager(props: Props): ThreadManager
 
 ## Defined in
 
-[packages/react-core/src/useThreadManager.ts:16](https://github.com/thesysdev/crayonai/blob/f566456db11ebf0674916d45b40423bef47282cf/frontend-sdk/packages/react-core/src/useThreadManager.ts#L16)
+[packages/react-core/src/useThreadManager.ts:16](https://github.com/thesysdev/crayonai/blob/7dc7bf9ad93dbd5ed62d55332e6a7a3cdb656cdf/frontend-sdk/packages/react-core/src/useThreadManager.ts#L16)
