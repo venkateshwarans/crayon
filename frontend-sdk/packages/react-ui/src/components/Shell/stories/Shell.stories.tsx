@@ -23,6 +23,14 @@ export default {
 export const Default = {
   render: (args: any) => {
     const threadListManager = useThreadListManager({
+      createThread: async () => {
+        return {
+          threadId: crypto.randomUUID(),
+          title: "test",
+          createdAt: new Date(),
+          isRunning: false,
+        };
+      },
       fetchThreadList: async () => {
         await new Promise((resolve) => setTimeout(resolve, 1000));
         return [

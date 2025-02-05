@@ -58,7 +58,7 @@ export const AssistantMessageContainer = ({
   return (
     <div className={clsx("crayon-shell-thread-message-assistant", className)}>
       <img src={logoUrl} alt="Assistant" className="crayon-shell-thread-message-assistant__logo" />
-      <div>{children}</div>
+      <div className="crayon-shell-thread-message-assistant__content">{children}</div>
     </div>
   );
 };
@@ -85,19 +85,21 @@ export const RenderMessage = ({ message, className }: { message: Message; classN
   if (message.role === "assistant") {
     return (
       <MessageContainer className={className}>
-        {message.message?.map((stringOrTemplate) => {
+        {message.message?.map((stringOrTemplate, i) => {
           if (typeof stringOrTemplate === "string") {
             return (
-              <div className="crayon-shell-thread-message-assistant__text">{stringOrTemplate}</div>
+              <div key={i} className="crayon-shell-thread-message-assistant__text">
+                {stringOrTemplate}
+              </div>
             );
           }
 
           const Template = responseTemplates[stringOrTemplate.name];
           const Fallback = responseTemplates["fallback"]?.Component || FallbackTemplate;
           return Template ? (
-            <Template.Component {...stringOrTemplate.templateProps} />
+            <Template.Component key={i} {...stringOrTemplate.templateProps} />
           ) : (
-            <Fallback />
+            <Fallback key={i} />
           );
         })}
       </MessageContainer>
@@ -121,7 +123,7 @@ export const Messages = ({ className }: { className?: string }) => {
 
 export const Composer = ({ className }: { className?: string }) => {
   const { textContent, setTextContent } = useComposerState();
-  const { processMessage } = useThreadActions();
+  const { processMessage, onCancel } = useThreadActions();
   const { isRunning } = useThreadState();
 
   const handleSubmit = () => {
@@ -153,7 +155,7 @@ export const Composer = ({ className }: { className?: string }) => {
           }}
         />
         <IconButton
-          onClick={handleSubmit}
+          onClick={isRunning ? onCancel : handleSubmit}
           icon={isRunning ? <Square size="1em" fill="currentColor" /> : <ArrowRight size="1em" />}
         />
       </div>
