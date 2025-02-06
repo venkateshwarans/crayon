@@ -16,6 +16,11 @@ const crayonPlugin = plugin.withOptions<CrayonPluginOptions>(
 
       `<ADD_COMPONENTS_CALLS$>`;
     },
+    () => {
+      return {
+        safelist: [{pattern: /^crayon-/}]
+      }
+    }
 );
 
 const componentDependencyMap = `<COMPONENT_DEPENDENCY_MAP$>`;
