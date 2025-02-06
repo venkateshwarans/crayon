@@ -45,10 +45,11 @@ yarn add @crayonai/crayon-ui @crayonai/react-core
 </Tabs>
 
 
-## Add the CrayonProvider to your app
+## Add the CrayonChat component to your app
 
 ```tsx title="page.tsx"
 import { CrayonChat } from "@crayonai/react-ui";
+import "@crayonai/react-ui/styles/index.css";
 
 export default function Home() {
   return <CrayonChat agentName="Crayon" logoUrl="" />;
