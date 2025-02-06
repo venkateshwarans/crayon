@@ -5,7 +5,7 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start -p 3003",
-    "build": "cd ../frontend-sdk/packages/react-ui && pnpm run build:storybook && cd ../../../docs && docusaurus build",
+    "build": "cd ../js/packages/react-ui && pnpm run build:storybook && cd ../../../docs && docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
@@ -22,8 +22,8 @@
     "prism-react-renderer": "^2.3.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "@crayonai/react-core": "file:../frontend-sdk/packages/react-core",
-    "@crayonai/react-ui": "file:../frontend-sdk/packages/react-ui"
+    "@crayonai/react-core": "file:../js/packages/react-core",
+    "@crayonai/react-ui": "file:../js/packages/react-ui"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.6.3",

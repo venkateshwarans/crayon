@@ -46,5 +46,5 @@ export default function App() {
 
 ## Packages
 
-- [react-core](./frontend-sdk/packages/react-core): Core framework and hooks for managing state and agents
-- [react-ui](./frontend-sdk/packages/react-ui): Modular UI components for use with Crayon
+- [react-core](./js/packages/react-core): Core framework and hooks for managing state and agents
+- [react-ui](./js/packages/react-ui): Modular UI components for use with Crayon

@@ -32,7 +32,7 @@ jobs:
 
       - name: Install dependencies of sdk
         run: pnpm install --frozen-lockfile
-        working-directory: frontend-sdk
+        working-directory: js
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Build website

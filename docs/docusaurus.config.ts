@@ -164,8 +164,8 @@ const config: Config = {
       "docusaurus-plugin-typedoc",
       {
         id: "react-core",
-        entryPoints: ["../frontend-sdk/packages/react-core/src/index.ts"],
-        tsconfig: "../frontend-sdk/tsconfig.json",
+        entryPoints: ["../js/packages/react-core/src/index.ts"],
+        tsconfig: "../js/tsconfig.json",
         out: "./docs/reference/js/react-core",
         ...typeDocConfig,
       },
@@ -175,8 +175,8 @@ const config: Config = {
     //   "docusaurus-plugin-typedoc",
     //   {
     //     id: "react-ui",
-    //     entryPoints: ["../frontend-sdk/packages/react-ui/src/index.ts"],
-    //     tsconfig: "../frontend-sdk/tsconfig.json",
+    //     entryPoints: ["../js/packages/react-ui/src/index.ts"],
+    //     tsconfig: "../js/tsconfig.json",
     //     out: "./docs/reference/js/react-ui",
     //     ...typeDocConfig,
     //   },
