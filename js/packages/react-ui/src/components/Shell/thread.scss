@@ -14,7 +14,7 @@ $center-align-spacing: calc(32px + map.get(cssUtils.$spacing, "s"));
   width: 100%;
   flex: 1;
   overflow: auto;
-  padding: map.get(cssUtils.$spacing, "m") $center-align-spacing 0;
+  padding: map.get(cssUtils.$spacing, "m") $center-align-spacing map.get(cssUtils.$spacing, "xl");
 
   .crayon-shell-container--mobile & {
     padding: map.get(cssUtils.$spacing, "l");
@@ -44,7 +44,6 @@ $center-align-spacing: calc(32px + map.get(cssUtils.$spacing, "s"));
     display: flex;
     flex-direction: column;
     gap: map.get(cssUtils.$spacing, "s");
-    padding-bottom: map.get(cssUtils.$spacing, "xl");
     overflow: hidden;
     overflow-wrap: break-word;
   }
