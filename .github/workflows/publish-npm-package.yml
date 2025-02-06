@@ -26,10 +26,17 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build affected projects
+      - name: Build projects
         run: pnpm -r run ci
 
-      - name: Check affected projects
-        run: pnpm -r publish --access public
+      - name: Publish react-ui
+        working-directory: ./js/packages/react-ui
+        run: pnpm publish --access public
+        env:
+            NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish react-core
+        working-directory: ./js/packages/react-core
+        run: pnpm publish --access public
         env:
             NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
