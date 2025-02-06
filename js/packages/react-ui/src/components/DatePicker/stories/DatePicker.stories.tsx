@@ -21,8 +21,7 @@ const meta: Meta<typeof DatePicker> = {
     (Story) => (
       <div
         style={{
-          width: "400px",
-          height: "400px",
+          width: "350px",
         }}
       >
         <Story />
@@ -231,6 +230,8 @@ export const ControlledRange: Story = {
     docs: {
       source: {
         code: `
+import { DateRange } from "react-day-picker";
+
 const ControlledRangePicker = () => {
   const [dateRange, setDateRange] = useState<DateRange>();
 
