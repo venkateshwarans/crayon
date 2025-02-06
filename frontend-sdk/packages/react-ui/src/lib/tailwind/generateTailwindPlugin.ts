@@ -174,7 +174,7 @@ const generateComponentDependencyMap = async () => {
   for (const component of componentsAndPaths) {
     const dependencies = await getComponentsDependencies([component.name]);
     if (!dependencies) continue;
-    componentDepsMap[component.name] = dependencies;
+    componentDepsMap[component.name] = dependencies as string[];
   }
 
   return componentDepsMap;
