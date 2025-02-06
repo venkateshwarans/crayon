@@ -121,7 +121,7 @@ const formatPluginFile = (pluginFileContents: string) => {
 };
 
 const readTemplateFile = () => {
-  const templateFilePath = path.resolve(dirname, "./pluginTemplate");
+  const templateFilePath = path.resolve(dirname, "./pluginTemplate.txt");
   const templateFileContents = fs.readFileSync(templateFilePath, "utf8");
   return templateFileContents;
 };
