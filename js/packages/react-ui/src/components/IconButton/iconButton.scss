@@ -32,7 +32,7 @@
   }
 
   &-secondary {
-    background-color: map.get(cssUtils.$colors, "fills", "Container");
+    background-color: map.get(cssUtils.$colors, "fills", "container");
     border-color: map.get(cssUtils.$colors, "strokes", "default");
     color: map.get(cssUtils.$colors, "text", "primary");
   }
