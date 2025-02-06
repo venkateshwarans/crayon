@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import "../../Label/Label.scss";
+import "../../Label/label.scss";
 import { SwitchItem } from "../../SwitchItem";
 import "../../SwitchItem/switchItem.scss";
 import { SwitchGroup } from "../SwitchGroup";

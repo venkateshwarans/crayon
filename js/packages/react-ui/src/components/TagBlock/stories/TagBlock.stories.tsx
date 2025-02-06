@@ -3,7 +3,7 @@ import { Heart, Star, User } from "lucide-react";
 import { Tag } from "../../Tag";
 import "../../Tag/tag.scss";
 import { TagBlock } from "../TagBlock";
-import "../TagBlock.scss";
+import "../tagBlock.scss";
 
 const meta: Meta<typeof TagBlock> = {
   title: "Components/TagBlock",

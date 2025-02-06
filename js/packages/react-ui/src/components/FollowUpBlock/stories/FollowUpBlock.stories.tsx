@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { Plus } from "lucide-react";
 import { FollowUpItem } from "../../FollowUpItem";
-import "../../FollowUpItem/FollowUpItem.scss";
+import "../../FollowUpItem/followUpItem.scss";
 import { FollowUpBlock } from "../FollowUpBlock";
-import "../FollowUpBlock.scss";
+import "../followUpBlock.scss";
 
 const meta: Meta<typeof FollowUpBlock> = {
   title: "Components/FollowUpBlock",
