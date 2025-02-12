@@ -4,11 +4,15 @@ import { mergeConfig } from "vite";
 
 const config: StorybookConfig = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
-  addons: ["@storybook/addon-essentials", "@storybook/addon-themes"],
-  framework: {
-    name: "@storybook/react-vite",
-    options: {},
-  },
+  addons: [
+    "@storybook/addon-essentials",
+    "@storybook/addon-interactions",
+    "@storybook/addon-onboarding",
+    "@storybook/core-events",
+    "@storybook/blocks",
+  ],
+  framework: "@storybook/react-vite",
+  features: {},
   previewHead: (head) => `
   ${head}
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.css">
@@ -20,6 +24,7 @@ const config: StorybookConfig = {
       body {
         margin: 0 !important;
         padding: 0 !important;
+        background-color: #1B1C1D;
       }
     </style>
   `,
