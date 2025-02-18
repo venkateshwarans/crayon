@@ -1,4 +1,4 @@
-// OpenAPI object definition for a simple text based reponse.
+// JSON schema for a simple text based reponse.
 // This should be used as the default/fallback response type when
 // using structured outputs.
 export const TextResponseSchema = {
