@@ -30,14 +30,14 @@ import { ThemeProvider } from "../ThemeProvider";
 interface CrayonChatProps {
   processMessage?: (params: {
     threadId: string;
-    message: CreateMessage;
+    messages: Message[];
     abortController: AbortController;
   }) => Promise<Response>;
   createThread?: (message: CreateMessage) => Promise<Thread>;
   threadManager?: ThreadManager;
   threadListManager?: ThreadListManager;
-  logoUrl: string;
-  agentName: string;
+  logoUrl?: string;
+  agentName?: string;
   responseTemplates?: ResponseTemplate[];
 }
 
@@ -45,8 +45,8 @@ export const CrayonChat = ({
   processMessage,
   threadManager: userThreadManager,
   threadListManager: userThreadListManager,
-  logoUrl,
-  agentName,
+  logoUrl = "https://crayonai.org/img/logo.png",
+  agentName = "My Agent",
   responseTemplates,
   createThread,
 }: CrayonChatProps) => {
@@ -81,12 +81,13 @@ export const CrayonChat = ({
       return Promise.resolve(messages);
     },
     onProcessMessage: async ({ message, abortController, threadManager }) => {
-      threadManager.appendMessages({
+      const newMessage: UserMessage = {
         id: crypto.randomUUID(),
         role: "user",
         type: "prompt",
-        message: message.message as string,
-      });
+        message: message.message,
+      };
+      threadManager.appendMessages(newMessage);
 
       let threadId = threadListManager.selectedThreadId;
       if (!threadId) {
@@ -97,7 +98,11 @@ export const CrayonChat = ({
 
       invariant(processMessage, "processMessage is required");
 
-      const response = await processMessage({ threadId, message, abortController });
+      const response = await processMessage({
+        threadId,
+        messages: [...threadManager.messages, newMessage],
+        abortController,
+      });
       await processStreamedMessage({
         response,
         createMessage: threadManager.appendMessages,
