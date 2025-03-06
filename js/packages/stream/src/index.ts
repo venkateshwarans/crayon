@@ -1,3 +1,4 @@
+export * from "./jsonSchemaHelpers";
 export * from "./openai";
 export * from "./textSchema";
 export * from "./transformer";
