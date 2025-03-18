@@ -12,7 +12,6 @@ import { useComposerState } from "../../hooks/useComposerState";
 import { useScrollToBottom } from "../../hooks/useScrollToBottom";
 import { IconButton } from "../IconButton";
 import { MessageLoading as MessageLoadingComponent } from "../MessageLoading";
-import { useShellStore } from "./store";
 
 export const ThreadContainer = ({
   children,
@@ -21,7 +20,7 @@ export const ThreadContainer = ({
   children?: React.ReactNode;
   className?: string;
 }) => {
-  return <div className={clsx("crayon-shell-thread-container", className)}>{children}</div>;
+  return <div className={clsx("crayon-copilot-shell-thread-container", className)}>{children}</div>;
 };
 
 export const ScrollArea = ({
@@ -53,7 +52,7 @@ export const ScrollArea = ({
   });
 
   return (
-    <div ref={ref} className={clsx("crayon-shell-thread-scroll-area", className)}>
+    <div ref={ref} className={clsx("crayon-copilot-shell-thread-scroll-area", className)}>
       {children}
     </div>
   );
@@ -85,14 +84,9 @@ export const AssistantMessageContainer = ({
   children?: React.ReactNode;
   className?: string;
 }) => {
-  const { logoUrl } = useShellStore((store) => ({
-    logoUrl: store.logoUrl,
-  }));
-
   return (
-    <div className={clsx("crayon-shell-thread-message-assistant", className)}>
-      <img src={logoUrl} alt="Assistant" className="crayon-shell-thread-message-assistant__logo" />
-      <div className="crayon-shell-thread-message-assistant__content">{children}</div>
+    <div className={clsx("crayon-copilot-shell-thread-message-assistant", className)}>
+      <div className="crayon-copilot-shell-thread-message-assistant__content">{children}</div>
     </div>
   );
 };
@@ -105,8 +99,8 @@ export const UserMessageContainer = ({
   className?: string;
 }) => {
   return (
-    <div className={clsx("crayon-shell-thread-message-user", className)}>
-      <div className="crayon-shell-thread-message-user__content">{children}</div>
+    <div className={clsx("crayon-copilot-shell-thread-message-user", className)}>
+      <div className="crayon-copilot-shell-thread-message-user__content">{children}</div>
     </div>
   );
 };
@@ -125,7 +119,10 @@ export const RenderMessage = memo(
               const TextRenderer = responseTemplates["text"]?.Component || DefaultTextRenderer;
 
               return (
-                <TextRenderer key={i} className="crayon-shell-thread-message-assistant__text">
+                <TextRenderer
+                  key={i}
+                  className="crayon-copilot-shell-thread-message-assistant__text"
+                >
                   {stringOrTemplate.text}
                 </TextRenderer>
               );
@@ -159,7 +156,7 @@ export const MessageLoading = () => {
   }
 
   return (
-    <div className="crayon-shell-thread-message-loading">
+    <div className="crayon-copilot-shell-thread-message-loading">
       <MessageLoadingComponent />
     </div>
   );
@@ -175,7 +172,7 @@ export const Messages = ({
   const { messages } = useThreadState();
 
   return (
-    <div className={clsx("crayon-shell-thread-messages", className)}>
+    <div className={clsx("crayon-copilot-shell-thread-messages", className)}>
       {messages.map((message) => {
         if (message.isVisuallyHidden) {
           return null;
@@ -194,11 +191,11 @@ export const Messages = ({
 export const Composer = ({ className }: { className?: string }) => {
   const { textContent, setTextContent } = useComposerState();
   const { processMessage, onCancel } = useThreadActions();
-  const { isRunning, isLoadingMessages } = useThreadState();
+  const { isRunning } = useThreadState();
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSubmit = () => {
-    if (!textContent.trim() || isRunning || isLoadingMessages) {
+    if (!textContent.trim() || isRunning) {
       return;
     }
 
@@ -222,13 +219,13 @@ export const Composer = ({ className }: { className?: string }) => {
   }, [textContent]);
 
   return (
-    <div className={clsx("crayon-shell-thread-composer", className)}>
-      <div className="crayon-shell-thread-composer__input-wrapper">
+    <div className={clsx("crayon-copilot-shell-thread-composer", className)}>
+      <div className="crayon-copilot-shell-thread-composer__input-wrapper">
         <textarea
           ref={inputRef}
           value={textContent}
           onChange={(e) => setTextContent(e.target.value)}
-          className="crayon-shell-thread-composer__input"
+          className="crayon-copilot-shell-thread-composer__input"
           placeholder="Type your message..."
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey) {

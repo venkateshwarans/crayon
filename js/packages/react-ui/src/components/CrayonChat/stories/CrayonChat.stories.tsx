@@ -1,23 +1,21 @@
-import {
-  ChatProvider,
-  Message,
-  useThreadListManager,
-  useThreadManager,
-} from "@crayonai/react-core";
-import { Container } from "../Container";
-import { MobileHeader } from "../MobileHeader";
-import { NewChatButton } from "../NewChatButton";
-import { SidebarContainer, SidebarContent, SidebarHeader, SidebarSeparator } from "../Sidebar";
-import { Composer, MessageLoading, Messages, ScrollArea, ThreadContainer } from "../Thread";
-import { ThreadList } from "../ThreadList";
-import logoUrl from "./thesysdev_logo.jpeg";
+import { Message, useThreadListManager, useThreadManager } from "@crayonai/react-core";
+import { CrayonChat } from "../CrayonChat";
 
 export default {
-  title: "Shell",
+  title: "Components/CrayonChat",
   tags: ["dev", "!autodocs"],
+  argTypes: {
+    type: {
+      control: "select",
+      options: ["standalone", "copilot"],
+    },
+  },
 };
 
 export const Default = {
+  args: {
+    type: "standalone",
+  },
   render: (args: any) => {
     const threadListManager = useThreadListManager({
       createThread: async () => {
@@ -94,25 +92,11 @@ export const Default = {
     });
 
     return (
-      <ChatProvider threadListManager={threadListManager} threadManager={threadManager}>
-        <Container logoUrl={logoUrl} agentName="Crayon">
-          <SidebarContainer>
-            <SidebarHeader />
-            <SidebarContent>
-              <NewChatButton />
-              <SidebarSeparator />
-              <ThreadList />
-            </SidebarContent>
-          </SidebarContainer>
-          <ThreadContainer>
-            <MobileHeader />
-            <ScrollArea>
-              <Messages loader={<MessageLoading />} />
-            </ScrollArea>
-            <Composer />
-          </ThreadContainer>
-        </Container>
-      </ChatProvider>
+      <CrayonChat
+        threadListManager={threadListManager}
+        threadManager={threadManager}
+        type={args.type}
+      />
     );
   },
 };

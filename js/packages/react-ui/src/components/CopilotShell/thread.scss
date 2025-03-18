@@ -1,48 +1,34 @@
 @use "../../cssUtils" as cssUtils;
 
-.crayon-shell-thread-container {
+.crayon-copilot-shell-thread-container {
   flex: 1;
   overflow: hidden;
   display: flex;
   flex-direction: column;
 }
 
-$center-align-spacing: calc(32px + cssUtils.$spacing-s);
-
-.crayon-shell-thread-scroll-area {
+.crayon-copilot-shell-thread-scroll-area {
   width: 100%;
   flex: 1;
   overflow: auto;
-  padding: cssUtils.$spacing-m $center-align-spacing cssUtils.$spacing-xl;
-
-  .crayon-shell-container--mobile & {
-    padding: cssUtils.$spacing-l;
-  }
+  padding: cssUtils.$spacing-l;
 }
 
-.crayon-shell-thread-messages {
-  max-width: 776px;
+.crayon-copilot-shell-thread-messages {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: calc(2 * cssUtils.$spacing-l);
+  gap: cssUtils.$spacing-xl;
 }
 
-.crayon-shell-thread-message-assistant {
+.crayon-copilot-shell-thread-message-assistant {
   width: 100%;
-  display: flex;
-  gap: cssUtils.$spacing-s;
-  padding-right: $center-align-spacing;
   overflow: hidden;
 
   // override theme variables so that other crayon components don't depend on chat colors
   // this solves the case where the crayon-card component is used in the thread but without card component
   --crayon-primary-text: #{cssUtils.$chat-assistant-response-text};
   --crayon-container-fills: #{cssUtils.$chat-assistant-response-bg};
-
-  .crayon-shell-container--mobile & {
-    padding: 0;
-  }
 
   &__content {
     display: flex;
@@ -56,26 +42,12 @@ $center-align-spacing: calc(32px + cssUtils.$spacing-s);
   &__text {
     @include cssUtils.typography(primary, default);
     color: cssUtils.$chat-assistant-response-text;
-    &:first-child {
-      margin-top: cssUtils.$spacing-xs;
-    }
-  }
-
-  &__logo {
-    width: 32px;
-    height: 32px;
-    border-radius: cssUtils.$rounded-m;
   }
 }
 
-.crayon-shell-thread-message-user {
+.crayon-copilot-shell-thread-message-user {
   display: flex;
   justify-content: flex-end;
-  padding: 0 $center-align-spacing;
-
-  .crayon-shell-container--mobile & {
-    padding: 0;
-  }
 
   &__content {
     @include cssUtils.typography(primary, default);
@@ -88,25 +60,18 @@ $center-align-spacing: calc(32px + cssUtils.$spacing-s);
   }
 }
 
-.crayon-shell-thread-composer {
-  max-width: 776px;
+.crayon-copilot-shell-thread-composer {
   width: 100%;
-  margin: 0 auto cssUtils.$spacing-m;
-  padding: 0 $center-align-spacing;
-
-  .crayon-shell-container--mobile & {
-    margin: 0;
-    padding: cssUtils.$spacing-m 14px;
-    background-color: cssUtils.$bg-container;
-  }
+  padding: cssUtils.$spacing-m cssUtils.$spacing-l cssUtils.$spacing-l;
+  background-color: cssUtils.$bg-container;
 
   &__input-wrapper {
     border: 1.256px solid cssUtils.$stroke-default;
-    border-radius: cssUtils.$rounded-xl;
     display: flex;
     align-items: flex-end;
     gap: cssUtils.$spacing-s;
     padding: cssUtils.$spacing-m;
+    border-radius: cssUtils.$rounded-l;
   }
 
   &__input {
@@ -125,9 +90,4 @@ $center-align-spacing: calc(32px + cssUtils.$spacing-s);
       color: cssUtils.$disabled-text;
     }
   }
-}
-
-.crayon-shell-thread-message-loading {
-  display: flex;
-  padding: 0 $center-align-spacing;
 }

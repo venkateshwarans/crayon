@@ -29,6 +29,7 @@ export const useThreadManager = (props: Props): ThreadManager => {
         error: null,
         abortController: null,
         isRunning: false,
+        isLoadingMessages: false,
         setMessages: (messages: Message[]) => {
           set({ messages });
         },
@@ -51,7 +52,7 @@ export const useThreadManager = (props: Props): ThreadManager => {
             const newMessages = await propsRef.current.onProcessMessage({
               message,
               threadManager: store.getState(),
-              abortController: new AbortController(),
+              abortController,
             });
 
             store.getState().appendMessages(...newMessages);
@@ -97,8 +98,7 @@ export const useThreadManager = (props: Props): ThreadManager => {
     store.setState({ messages: [] });
 
     if (threadId) {
-      const abortController = new AbortController();
-      store.setState({ abortController, isRunning: true });
+      store.setState({ isLoadingMessages: true });
       props
         .loadThread(threadId)
         .then((messages) => {
@@ -108,7 +108,7 @@ export const useThreadManager = (props: Props): ThreadManager => {
           store.setState({ error });
         })
         .finally(() => {
-          store.setState({ abortController: null, isRunning: false });
+          store.setState({ isLoadingMessages: false });
         });
     }
   }, [props.threadId, props.shouldResetThreadState]);

@@ -4,16 +4,21 @@ import {
   useThreadListManager,
   useThreadManager,
 } from "@crayonai/react-core";
-import { Container } from "../Container";
-import { MobileHeader } from "../MobileHeader";
-import { NewChatButton } from "../NewChatButton";
-import { SidebarContainer, SidebarContent, SidebarHeader, SidebarSeparator } from "../Sidebar";
-import { Composer, MessageLoading, Messages, ScrollArea, ThreadContainer } from "../Thread";
-import { ThreadList } from "../ThreadList";
+import {
+  Composer,
+  Container,
+  Header,
+  MessageLoading,
+  Messages,
+  ScrollArea,
+  ThreadContainer,
+} from "../../CopilotShell";
+// @ts-ignore
+import styles from "./style.module.scss";
 import logoUrl from "./thesysdev_logo.jpeg";
 
 export default {
-  title: "Shell",
+  title: "Copilot Shell",
   tags: ["dev", "!autodocs"],
 };
 
@@ -94,25 +99,20 @@ export const Default = {
     });
 
     return (
-      <ChatProvider threadListManager={threadListManager} threadManager={threadManager}>
-        <Container logoUrl={logoUrl} agentName="Crayon">
-          <SidebarContainer>
-            <SidebarHeader />
-            <SidebarContent>
-              <NewChatButton />
-              <SidebarSeparator />
-              <ThreadList />
-            </SidebarContent>
-          </SidebarContainer>
-          <ThreadContainer>
-            <MobileHeader />
-            <ScrollArea>
-              <Messages loader={<MessageLoading />} />
-            </ScrollArea>
-            <Composer />
-          </ThreadContainer>
-        </Container>
-      </ChatProvider>
+      <div className={styles.container}>
+        <div className={styles.left} />
+        <ChatProvider threadListManager={threadListManager} threadManager={threadManager}>
+          <Container logoUrl={logoUrl} agentName="Crayon">
+            <ThreadContainer>
+              <Header />
+              <ScrollArea>
+                <Messages loader={<MessageLoading />} />
+              </ScrollArea>
+              <Composer />
+            </ThreadContainer>
+          </Container>
+        </ChatProvider>
+      </div>
     );
   },
 };
