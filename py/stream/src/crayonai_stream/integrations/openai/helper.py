@@ -3,10 +3,8 @@ from typing import Union
 
 from openai.types.chat import (
     ChatCompletionAssistantMessageParam,
-    ChatCompletionSystemMessageParam,
     ChatCompletionUserMessageParam,
 )
-from pydantic import BaseModel
 
 from crayonai_stream.crayon_message import CrayonMessage
 
@@ -25,7 +23,6 @@ def toOpenAIMessage(
 ) -> Union[
     ChatCompletionUserMessageParam,
     ChatCompletionAssistantMessageParam,
-    ChatCompletionSystemMessageParam,
 ]:
     if msg.role == "user":
         return ChatCompletionUserMessageParam(
