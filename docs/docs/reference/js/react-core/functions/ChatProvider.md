@@ -1,37 +1,18 @@
 ```ts
-function ChatProvider(props: PropsWithChildren<ChatManager>): ReactNode | Promise<ReactNode>
+function ChatProvider(
+  props: PropsWithChildren<ChatManager>,
+): ReactNode | Promise<ReactNode>;
 ```
+
+Defined in: [packages/react-core/src/ChatProvider.tsx:30](https://github.com/thesysdev/crayon/blob/764dfdfef65ac5751288cdbd014d2017f4c5dc0d/js/packages/react-core/src/ChatProvider.tsx#L30)
 
 ## Parameters
 
-<table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-
-`props`
-
-</td>
-<td>
+### props
 
 `PropsWithChildren`\<[`ChatManager`](../type-aliases/ChatManager.md)\>
 
-</td>
-<td>
-
 The component props
-
-</td>
-</tr>
-</tbody>
-</table>
 
 ## Returns
 
@@ -54,7 +35,3 @@ It serves as the top-level provider for thread and thread list management functi
   <App />
 </ChatProvider>
 ```
-
-## Defined in
-
-[packages/react-core/src/ChatProvider.tsx:30](https://github.com/thesysdev/crayonai/blob/868f459d859250eef3283635b1127c3c68c35546/js/packages/react-core/src/ChatProvider.tsx#L30)

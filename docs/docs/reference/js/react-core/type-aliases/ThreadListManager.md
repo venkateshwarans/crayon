@@ -2,8 +2,6 @@
 type ThreadListManager = ThreadListState & ThreadListActions;
 ```
 
+Defined in: [packages/react-core/src/types/chatManager.ts:91](https://github.com/thesysdev/crayon/blob/764dfdfef65ac5751288cdbd014d2017f4c5dc0d/js/packages/react-core/src/types/chatManager.ts#L91)
+
 Combines thread list state and actions
-
-## Defined in
-
-[packages/react-core/src/types/chatManager.ts:75](https://github.com/thesysdev/crayonai/blob/868f459d859250eef3283635b1127c3c68c35546/js/packages/react-core/src/types/chatManager.ts#L75)
