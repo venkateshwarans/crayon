@@ -17,11 +17,13 @@ import {
 interface ComposedStandaloneProps {
   logoUrl?: string;
   agentName?: string;
+  messageLoadingComponent?: () => React.ReactNode;
 }
 
 export const ComposedStandalone = ({
   logoUrl = "https://crayonai.org/img/logo.png",
   agentName = "My Agent",
+  messageLoadingComponent: MessageLoadingComponent = MessageLoading,
 }: ComposedStandaloneProps) => {
   return (
     <Container logoUrl={logoUrl} agentName={agentName}>
@@ -36,7 +38,7 @@ export const ComposedStandalone = ({
       <ThreadContainer>
         <MobileHeader />
         <ScrollArea>
-          <Messages loader={<MessageLoading />} />
+          <Messages loader={<MessageLoadingComponent />} />
         </ScrollArea>
         <Composer />
       </ThreadContainer>
