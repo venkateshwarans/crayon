@@ -13,7 +13,7 @@ import {
 } from "@crayonai/react-core";
 import { useEffect, useRef } from "react";
 import invariant from "tiny-invariant";
-import { ThemeProvider } from "../ThemeProvider";
+import { ThemeProps, ThemeProvider } from "../ThemeProvider";
 import { ComposedCopilot } from "./ComposedCopilot";
 import { ComposedStandalone } from "./ComposedStandalone";
 
@@ -27,6 +27,8 @@ type CrayonChatProps = {
   onUpdateMessage?: (props: { message: Message }) => void;
   processStreamedMessage?: typeof processStreamedMessage;
   responseTemplates?: ResponseTemplate[];
+
+  theme?: ThemeProps;
 
   // options used when threadListManager is not provided
   createThread?: (message: CreateMessage) => Promise<Thread>;
@@ -53,6 +55,7 @@ export const CrayonChat = ({
   processStreamedMessage: userProcessStreamedMessage,
   messageLoadingComponent,
   type = "standalone",
+  theme,
 }: CrayonChatProps) => {
   invariant(processMessage || userThreadManager, "processMessage or threadManager is required");
 
@@ -129,7 +132,7 @@ export const CrayonChat = ({
   }, [threadManager.messages]);
 
   return (
-    <ThemeProvider>
+    <ThemeProvider {...theme}>
       <ChatProvider threadListManager={threadListManager} threadManager={threadManager}>
         {type === "copilot" ? (
           <ComposedCopilot
