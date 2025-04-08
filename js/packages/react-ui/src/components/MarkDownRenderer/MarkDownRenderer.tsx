@@ -3,6 +3,7 @@ import { memo } from "react";
 import ReactMarkdown, { Components, type Options } from "react-markdown";
 import { oneLight, vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { CodeBlock } from "../CodeBlock";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../Table";
 import { useTheme } from "../ThemeProvider";
 
 const variantStyles = {
@@ -49,6 +50,12 @@ export const MarkDownRenderer = memo((props: MarkDownRendererProps) => {
         </a>
       );
     },
+    table: Table,
+    thead: TableHeader,
+    th: TableHead,
+    tbody: TableBody,
+    tr: TableRow,
+    td: TableCell,
   };
 
   const markdownProps = {
