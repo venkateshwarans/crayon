@@ -48,6 +48,7 @@
 .crayon-markdown-renderer {
   color: cssUtils.$primary-text;
   @include cssUtils.typography(body, default);
+  max-width: none;
 
   /* Heading Styles */
   & h1,
@@ -161,5 +162,9 @@
     font-style: inherit;
     color: inherit;
     line-height: inherit;
+  }
+
+  & .crayon-table-container {
+    margin-bottom: 20px;
   }
 }
