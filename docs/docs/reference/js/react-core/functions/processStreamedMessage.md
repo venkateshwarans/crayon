@@ -21,7 +21,7 @@ function processStreamedMessage(__namedParameters: {
   deleteMessage: (messageId: string) => void;
   response: Response;
   updateMessage: (message: AssistantMessage) => void;
-}): Promise<void>;
+}): Promise<void | AssistantMessage>;
 ```
 
 Defined in: [js/packages/react-core/src/stream/processStreamedMessage.ts:29](https://github.com/thesysdev/crayon/blob/main/js/packages/react-core/src/stream/processStreamedMessage.ts#L29)
@@ -54,4 +54,4 @@ A function that updates an existing assistant message in the thread
 
 ## Returns
 
-`Promise`\<`void`\>
+`Promise`\<`void` \| [`AssistantMessage`](../type-aliases/AssistantMessage.md)\>
