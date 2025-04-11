@@ -46,6 +46,7 @@ export const AreaChart = <T extends AreaChartData>({
   xAxisLabel,
   yAxisLabel,
 }: AreaChartProps<T>) => {
+  console.log(data)
   // excluding the categoryKey
   const dataKeys = Object.keys(data[0] || {}).filter((key) => key !== categoryKey);
 
