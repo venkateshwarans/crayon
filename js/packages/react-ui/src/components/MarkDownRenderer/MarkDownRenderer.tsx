@@ -3,6 +3,7 @@ import { memo } from "react";
 import ReactMarkdown, { Components, type Options } from "react-markdown";
 import { oneLight, vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { CodeBlock } from "../CodeBlock";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../Table";
 import { useTheme } from "../ThemeProvider";
 
 const variantStyles = {
@@ -15,6 +16,7 @@ export interface MarkDownRendererProps {
   variant?: "clear" | "card" | "sunk";
   textMarkdown: string;
   options?: Options;
+  className?: string;
 }
 
 export const MarkDownRenderer = memo((props: MarkDownRendererProps) => {
@@ -49,6 +51,12 @@ export const MarkDownRenderer = memo((props: MarkDownRendererProps) => {
         </a>
       );
     },
+    table: Table,
+    thead: TableHeader,
+    th: TableHead,
+    tbody: TableBody,
+    tr: TableRow,
+    td: TableCell,
   };
 
   const markdownProps = {
@@ -61,6 +69,7 @@ export const MarkDownRenderer = memo((props: MarkDownRendererProps) => {
       className={clsx(
         props["variant"] && variantStyles[props["variant"] as keyof typeof variantStyles],
         "crayon-markdown-renderer",
+        props.className,
       )}
     >
       <ReactMarkdown {...markdownProps}>{props.textMarkdown}</ReactMarkdown>
