@@ -31,7 +31,7 @@ const config: StorybookConfig = {
   `,
   viteFinal: async (config) => {
     return mergeConfig(config, {
-      base: "/ui/",
+      base: "/",
       resolve: {
         alias: {
           "@crayonai/react-core": path.resolve(__dirname, "../../react-core/src/index.ts"),
