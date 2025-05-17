@@ -94,7 +94,11 @@ export const StackedColumnChart = <T extends StackedColumnChartData>({
   yAxisLabel,
 }: StackedColumnChartProps<T>) => {
   // excluding the categoryKey
-  const dataKeys = Object.keys(data[0] || {}).filter((key) => key !== categoryKey);
+  const dataKeys = Array.from(
+  new Set(
+    data.flatMap((d) => Object.keys(d)).filter((k) => k !== categoryKey)
+  )
+);
 
   const palette = getPalette(theme);
   const colors = getDistributedColors(palette, dataKeys.length);
@@ -149,11 +153,12 @@ export const StackedColumnChart = <T extends StackedColumnChartData>({
         ? 4
         : layoutConfig[dataLength as keyof typeof layoutConfig] || layoutConfig.default;
 
-    return (value: string) => {
-      if (value.length > maxLength) {
-        return `${value.slice(0, maxLength)}...`;
+    return (value: unknown) => {
+      const str = String(value);
+      if (str.length > maxLength) {
+        return `${str.slice(0, maxLength)}...`;
       }
-      return value;
+      return str;
     };
   };
   
@@ -209,10 +214,10 @@ export const StackedColumnChart = <T extends StackedColumnChartData>({
         // Make chart responsive with auto height
         height={400}
         // Control bar width - reduce gap between categories for better space utilization
-        // barCategoryGap={layout === 'mobile' ? "5%" : "8%"}
-        // barGap={1}
+        barCategoryGap={layout === 'mobile' ? "5%" : "8%"}
+        barGap={1}
         // Limit maximum bar size to prevent overly wide bars
-        maxBarSize={20}
+        maxBarSize={30}
       >
         {grid && cartesianGrid()}
         <XAxis
@@ -259,9 +264,8 @@ export const StackedColumnChart = <T extends StackedColumnChartData>({
         )}
         <ChartTooltip 
           content={<ChartTooltipContent />}
-          wrapperStyle={{ zIndex: 100 }}
           cursor={false}
-          cursorStyle={{ fill: "none" , stroke: "none", strokeWidth: 0, opacity: 0 }}
+          wrapperStyle={{ zIndex: 100 }}
           isAnimationActive={false}
         />
         {dataKeys.map((key) => {
@@ -279,7 +283,7 @@ export const StackedColumnChart = <T extends StackedColumnChartData>({
                 // Make bars responsive with minimum size to ensure visibility
                 minPointSize={4}
                 // Responsive bar width based on layout and data length
-                // barSize={layout === 'mobile' ? 10 : layout === 'tray' ? 15 : data.length > 8 ? 18 : 25}
+                barSize={layout === 'mobile' ? 10 : layout === 'tray' ? 15 : data.length > 8 ? 18 : 25}
                 // Custom hover effect for better visual feedback
                 activeBar={{
                   stroke: color,
@@ -310,7 +314,7 @@ export const StackedColumnChart = <T extends StackedColumnChartData>({
               // Make bars responsive with minimum size to ensure visibility
               minPointSize={4}
               // Responsive bar width based on layout and data length
-              // barSize={layout === 'mobile' ? 10 : layout === 'tray' ? 15 : data.length > 8 ? 18 : 25}
+              barSize={layout === 'mobile' ? 10 : layout === 'tray' ? 15 : data.length > 8 ? 18 : 25}
               // Custom hover effect for better visual feedback
               activeBar={{
                 stroke: color,
