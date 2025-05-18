@@ -120,6 +120,24 @@ const meta: Meta<GaugeChartProps> = {
         category: "Display",
       },
     },
+    showRanges: {
+      description: "Whether to show range segments on the gauge",
+      control: "boolean",
+      table: {
+        type: { summary: "boolean" },
+        defaultValue: { summary: "true" },
+        category: "Display",
+      },
+    },
+    showRangeDividers: {
+      description: "Whether to show range divider lines",
+      control: "boolean",
+      table: {
+        type: { summary: "boolean" },
+        defaultValue: { summary: "false" },
+        category: "Display",
+      },
+    },
     ranges: {
       description: "The color ranges for the gauge (overrides theme)",
       control: "object",
@@ -210,7 +228,7 @@ const CustomTooltipContent = ({ active, payload }: any) => {
 export const DefaultGauge: Story = {
   name: "Default Gauge",
   args: {
-    value: 65,
+    value: 12,
     min: 0,
     max: 100,
     unit: "%",
@@ -370,6 +388,75 @@ export const GaugeWithMinMaxLabels: Story = {
   },
 };
 
+export const GaugeWithRanges: Story = {
+  name: "Gauge with Range Segments",
+  args: {
+    value: 75,
+    min: 0,
+    max: 100,
+    unit: "%",
+    theme: "ocean",
+    isAnimationActive: true,
+    startAngle: 180,
+    endAngle: 0,
+    arcWidth: 20,
+    valueSize: 32,
+    unitSize: 16,
+    showValue: true,
+    showTooltip: true,
+    showMinMax: true,
+    minMaxLabelSize: 14,
+    showRanges: true,
+    showRangeDividers: true,
+    ranges: [
+      { min: 0, max: 25, color: "#FF5252" },  // Red - Poor
+      { min: 25, max: 50, color: "#FFC107" },  // Yellow - Fair
+      { min: 50, max: 75, color: "#4CAF50" },  // Green - Good
+      { min: 75, max: 100, color: "#2196F3" }, // Blue - Excellent
+    ],
+  },
+  render: (args) => (
+    <Card style={{ width: "300px", height: "auto" }}>
+      <GaugeChart {...args} />
+    </Card>
+  ),
+  parameters: {
+    docs: {
+      source: {
+        code: `
+<Card style={{ width: "300px", height: "auto" }}>
+  <GaugeChart
+    value={75}
+    min={0}
+    max={100}
+    unit="%"
+    theme="ocean"
+    isAnimationActive={true}
+    startAngle={180}
+    endAngle={0}
+    arcWidth={20}
+    valueSize={32}
+    unitSize={16}
+    showValue={true}
+    showTooltip={true}
+    showMinMax={true}
+    minMaxLabelSize={14}
+    showRanges={true}
+    showRangeDividers={true}
+    ranges={[
+      { min: 0, max: 25, color: "#FF5252" },  // Red - Poor
+      { min: 25, max: 50, color: "#FFC107" },  // Yellow - Fair
+      { min: 50, max: 75, color: "#4CAF50" },  // Green - Good
+      { min: 75, max: 100, color: "#2196F3" }, // Blue - Excellent
+    ]}
+  />
+</Card>
+`,
+      },
+    },
+  },
+};
+
 export const GaugeWithLargeNumbers: Story = {
   name: "Gauge with Large Numbers",
   args: {
@@ -389,6 +476,7 @@ export const GaugeWithLargeNumbers: Story = {
     showMinMax: true,
     minMaxLabelSize: 14,
     minMaxFormatter: (value) => value === 0 ? "0" : `${Math.round(value/1000)}k`,
+    showRanges: false,
   },
   render: (args) => (
     <Card style={{ width: "300px", height: "auto" }}>

@@ -86,6 +86,14 @@ export interface GaugeChartProps {
    * Custom formatter for min/max values
    */
   minMaxFormatter?: (value: number) => string;
+  /**
+   * Whether to show range segments on the gauge
+   */
+  showRanges?: boolean;
+  /**
+   * Whether to show range divider lines
+   */
+  showRangeDividers?: boolean;
 }
 
 /**
@@ -111,6 +119,8 @@ export const GaugeChart: React.FC<GaugeChartProps> = ({
   showMinMax = false,
   minMaxLabelSize = 12,
   minMaxFormatter = (value) => value.toString(),
+  showRanges = true,
+  showRangeDividers = false,
 }) => {
   const { layout } = useLayoutContext();
   const normalizedValue = Math.min(Math.max(value, min), max);
@@ -215,6 +225,70 @@ export const GaugeChart: React.FC<GaugeChartProps> = ({
 
   const { valueSize: responsiveValueSize, unitSize: responsiveUnitSize, arcWidth: responsiveArcWidth } = getResponsiveDimensions();
 
+  // Calculate range segments for visualization
+  const renderRangeSegments = () => {
+    // Sort ranges by min value to ensure proper rendering
+    const sortedRanges = [...colorRanges].sort((a, b) => a.min - b.min);
+    
+    return sortedRanges.map((range, index) => {
+      const rangeStartAngle = startAngle + (endAngle - startAngle) * (range.min / 100);
+      const rangeEndAngle = startAngle + (endAngle - startAngle) * (Math.min(range.max, 100) / 100);
+      
+      return (
+        <Pie
+          key={`range-${index}`}
+          data={[{ name: `range-${index}`, value: range.max - range.min }]}
+          cx="50%"
+          cy="50%"
+          innerRadius={80 - responsiveArcWidth}
+          outerRadius={80}
+          startAngle={rangeStartAngle}
+          endAngle={rangeEndAngle}
+          paddingAngle={0}
+          dataKey="value"
+          isAnimationActive={false}
+          fill={range.color}
+          stroke={showRangeDividers ? "#fff" : "transparent"}
+          strokeWidth={showRangeDividers ? 1 : 0}
+        />
+      );
+    });
+  };
+  
+  // Render range divider lines
+  const renderRangeDividers = () => {
+    if (!showRangeDividers) return null;
+    
+    // Sort ranges by min value to ensure proper rendering
+    const sortedRanges = [...colorRanges].sort((a, b) => a.min - b.min);
+    
+    // Create divider lines at each range boundary
+    return sortedRanges.map((range, index) => {
+      // Skip the first min value (usually 0)
+      if (index === 0 && range.min === 0) return null;
+      
+      const angle = startAngle + (endAngle - startAngle) * (range.min / 100);
+      const radians = (angle * Math.PI) / 180;
+      const x1 = 50 + (80 - responsiveArcWidth - 5) * Math.cos(radians) / 1;
+      const y1 = 50 + (80 - responsiveArcWidth - 5) * Math.sin(radians) / 1;
+      const x2 = 50 + (80 + 5) * Math.cos(radians) / 1;
+      const y2 = 50 + (80 + 5) * Math.sin(radians) / 1;
+      
+      return (
+        <line
+          key={`divider-${index}`}
+          x1={`${x1}%`}
+          y1={`${y1}%`}
+          x2={`${x2}%`}
+          y2={`${y2}%`}
+          stroke="#fff"
+          strokeWidth={1.5}
+          strokeLinecap="round"
+        />
+      );
+    });
+  };
+  
   // Render the gauge chart
   return (
     <ChartContainer config={chartConfig}>
@@ -234,19 +308,27 @@ export const GaugeChart: React.FC<GaugeChartProps> = ({
           fill={chartConfig['background']?.color || '#e0e0e0'}
         />
         
+        {/* Range segments */}
+        {showRanges && renderRangeSegments()}
+        
+        {/* Range divider lines */}
+        {showRangeDividers && renderRangeDividers()}
+        
         {/* Value Pie (with tooltip) */}
         <Pie
           data={[{ name: "value", value: percentage }]}
           cx="50%"
           cy="50%"
-          innerRadius={80 - responsiveArcWidth}
-          outerRadius={80}
+          innerRadius={80 - responsiveArcWidth - 2}
+          outerRadius={80 + 2}
           startAngle={startAngle}
           endAngle={startAngle + (endAngle - startAngle) * percentage / 100}
           paddingAngle={0}
           dataKey="value"
           isAnimationActive={isAnimationActive}
           fill={valueColor}
+          stroke="#fff"
+          strokeWidth={1}
         />
         
         {/* Tooltip */}
