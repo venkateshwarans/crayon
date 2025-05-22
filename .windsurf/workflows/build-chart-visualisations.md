@@ -2,6 +2,26 @@
 description: Build different chart type using recharts on top of existing chart components
 ---
 
+## Running the Project
+
+To view and interact with the chart components:
+
+1. **Install dependencies**
+   ```bash
+   cd /Users/venkat/Work/thesys/crayon/js && pnpm install
+   ```
+
+2. **Run Storybook**
+   ```bash
+   cd /Users/venkat/Work/thesys/crayon/js/packages/react-ui && pnpm storybook
+   ```
+
+3. **Access Storybook UI**
+   - Open your browser to http://localhost:6006/
+   - Navigate to the "Charts" section in the Storybook sidebar
+   - View all available chart components including GaugeChart, BubbleChart, and others
+   - Use the Controls panel to customize and experiment with chart properties
+
 1. List of chart types -https://gist.githubusercontent.com/venkateshwarans/f7458e5716a7876987f01c6303771c4e/raw/7b634b092eb69ef9870c326fd21adfb038f41c94/Looker%2520Studio%2520Visualizations%2520-%2520Google
 
 Recharts documentation - https://recharts.org/en-US/api
@@ -30,7 +50,6 @@ Recharts documentation - https://recharts.org/en-US/api
     5. https://developers.google.com/chart/interactive/docs/gallery/geochart#configuration-options
     6. It should have zoom controls
     7. It should mobile and tablet responsive. 
-
 10. Project folder is in /Users/venkat/Work/thesys/crayon/js/packages/react-ui
 11. Node modules folder is in /Users/venkat/Work/thesys/crayon/js/packages/react-ui/node_modules
 12. Relevant package.json is in /Users/venkat/Work/thesys/crayon/js/packages/react-ui/package.json
