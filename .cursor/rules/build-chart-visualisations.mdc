@@ -23,8 +23,8 @@ Recharts documentation - https://recharts.org/en-US/api
 
 8. Build the chart type that I ask. Once we are done with it, then we will move to next chart type.
 
-9. For GeoCharts, refer these docs
-    1. https://cloud.google.com/looker/docs/studio/geo-chart-reference?visit_id=638832396995607373-2438106158&rd=1
+9. For Scorecard or KPI visualisation, refer these docs
+    1. https://cloud.google.com/looker/docs/studio/scorecard-reference?visit_id=638835825782555285-3908956217&rd=1
     2. https://developers.google.com/chart/interactive/docs/gallery/geochart
     3. https://www.react-simple-maps.io/docs/getting-started/
     4. https://developers.google.com/chart/interactive/docs/gallery/geochart#data-format

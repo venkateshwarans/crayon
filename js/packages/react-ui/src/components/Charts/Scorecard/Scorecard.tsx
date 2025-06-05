@@ -249,7 +249,7 @@ export const Scorecard: React.FC<ScorecardProps> = ({
     const maxValue = Math.max(...sparklineData.map(d => d.value));
     const minValue = Math.min(...sparklineData.map(d => d.value));
     const range = maxValue - minValue;
-    const height = size === 'small' ? 20 : size === 'medium' ? 30 : 40;
+    const height = sparklineHeight;
     
     // Ensure we don't divide by zero
     if (range === 0 || !sparklineData.length) {
@@ -257,7 +257,14 @@ export const Scorecard: React.FC<ScorecardProps> = ({
       return (
         <div className="mt-4 w-full">
           <svg height={height} width="100%" viewBox={`0 0 100 ${height}`} preserveAspectRatio="none">
-            <line x1="0" y1={height/2} x2="100" y2={height/2} stroke={actualValueColor} strokeWidth="2" />
+            <line 
+              x1="0" 
+              y1={height/2} 
+              x2="100" 
+              y2={height/2} 
+              stroke={actualValueColor} 
+              strokeWidth={Math.max(1, dotSize/2)} 
+            />
           </svg>
         </div>
       );
@@ -303,7 +310,7 @@ export const Scorecard: React.FC<ScorecardProps> = ({
             points={points}
             fill="none"
             stroke={trendColor}
-            strokeWidth="2"
+            strokeWidth={Math.max(1, dotSize/2)}
             strokeLinecap="round"
             strokeLinejoin="round"
             className={isDarkMode ? 'filter drop-shadow(0 0 2px rgba(255, 255, 255, 0.3))' : ''}
@@ -313,7 +320,7 @@ export const Scorecard: React.FC<ScorecardProps> = ({
           <circle
             cx="100"
             cy={height - ((lastDataValue - minValue) / range) * height}
-            r="3"
+            r={dotSize}
             fill={trendColor}
             stroke={isDarkMode ? 'rgba(255, 255, 255, 0.5)' : 'white'}
             strokeWidth="1"
@@ -328,10 +335,11 @@ export const Scorecard: React.FC<ScorecardProps> = ({
     if (!showAsProgress || percentageChange === null) return null;
     
     return (
-      <div className="w-full mt-3 bg-gray-200 rounded-full h-3 dark:bg-gray-700 overflow-hidden shadow-inner">
+      <div className={`w-full mt-3 bg-gray-200 rounded-full dark:bg-gray-700 overflow-hidden shadow-inner`} style={{ height: `${progressBarHeight}px` }}>
         <div 
-          className="h-3 rounded-full transition-all duration-500 ease-in-out" 
+          className={`rounded-full transition-all duration-500 ease-in-out`} 
           style={{
+            height: `${progressBarHeight}px`,
             width: `${Math.min(100, Math.max(0, percentageChange))}%`,
             backgroundColor: comparisonDirection === "positive" ? actualPositiveColor : actualNegativeColor,
             boxShadow: isDarkMode ? '0 0 8px rgba(255, 255, 255, 0.3)' : '0 0 8px rgba(0, 0, 0, 0.1)'
@@ -341,7 +349,8 @@ export const Scorecard: React.FC<ScorecardProps> = ({
     );
   };
   
-  // Determine font sizes based on size prop with more responsive values
+  // Determine sizes for all elements based on size prop
+  // Font sizes
   const responsiveTitleSize = 
     size === "compact" ? "text-xs" : 
     size === "small" ? "text-xs" : 
@@ -362,6 +371,35 @@ export const Scorecard: React.FC<ScorecardProps> = ({
     size === "medium" ? "text-sm" : 
     size === "large" ? "text-base" :
     "text-lg"; // hero
+    
+  // Icon and element sizes
+  const iconSize = 
+    size === "compact" ? 12 : 
+    size === "small" ? 14 : 
+    size === "medium" ? 16 : 
+    size === "large" ? 20 :
+    24; // hero
+    
+  const progressBarHeight = 
+    size === "compact" ? 2 : 
+    size === "small" ? 2.5 : 
+    size === "medium" ? 3 : 
+    size === "large" ? 4 :
+    5; // hero
+    
+  const sparklineHeight = 
+    size === "compact" ? 15 : 
+    size === "small" ? 20 : 
+    size === "medium" ? 30 : 
+    size === "large" ? 40 :
+    50; // hero
+    
+  const dotSize = 
+    size === "compact" ? 2 : 
+    size === "small" ? 3 : 
+    size === "medium" ? 3 : 
+    size === "large" ? 4 :
+    5; // hero
 
   // Use a key based on props to force re-render when props change
   const componentKey = `scorecard-${value}-${title}-${comparisonValue}-${theme}-${size}`;
@@ -404,9 +442,9 @@ export const Scorecard: React.FC<ScorecardProps> = ({
               {!showAsProgress && (
                 <span className="mr-1 inline-flex items-center">
                   {comparisonDirection === "positive" ? 
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-0.5"><path d="m18 15-6-6-6 6"/></svg> : 
+                    <svg xmlns="http://www.w3.org/2000/svg" width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-0.5"><path d="m18 15-6-6-6 6"/></svg> : 
                     comparisonDirection === "negative" ? 
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-0.5"><path d="m6 9 6 6 6-6"/></svg> : 
+                    <svg xmlns="http://www.w3.org/2000/svg" width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-0.5"><path d="m6 9 6 6 6-6"/></svg> : 
                     ""}
                 </span>
               )}
