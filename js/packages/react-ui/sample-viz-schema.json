@@ -1,0 +1,31 @@
+{
+    "type": "object",
+    "properties": {
+      "title": {
+        "type": "string"
+      },
+      "description": {
+        "type": "string"
+      },
+      "table": {
+        "type": "array",
+        "description": "Table information is shown in this where column represents column title and data is the data for each column",
+        "items": {
+          "type": "object",
+          "properties": {
+            "column": {
+              "type": "string"
+            },
+            "data": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": ["column", "data"]
+        }
+      }
+    },
+    "required": ["title", "description", "table"]
+  }
