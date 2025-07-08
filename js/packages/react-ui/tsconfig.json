@@ -1,12 +1,13 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "../../tsconfig.json",
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "src/mdx.d.ts"],
   "compilerOptions": {
     "moduleResolution": "bundler",
     "module": "ESNext",
     "outDir": "./dist",
     "rootDir": "./src",
-    "types": ["./src/types.d.ts", "node"]
+    "types": ["./src/types.d.ts", "node", "react", "react/jsx-runtime", "react-dom"],
+    "jsx": "react-jsx"
   }
 }

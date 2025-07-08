@@ -6,3 +6,7 @@ dist
 
 # Generated tailwind plugin TS file
 packages/react-ui/src/lib/tailwind/tailwind.ts
+packages/react-ui/vercel-deploy
+.vercel
+vercel.json
+vercel-deploy
