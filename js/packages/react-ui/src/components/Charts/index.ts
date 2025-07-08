@@ -7,6 +7,7 @@ export * from "./LineChart";
 export * from "./PieChart";
 export * from "./RadarChart";
 export * from "./RadialChart";
+export * from "./Scorecard";
 export * from "./StackedAreaChart";
 export * from "./StackedColumnChart";
 export * from "./TreeMap";
