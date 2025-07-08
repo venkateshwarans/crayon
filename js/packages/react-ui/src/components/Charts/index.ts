@@ -6,3 +6,4 @@ export * from "./PieChart";
 export * from "./RadarChart";
 export * from "./RadialChart";
 export * from "./StackedAreaChart";
+export * from "./StackedColumnChart";
