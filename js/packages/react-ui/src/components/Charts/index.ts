@@ -9,3 +9,4 @@ export * from "./RadarChart";
 export * from "./RadialChart";
 export * from "./StackedAreaChart";
 export * from "./StackedColumnChart";
+export * from "./TreeMap";

@@ -48,3 +48,27 @@ export default function App() {
 
 - [react-core](./js/packages/react-core): Core framework and hooks for managing state and agents
 - [react-ui](./js/packages/react-ui): Modular UI components for use with Crayon
+
+## Running the Project
+
+This project uses `pnpm` as its package manager. Follow these steps to run the project:
+
+1. **Install dependencies:**
+   ```bash
+   cd js && pnpm install
+   ```
+
+2. **Run Storybook to view UI components:**
+   ```bash
+   cd js/packages/react-ui && pnpm storybook
+   ```
+   Storybook will start at http://localhost:6006/
+
+3. **Viewing Chart Components:**
+   - Navigate to the "Charts" section in the Storybook sidebar
+   - You can find various chart visualizations including:
+     - GaugeChart: A semi-circular gauge for displaying values within ranges
+     - BubbleChart: A scatter plot with variable point sizes
+     - And many other chart components
+   
+   Each component includes interactive examples, documentation, and customizable props that can be adjusted in the Controls panel.
