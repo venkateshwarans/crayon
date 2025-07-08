@@ -1,6 +1,7 @@
 export * from "./AreaChart";
 export * from "./BarChart";
 export * from "./BubbleChart";
+export * from "./GaugeChart";
 export * from "./HorizontalBarChart";
 export * from "./LineChart";
 export * from "./PieChart";
