@@ -2,6 +2,7 @@
 
 // bar chart css
 @forward "./BarChart/barChart.scss";
+@forward "./HorizontalBarChart/horizontalBarChart.scss";
 @forward "./MiniBarChart/miniBarChart.scss";
 
 // area chart css
@@ -28,6 +29,7 @@
 @forward "./shared/StackedLegend/stackedLegend.scss";
 @forward "./shared/YAxisTick/yAxisTick.scss";
 @forward "./shared/ScrollButtonsHorizontal/scrollButtonsHorizontal.scss";
+@forward "./shared/ScrollButtonsVertical/scrollButtonsVertical.scss";
 @forward "./shared/LabelTooltip/labelTooltip.scss";
 
 // portal tooltip css
@@ -76,46 +78,14 @@
   stroke: cssUtils.$stroke-default;
 }
 
+.crayon-chart-vertical-cartesian-grid {
+  stroke: cssUtils.$stroke-default;
+}
+
 .crayon-chart-polar-grid {
   stroke: cssUtils.$stroke-default;
 }
 
 .crayon-chart-label-list {
   fill: cssUtils.$secondary-text;
-}
-
-//Pie Chart styles
-// @subham either remove this or move this to it dedicated file.
-
-.crayon-pie-chart {
-  &-container {
-    margin-left: auto;
-    margin-right: auto;
-    aspect-ratio: 1/1;
-
-    &-fullscreen {
-      min-height: 400px;
-      width: 100%;
-    }
-
-    &-mobile {
-      min-height: 300px;
-      width: 100%;
-    }
-
-    &-tray {
-      min-height: 350px;
-      width: 100%;
-    }
-
-    &-copilot {
-      min-height: 350px;
-      width: 100%;
-    }
-  }
-}
-
-.crayon-pie-chart-label {
-  fill: cssUtils.$secondary-text;
-  padding: 0;
 }

@@ -2,8 +2,8 @@ import clsx from "clsx";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Bar, BarChart, XAxis } from "recharts";
 import { useTheme } from "../../ThemeProvider";
-import { LineInBarShape } from "../BarChart/components/LineInBarShape";
 import { ChartConfig, ChartContainer } from "../Charts";
+import { LineInBarShape } from "../shared";
 import { getDistributedColors, getPalette, PaletteName } from "../utils/PalletUtils";
 import { type MiniBarChartData } from "./types";
 import {
