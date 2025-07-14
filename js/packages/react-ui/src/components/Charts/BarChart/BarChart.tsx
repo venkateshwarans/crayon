@@ -23,7 +23,11 @@ import { type LegendItem } from "../types/Legend";
 import { useChartPalette, type PaletteName } from "../utils/PalletUtils";
 
 import { LabelTooltipProvider } from "../shared/LabelTooltip/LabelTooltip";
-import { findNearestSnapPosition, getRadiusArray } from "../utils/BarCharts/BarChartsUtils";
+import {
+  findNearestSnapPosition,
+  getBarStackInfo,
+  getRadiusArray,
+} from "../utils/BarCharts/BarChartsUtils";
 import {
   get2dChartConfig,
   getColorForDataKey,
@@ -259,6 +263,7 @@ const BarChartComponent = <T extends BarChartData>({
           width={yAxisWidth}
           height={chartHeight}
           data={data}
+          stackOffset="sign"
           margin={{
             top: 20,
             bottom: maxLabelHeight + CHART_CONTAINER_BOTTOM_MARGIN, // this is required for to give space for x-axis
@@ -333,38 +338,48 @@ const BarChartComponent = <T extends BarChartData>({
   );
 
   const barElements = useMemo(() => {
-    return dataKeys.map((key, index) => {
+    return dataKeys.map((key) => {
       const transformedKey = transformedKeys[key];
       const color = `var(--color-${transformedKey})`;
-      const isFirstInStack = index === 0;
-      const isLastInStack = index === dataKeys.length - 1;
 
       return (
         <Bar
           key={`main-${key}`}
           dataKey={key}
           fill={color}
-          radius={getRadiusArray(
-            variant,
-            radius,
-            "vertical",
-            variant === "stacked" ? isFirstInStack : undefined,
-            variant === "stacked" ? isLastInStack : undefined,
-          )}
           stackId={variant === "stacked" ? "a" : undefined}
           isAnimationActive={isAnimationActive}
           maxBarSize={BAR_WIDTH}
           barSize={BAR_WIDTH}
-          shape={
-            <LineInBarShape
-              internalLineColor={barInternalLineColor}
-              internalLineWidth={BAR_INTERNAL_LINE_WIDTH}
-              isHovered={hoveredCategory !== null}
-              hoveredCategory={hoveredCategory}
-              categoryKey={categoryKey as string}
-              variant={variant}
-            />
-          }
+          shape={(props: any) => {
+            const { payload, value, dataKey } = props;
+
+            const { isNegative, isFirstInStack, isLastInStack, hasNegativeValueInStack } =
+              getBarStackInfo(variant, value, dataKey, payload, dataKeys);
+
+            const customRadius = getRadiusArray(
+              variant,
+              radius,
+              "vertical",
+              isFirstInStack,
+              isLastInStack,
+              isNegative,
+            );
+
+            return (
+              <LineInBarShape
+                {...props}
+                radius={customRadius}
+                internalLineColor={barInternalLineColor}
+                internalLineWidth={BAR_INTERNAL_LINE_WIDTH}
+                isHovered={hoveredCategory !== null}
+                hoveredCategory={hoveredCategory}
+                categoryKey={categoryKey as string}
+                variant={variant}
+                hasNegativeValueInStack={hasNegativeValueInStack}
+              />
+            );
+          }}
         />
       );
     });
@@ -406,6 +421,7 @@ const BarChartComponent = <T extends BarChartData>({
                 }}
               >
                 <RechartsBarChart
+                  stackOffset="sign"
                   accessibilityLayer
                   key={`bar-chart-${id}`}
                   data={data}

@@ -6,40 +6,52 @@ export const getRadiusArray = (
   orientation: "vertical" | "horizontal",
   isFirst?: boolean,
   isLast?: boolean,
+  isNegative?: boolean,
 ): [number, number, number, number] => {
   if (variant === "grouped") {
     if (orientation === "vertical") {
-      return [radius, radius, 0, 0]; // top-left, top-right, bottom-right, bottom-left
+      if (isNegative) {
+        return [0, 0, radius, radius]; // bottom-right, bottom-left for negative bars
+      }
+      return [radius, radius, 0, 0]; // top-left, top-right for positive bars
     } else {
       // horizontal
-      return [0, radius, radius, 0];
+      if (isNegative) {
+        return [radius, 0, 0, radius]; // top-left, bottom-left for negative bars
+      }
+      return [0, radius, radius, 0]; // top-right, bottom-right for positive bars
     }
   } else if (variant === "stacked") {
+    // For single-item stacks, round the end of the bar.
     if (isFirst && isLast) {
-      // Single item in stack
-      return [radius, radius, radius, radius];
-    }
-    if (orientation === "vertical") {
-      if (isFirst) {
-        // Bottom of the stack for vertical bar
-        return [0, 0, 0, 0];
+      if (orientation === "vertical") {
+        return isNegative ? [0, 0, radius, radius] : [radius, radius, 0, 0];
+      } else {
+        // horizontal
+        return isNegative ? [radius, 0, 0, radius] : [0, radius, radius, 0];
       }
+    }
+
+    // For multi-item stacks, only round the last bar in the stack.
+    if (orientation === "vertical") {
       if (isLast) {
         // Top of the stack for vertical bar
+        if (isNegative) {
+          return [0, 0, radius, radius];
+        }
         return [radius, radius, 0, 0];
       }
     } else {
       // horizontal
-      if (isFirst) {
-        // Left of the stack for horizontal bar
-        return [0, 0, 0, 0];
-      }
       if (isLast) {
         // Right of the stack for horizontal bar
+        if (isNegative) {
+          return [radius, 0, 0, radius];
+        }
         return [0, radius, radius, 0];
       }
     }
-    // Middle of the stack
+    // First and middle bars of the stack have no rounding.
     return [0, 0, 0, 0];
   }
   // Default or other variants
@@ -70,3 +82,41 @@ export const findNearestSnapPosition = (
     return Math.min(snapPositions.length - 1, currentIndex + 1);
   }
 };
+
+export interface BarStackInfo {
+  isNegative: boolean;
+  isFirstInStack?: boolean;
+  isLastInStack?: boolean;
+  hasNegativeValueInStack?: boolean;
+}
+
+export function getBarStackInfo(
+  variant: "grouped" | "stacked",
+  value: number | [number, number],
+  dataKey: string,
+  payload: Record<string, unknown>,
+  dataKeys: string[],
+): BarStackInfo {
+  const isNegative = Array.isArray(value) ? value[0] <= 0 && value[1] < 0 : value < 0;
+
+  if (variant !== "stacked") {
+    return { isNegative };
+  }
+
+  const stackedKeys = dataKeys.filter((k) => typeof payload[k] === "number");
+  const positiveKeys = stackedKeys.filter((k) => (payload[k] as number) >= 0);
+  const negativeKeys = stackedKeys.filter((k) => (payload[k] as number) < 0);
+  const hasNegativeValueInStack = negativeKeys.length > 0;
+
+  const keys = isNegative ? negativeKeys : positiveKeys;
+  const currentIndex = keys.indexOf(dataKey);
+  const isFirstInStack = currentIndex === 0;
+  const isLastInStack = currentIndex === keys.length - 1;
+
+  return {
+    isNegative,
+    isFirstInStack,
+    isLastInStack,
+    hasNegativeValueInStack,
+  };
+}

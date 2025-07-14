@@ -20,7 +20,11 @@ import { type LegendItem } from "../types/Legend";
 import { useChartPalette, type PaletteName } from "../utils/PalletUtils";
 
 import { LabelTooltipProvider } from "../shared/LabelTooltip/LabelTooltip";
-import { findNearestSnapPosition, getRadiusArray } from "../utils/BarCharts/BarChartsUtils";
+import {
+  findNearestSnapPosition,
+  getBarStackInfo,
+  getRadiusArray,
+} from "../utils/BarCharts/BarChartsUtils";
 import {
   get2dChartConfig,
   getColorForDataKey,
@@ -262,6 +266,7 @@ const HorizontalBarChartComponent = <T extends HorizontalBarChartData>({
               left: 5,
               right: 2,
             }}
+            stackOffset="sign"
           >
             <XAxis
               type="number"
@@ -275,7 +280,7 @@ const HorizontalBarChartComponent = <T extends HorizontalBarChartData>({
             {dataKeys.map((key) => {
               return (
                 <Bar
-                  key={`xaxis-horizontal-bar-chart-${key}`}
+                  key={`x-axis-horizontal-bar-chart-${key}`}
                   dataKey={key}
                   fill="transparent"
                   stackId={variant === "stacked" ? "a" : undefined}
@@ -364,6 +369,7 @@ const HorizontalBarChartComponent = <T extends HorizontalBarChartData>({
                       left: 2,
                       right: 2,
                     }}
+                    stackOffset="sign"
                   >
                     {grid && verticalCartesianGrid()}
                     {/* this x axis is not visible but is needed for the chart to work */}
@@ -395,37 +401,51 @@ const HorizontalBarChartComponent = <T extends HorizontalBarChartData>({
                     {dataKeys.map((key, index) => {
                       const transformedKey = transformedKeys[key];
                       const color = `var(--color-${transformedKey})`;
-                      const isFirstInStack = index === 0;
-                      const isLastInStack = index === dataKeys.length - 1;
 
                       return (
                         <Bar
                           key={`main-${key}`}
                           dataKey={key}
                           fill={color}
-                          radius={getRadiusArray(
-                            variant,
-                            radius,
-                            "horizontal",
-                            variant === "stacked" ? isFirstInStack : undefined,
-                            variant === "stacked" ? isLastInStack : undefined,
-                          )}
                           stackId={variant === "stacked" ? "a" : undefined}
                           isAnimationActive={isAnimationActive}
                           maxBarSize={BAR_HEIGHT}
                           barSize={BAR_HEIGHT}
-                          shape={
-                            <CustomBarShape
-                              index={index}
-                              categoryKey={categoryKey as string}
-                              effectiveWidth={effectiveWidth}
-                              labelHeight={labelHeight}
-                              barInternalLineColor={barInternalLineColor}
-                              internalLineWidth={BAR_INTERNAL_LINE_WIDTH}
-                              hoveredCategory={hoveredCategory}
-                              variant={variant}
-                            />
-                          }
+                          shape={(props: any) => {
+                            const { payload, value, dataKey } = props;
+
+                            const { isNegative, isFirstInStack, isLastInStack } = getBarStackInfo(
+                              variant,
+                              value,
+                              dataKey,
+                              payload,
+                              dataKeys,
+                            );
+
+                            const customRadius = getRadiusArray(
+                              variant,
+                              radius,
+                              "horizontal",
+                              isFirstInStack,
+                              isLastInStack,
+                              isNegative,
+                            );
+
+                            return (
+                              <CustomBarShape
+                                {...props}
+                                radius={customRadius}
+                                index={index}
+                                categoryKey={categoryKey as string}
+                                effectiveWidth={effectiveWidth}
+                                labelHeight={labelHeight}
+                                barInternalLineColor={barInternalLineColor}
+                                internalLineWidth={BAR_INTERNAL_LINE_WIDTH}
+                                hoveredCategory={hoveredCategory}
+                                variant={variant}
+                              />
+                            );
+                          }}
                         />
                       );
                     })}
