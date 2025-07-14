@@ -278,8 +278,8 @@ export const Scorecard: React.FC<ScorecardProps> = ({
     }).join(" ");
     
     // Determine if the trend is positive or negative
-    const firstDataValue = sparklineData[0].value; // Safe to access now that we've checked length
-    const lastDataValue = sparklineData[sparklineData.length - 1].value;
+    const firstDataValue = sparklineData?.[0]?.value ?? 0; // Safe to access now that we've checked length
+    const lastDataValue = sparklineData?.[sparklineData.length - 1]?.value ?? 0;
     const trendColor = lastDataValue >= firstDataValue ? actualPositiveColor : actualNegativeColor;
     
     return (
