@@ -29,6 +29,7 @@ export interface BarChartProps<T extends BarChartData> {
   showYAxis?: boolean;
   xAxisLabel?: React.ReactNode;
   yAxisLabel?: React.ReactNode;
+  customColors?: string[];
 }
 
 export const BarChart = <T extends BarChartData>({
@@ -45,6 +46,7 @@ export const BarChart = <T extends BarChartData>({
   showYAxis = false,
   xAxisLabel,
   yAxisLabel,
+  customColors,
 }: BarChartProps<T>) => {
   // excluding the categoryKey
   const dataKeys = Object.keys(data[0] || {}).filter((key) => key !== categoryKey);
@@ -183,9 +185,12 @@ export const BarChart = <T extends BarChartData>({
           />
         )}
         <ChartTooltip content={<ChartTooltipContent />} />
-        {dataKeys.map((key) => {
+        {dataKeys.map((key, index) => {
           const transformedKey = keyTransform(key);
-          const color = `var(--color-${transformedKey})`;
+          const color =
+            customColors && !!customColors.length
+              ? customColors[index]
+              : `var(--color-${transformedKey})`;
           if (label) {
             return (
               <Bar
@@ -195,6 +200,7 @@ export const BarChart = <T extends BarChartData>({
                 radius={radius}
                 stackId={variant === "stacked" ? "a" : undefined}
                 isAnimationActive={isAnimationActive}
+                label={{}}
               >
                 {label && (
                   <LabelList
@@ -202,6 +208,13 @@ export const BarChart = <T extends BarChartData>({
                     offset={12}
                     className="crayon-chart-label-list"
                     fontSize={12}
+                    formatter={(value: number | string) => {
+                      // Format number to include commas for thousands
+                      if (typeof value === "number") {
+                        return value.toLocaleString();
+                      }
+                      return value;
+                    }}
                   />
                 )}
               </Bar>
