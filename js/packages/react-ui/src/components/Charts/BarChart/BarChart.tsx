@@ -200,7 +200,6 @@ export const BarChart = <T extends BarChartData>({
                 radius={radius}
                 stackId={variant === "stacked" ? "a" : undefined}
                 isAnimationActive={isAnimationActive}
-                label={{}}
               >
                 {label && (
                   <LabelList
