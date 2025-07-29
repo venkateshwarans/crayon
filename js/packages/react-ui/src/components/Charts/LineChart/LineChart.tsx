@@ -244,7 +244,6 @@ export const LineChart = <T extends LineChartData>({
           }
           return (
             <Line
-            dominantBaseline="middle"
               key={key}
               dataKey={key}
               type={variant}
