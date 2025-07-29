@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Bar, LabelList, BarChart as RechartsBarChart, XAxis, YAxis } from "recharts";
 import { useLayoutContext } from "../../../context/LayoutContext";
 import {
@@ -54,6 +54,9 @@ export const BarChart = <T extends BarChartData>({
   const palette = getPalette(theme);
   const colors = getDistributedColors(palette, dataKeys.length);
   const { layout } = useLayoutContext();
+
+  let [maxDataset, setMaxDataset] = useState(0);
+  let [minDataset, setMinDataset] = useState(0);
 
   // Create Config
   const chartConfig: ChartConfig = dataKeys.reduce(
@@ -147,6 +150,31 @@ export const BarChart = <T extends BarChartData>({
   const getTickMargin = (data: T) => {
     return data.length <= 6 ? 10 : 15;
   };
+  useEffect(()=>{
+    let min = 0, max = 0, prev: number, avg= 0;
+    dataKeys.map((key)=>{
+      data.map((item, index)=>{
+        if(item?.[key] && typeof item[key] === 'number'){
+          if(!index){
+            max = item[key];
+            min = item[key];
+            avg = item[key];
+          }else{
+            avg += item[key];
+          }
+          if(item[key] > max){
+            max = item[key];
+          }
+          if(item[key] < min){
+            min = item[key];
+          }
+        }
+      })
+    })
+    avg = avg / data.length;
+    setMaxDataset(max);
+    setMinDataset(min > avg ? min-avg : avg-min > 0 ? avg-min : 0 );
+  }, [data])
 
   return (
     <ChartContainer config={chartConfig}>
@@ -176,6 +204,7 @@ export const BarChart = <T extends BarChartData>({
         />
         {showYAxis && (
           <YAxis
+            domain={[minDataset, maxDataset]}
             label={{
               value: yAxisLabel,
               position: "insideLeft",

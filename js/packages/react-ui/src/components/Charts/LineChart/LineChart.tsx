@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { LabelList, Line, LineChart as RechartsLineChart, XAxis, YAxis } from "recharts";
 import { useLayoutContext } from "../../../context/LayoutContext";
 import {
@@ -48,6 +48,8 @@ export const LineChart = <T extends LineChartData>({
 }: LineChartProps<T>) => {
   // excluding the categoryKey
   const dataKeys = Object.keys(data[0] || {}).filter((key) => key !== categoryKey);
+  let [maxDataset, setMaxDataset] = useState(0);
+  let [minDataset, setMinDataset] = useState(0);
 
   const palette = getPalette(theme);
   const colors = getDistributedColors(palette, dataKeys.length);
@@ -146,6 +148,32 @@ export const LineChart = <T extends LineChartData>({
     return data.length <= 6 ? 10 : 15;
   };
 
+  useEffect(()=>{
+    let min = 0, max = 0, prev: number, avg= 0;
+    dataKeys.map((key)=>{
+      data.map((item, index)=>{
+        if(item?.[key] && typeof item[key] === 'number'){
+          if(!index){
+            max = item[key];
+            min = item[key];
+            avg = item[key];
+          }else{
+            avg += item[key];
+          }
+          if(item[key] > max){
+            max = item[key];
+          }
+          if(item[key] < min){
+            min = item[key];
+          }
+        }
+      })
+    })
+    avg = avg / data.length;
+    setMaxDataset(max);
+    setMinDataset(min > avg ? min-avg : avg-min > 0 ? avg-min : 0 );
+  }, [data])
+
   return (
     <ChartContainer config={chartConfig}>
       <RechartsLineChart
@@ -176,14 +204,15 @@ export const LineChart = <T extends LineChartData>({
           }}
         />
         {showYAxis && (
-          <YAxis
-            label={{
-              value: yAxisLabel,
-              position: "insideLeft",
-              angle: -90,
-              className: "crayon-chart-axis-label",
-            }}
-          />
+        <YAxis
+          domain={[minDataset, maxDataset]}
+          label={{
+            value: yAxisLabel,
+            position: "insideLeft",
+            angle: -90,
+            className: "crayon-chart-axis-label",
+          }}
+        />
         )}
         <ChartTooltip content={<ChartTooltipContent indicator="dot" />} />
         {dataKeys.map((key) => {
@@ -219,6 +248,7 @@ export const LineChart = <T extends LineChartData>({
           }
           return (
             <Line
+            dominantBaseline="middle"
               key={key}
               dataKey={key}
               type={variant}
