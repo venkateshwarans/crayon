@@ -24,7 +24,7 @@ export interface GaugeChartProps {
   /**
    * The color theme for the gauge
    */
-  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid";
+  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid" | "iq";
   /**
    * Whether to animate the gauge
    */

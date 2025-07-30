@@ -105,7 +105,22 @@ const colorPalettes: PaletteMap = {
       "#63438F",
     ],
   },
-};
+  iq: {
+    name: "IQ",
+    colors: [
+      "#e6f7f4",
+      "#c1eee3",
+      "#99e3d2",
+      "#66d7be",
+      "#33cca9",
+      "#00a97f",
+      "#009673",
+      "#007a60",
+      "#005e4c",
+      "#00413a",
+    ],
+  },
+}
 
 export type PaletteKey = keyof typeof colorPalettes;
 
