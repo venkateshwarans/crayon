@@ -29,7 +29,7 @@ export interface StackedAreaChartProps<T extends StackedAreaChartData> {
    * The color palette theme for the chart. Each theme provides a different set of colors for the areas.
    * @default "ocean"
    */
-  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid";
+  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid" | "iq";
   /**
    * The interpolation method used to create the area curves.
    * 'linear' creates straight lines between points, 'natural' creates smooth curves, and 'step' creates a stepped area.

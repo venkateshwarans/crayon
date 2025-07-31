@@ -55,7 +55,7 @@ export interface ScorecardProps {
   /**
    * Color theme for the scorecard
    */
-  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid";
+  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid" | "iq";
   
   /**
    * Color for positive changes/values

@@ -21,7 +21,7 @@ export interface BubbleChartProps<T extends BubbleChartData> {
   yAxisKey: keyof T[number];
   zAxisKey?: keyof T[number]; // For bubble size
   nameKey?: keyof T[number]; // For identifying each bubble (used in tooltip)
-  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid";
+  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid" | "iq";
   grid?: boolean;
   legend?: boolean;
   isAnimationActive?: boolean;

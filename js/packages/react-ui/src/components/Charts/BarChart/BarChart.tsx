@@ -18,7 +18,7 @@ export type BarChartData = Array<Record<string, string | number>>;
 export interface BarChartProps<T extends BarChartData> {
   data: T;
   categoryKey: keyof T[number];
-  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid";
+  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid" | "iq";
   variant?: "grouped" | "stacked";
   grid?: boolean;
   label?: boolean;
@@ -35,7 +35,7 @@ export interface BarChartProps<T extends BarChartData> {
 export const BarChart = <T extends BarChartData>({
   data,
   categoryKey,
-  theme = "ocean",
+  theme = "iq",
   variant = "grouped",
   grid = true,
   label = true,
