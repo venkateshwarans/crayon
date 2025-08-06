@@ -16,7 +16,7 @@ export type RadarChartData = Array<Record<string, string | number>>;
 export interface RadarChartProps<T extends RadarChartData> {
   data: T;
   categoryKey: keyof T[number];
-  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid";
+  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid" | "iq";
   variant?: "line" | "area";
   grid?: boolean;
   legend?: boolean;

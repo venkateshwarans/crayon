@@ -18,7 +18,7 @@ export type AreaChartData = Array<Record<string, string | number>>;
 export interface AreaChartProps<T extends AreaChartData> {
   data: T;
   categoryKey: keyof T[number];
-  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid";
+  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid" | "iq";
   variant?: "linear" | "natural" | "step";
   grid?: boolean;
   label?: boolean;
