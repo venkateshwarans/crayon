@@ -1,35 +1,32 @@
-import React from 'react';
-import { Chart } from 'react-google-charts';
+import React from "react";
+import { Chart } from "react-google-charts";
 
-export type CandlestickChartProps = {
+export type CandleStickChartProps = {
   data: any;
   width?: number | string;
   height?: number | string;
   title?: string;
-  legend?: {
-    position: string;
-    alignment: string;
-  };
-  colors?: string[];
-  backgroundColor?: string;
-  hAxis?: { title: string };
-  vAxis?: { title: string };
+  legend?: string;
+  bar?: { groupWidth: string };
   candlestick?: {
-    fallingColor: string;
-    risingColor: string;
+    fallingColor: {
+      strokeWidth: number;
+      fill: string;
+    };
+    risingColor: {
+      strokeWidth: number;
+      fill: string;
+    };
   };
 };
 
-export const CandlestickChart: React.FC<CandlestickChartProps> = ({
+export const CandleStickChart: React.FC<CandleStickChartProps> = ({
   data,
   width,
   height,
   title,
   legend,
-  colors,
-  backgroundColor,
-  hAxis,
-  vAxis,
+  bar,
   candlestick,
 }) => {
   return (
@@ -37,16 +34,29 @@ export const CandlestickChart: React.FC<CandlestickChartProps> = ({
       chartType="CandlestickChart"
       width={width}
       height={height}
-      data={data}
+      data={[
+        ["Day", "", "", "", ""],
+        ["Mon", 20, 28, 38, 45],
+        ["Tue", 31, 38, 55, 66],
+        ["Wed", 50, 55, 77, 80],
+        ["Thu", 77, 77, 66, 50],
+        ["Fri", 68, 66, 22, 15],
+      ]}
       options={{
         title,
         legend,
-        colors,
-        backgroundColor,
-        hAxis,
-        vAxis,
+        bar,
         candlestick,
       }}
     />
   );
+};
+
+export const options = {
+  legend: "none",
+  bar: { groupWidth: "100%" },
+  candlestick: {
+    fallingColor: { strokeWidth: 0, fill: "#a52714" },
+    risingColor: { strokeWidth: 0, fill: "#0f9d58" },
+  },
 };

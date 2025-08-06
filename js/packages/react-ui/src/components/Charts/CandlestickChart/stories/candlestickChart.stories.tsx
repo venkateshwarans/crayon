@@ -1,9 +1,18 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { CandlestickChart, CandlestickChartProps } from "../CandlestickChart";
+import { CandleStickChart, CandleStickChartProps } from "../CandleStickChart";
 
-const meta: Meta<CandlestickChartProps> = {
+const data = [
+  ["Day", "", "", "", ""],
+  ["Mon", 20, 28, 38, 45],
+  ["Tue", 31, 38, 55, 66],
+  ["Wed", 50, 55, 77, 80],
+  ["Thu", 77, 77, 66, 50],
+  ["Fri", 68, 66, 22, 15],
+];
+
+const meta: Meta<CandleStickChartProps> = {
   title: "Components/Charts/CandlestickChart",
-  component: CandlestickChart,
+  component: CandleStickChart,
   parameters: {
     layout: "centered",
     docs: {
@@ -19,37 +28,18 @@ const meta: Meta<CandlestickChartProps> = {
 
 export default meta;
 
-const candlestickData = [
-  ["Date", "Low", "Open", "Close", "High"],
-  ["2014-01-01", 100, 110, 120, 130],
-  ["2014-01-02", 120, 130, 140, 150],
-  ["2014-01-03", 140, 150, 160, 170],
-  ["2014-01-04", 160, 170, 180, 190],
-  ["2014-01-05", 180, 190, 200, 210],
-];
-
-export const CandlestickChartStory: StoryObj<CandlestickChartProps> = {
+export const CandlestickChartStory: StoryObj<CandleStickChartProps> = {
   name: "Candlestick Chart",
   args: {
-    data: candlestickData,
-    width: "1024px",
-    height: "500px",
+    data: data,
+    width: "100%",
+    height: "400px",
     title: "Stock prices",
-    legend: {
-      position: "bottom",
-      alignment: "center",
-    },
-    colors: ["#3366cc"],
-    backgroundColor: "#f5f5f5",
-    hAxis: {
-      title: "Date",
-    },
-    vAxis: {
-      title: "Price",
-    },
+    legend: "none",
+    bar: { groupWidth: "100%" },
     candlestick: {
-      fallingColor: "#dc3912",
-      risingColor: "#109618",
+      fallingColor: { strokeWidth: 0, fill: "#a52714" },
+      risingColor: { strokeWidth: 0, fill: "#0f9d58" },
     },
   },
 };
