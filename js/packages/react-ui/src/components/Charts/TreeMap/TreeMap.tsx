@@ -31,7 +31,7 @@ export interface TreeMapProps {
   /**
    * Color theme for the chart
    */
-  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid";
+  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid" | "iq";
   /**
    * Whether to show the legend
    */

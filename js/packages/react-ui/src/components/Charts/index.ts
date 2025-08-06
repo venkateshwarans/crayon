@@ -11,3 +11,4 @@ export * from "./Scorecard";
 export * from "./StackedAreaChart";
 export * from "./StackedColumnChart";
 export * from "./TreeMap";
+export * from "./GeoChart";

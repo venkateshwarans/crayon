@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { LabelList, Line, LineChart as RechartsLineChart, XAxis, YAxis } from "recharts";
 import { useLayoutContext } from "../../../context/LayoutContext";
 import {
@@ -18,7 +18,7 @@ export type LineChartData = Array<Record<string, string | number>>;
 export interface LineChartProps<T extends LineChartData> {
   data: T;
   categoryKey: keyof T[number];
-  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid";
+  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid" | "iq";
   variant?: "linear" | "natural" | "step";
   grid?: boolean;
   label?: boolean;
@@ -48,6 +48,8 @@ export const LineChart = <T extends LineChartData>({
 }: LineChartProps<T>) => {
   // excluding the categoryKey
   const dataKeys = Object.keys(data[0] || {}).filter((key) => key !== categoryKey);
+  let [maxDataset, setMaxDataset] = useState(0);
+  let [minDataset, setMinDataset] = useState(0);
 
   const palette = getPalette(theme);
   const colors = getDistributedColors(palette, dataKeys.length);
@@ -146,6 +148,28 @@ export const LineChart = <T extends LineChartData>({
     return data.length <= 6 ? 10 : 15;
   };
 
+  useEffect(()=>{
+    let min = 0, max = 0;
+    dataKeys.map((key)=>{
+      data.map((item, index)=>{
+        if(item?.[key] && typeof item[key] === 'number'){
+          if(!index){
+            max = item[key];
+            min = item[key];
+          }
+          if(item[key] > max){
+            max = item[key];
+          }
+          if(item[key] < min){
+            min = item[key];
+          }
+        }
+      })
+    })
+    setMaxDataset(Math.ceil(max * 1.05));
+    setMinDataset(Math.floor( min * 0.95 ));
+  }, [data])
+
   return (
     <ChartContainer config={chartConfig}>
       <RechartsLineChart
@@ -176,14 +200,15 @@ export const LineChart = <T extends LineChartData>({
           }}
         />
         {showYAxis && (
-          <YAxis
-            label={{
-              value: yAxisLabel,
-              position: "insideLeft",
-              angle: -90,
-              className: "crayon-chart-axis-label",
-            }}
-          />
+        <YAxis
+          domain={[minDataset, maxDataset]}
+          label={{
+            value: yAxisLabel,
+            position: "insideLeft",
+            angle: -90,
+            className: "crayon-chart-axis-label",
+          }}
+        />
         )}
         <ChartTooltip content={<ChartTooltipContent indicator="dot" />} />
         {dataKeys.map((key) => {

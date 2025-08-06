@@ -641,7 +641,8 @@ The Table schema defines the data format for the `Table` component, which displa
           "oneOf": [
             {"type": "string"},
             {"type": "number"},
-            {"type": "boolean"}
+            {"type": "boolean"},
+            {"type": "null"}
           ]
         }
       },
@@ -740,3 +741,160 @@ When adding schemas for new chart components:
 - Include validation rules (required fields, data types, constraints)
 - Provide clear examples in sample data
 - Follow JSON Schema specification standards
+
+---
+
+## Scorecard Schema
+
+### Schema Definition
+
+The Scorecard schema defines the data format for the `Scorecard` component, which displays a single KPI value with optional comparison indicator and sparkline.
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Title of the scorecard visualization"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of what the scorecard represents"
+    },
+    "data": {
+      "type": "object",
+      "description": "Object containing the primary value, optional comparison value, and optional sparkline data",
+      "properties": {
+        "value": {
+          "oneOf": [
+            { "type": "number" },
+            { "type": "string" },
+            { "type": "boolean" },
+            { "type": "null" }
+          ],
+          "description": "The primary value to display in the scorecard"
+        },
+        "comparisonValue": {
+          "type": "number",
+          "description": "Optional comparison value to show trend/progress"
+        },
+        "comparisonLabel": {
+          "type": "string",
+          "description": "Optional label for the comparison value"
+        },
+        "showAsProgress": {
+          "type": "boolean",
+          "description": "Whether to show the comparison as progress towards a target",
+          "default": false
+        },
+        "sparklineData": {
+          "type": "array",
+          "description": "Data for the sparkline if enabled",
+          "items": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": "number",
+                "description": "Numeric value for the sparkline data point"
+              }
+            },
+            "required": ["value"],
+            "additionalProperties": false
+          }
+        },
+        "valueFormat": {
+          "type": "string",
+          "enum": ["number", "currency", "percentage", "compact"],
+          "description": "Format for displaying the value",
+          "default": "number"
+        },
+        "comparisonFormat": {
+          "type": "string",
+          "enum": ["number", "currency", "percentage", "compact"],
+          "description": "Format for displaying the comparison value",
+          "default": "percentage"
+        }
+      },
+      "required": ["value"],
+      "additionalProperties": false
+    },
+    "theme": {
+      "type": "string",
+      "enum": ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid"],
+      "description": "Color theme for the scorecard",
+      "default": "ocean"
+    },
+    "size": {
+      "type": "string",
+      "enum": ["compact", "small", "medium", "large", "hero"],
+      "description": "Size variant of the scorecard",
+      "default": "medium"
+    }
+  },
+  "required": ["title", "description", "data"],
+  "additionalProperties": false
+}
+```
+
+### Data Structure
+
+- **title** (string, required): Scorecard title
+- **description** (string, required): Scorecard description
+- **data** (object, required): Object containing:
+  - **value** (number|string, required): The primary value to display
+  - **comparisonValue** (number, optional): Comparison value for trend/progress
+  - **comparisonLabel** (string, optional): Label for the comparison value
+  - **showAsProgress** (boolean, optional): Whether to show as progress towards target
+  - **sparklineData** (array, optional): Array of data points for sparkline
+  - **valueFormat** (string, optional): Format for displaying the main value
+  - **comparisonFormat** (string, optional): Format for displaying the comparison value
+- **theme** (string, optional): Color theme for the scorecard
+- **size** (string, optional): Size variant of the scorecard
+
+### Sample Data
+
+```json
+{
+  "title": "Monthly Active Users",
+  "description": "Number of active users this month with comparison to previous month",
+  "data": {
+    "value": 44811,
+    "comparisonValue": 38500,
+    "comparisonLabel": "Previous month",
+    "showAsProgress": false,
+    "valueFormat": "number",
+    "comparisonFormat": "percentage",
+    "sparklineData": [
+      { "value": 32500 },
+      { "value": 34800 },
+      { "value": 36200 },
+      { "value": 35400 },
+      { "value": 37800 },
+      { "value": 38500 },
+      { "value": 44811 }
+    ]
+  },
+  "theme": "ocean",
+  "size": "medium"
+}
+```
+
+Another example with progress bar:
+
+```json
+{
+  "title": "Sales Target",
+  "description": "Progress towards quarterly sales target",
+  "data": {
+    "value": 856420,
+    "comparisonValue": 1000000,
+    "comparisonLabel": "Q3 Target",
+    "showAsProgress": true,
+    "valueFormat": "currency",
+    "comparisonFormat": "percentage"
+  },
+  "theme": "emerald",
+  "size": "large"
+}
+```
