@@ -19,7 +19,7 @@ export interface RadialChartProps<T extends RadialChartData> {
   data: T;
   categoryKey: keyof T[number];
   dataKey: keyof T[number];
-  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid";
+  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid" | "iq";
   variant?: "semicircle" | "circular";
   format?: "percentage" | "number";
   legend?: boolean;
