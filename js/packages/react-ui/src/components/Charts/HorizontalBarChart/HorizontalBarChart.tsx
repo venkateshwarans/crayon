@@ -29,7 +29,7 @@ export interface HorizontalBarChartProps<T extends HorizontalBarChartData> {
    * The color palette theme for the chart. Each theme provides a different set of colors for the bars.
    * @default "ocean"
    */
-  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid";
+  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid" | "iq";
   /**
    * The style of the bar chart. 'grouped' shows bars side by side, while 'stacked' shows bars stacked.
    * @default "grouped"

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Bar, LabelList, BarChart as RechartsBarChart, XAxis, YAxis } from "recharts";
 import { useLayoutContext } from "../../../context/LayoutContext";
 import {
@@ -18,7 +18,7 @@ export type BarChartData = Array<Record<string, string | number>>;
 export interface BarChartProps<T extends BarChartData> {
   data: T;
   categoryKey: keyof T[number];
-  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid";
+  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid" | "iq";
   variant?: "grouped" | "stacked";
   grid?: boolean;
   label?: boolean;
@@ -29,12 +29,13 @@ export interface BarChartProps<T extends BarChartData> {
   showYAxis?: boolean;
   xAxisLabel?: React.ReactNode;
   yAxisLabel?: React.ReactNode;
+  customColors?: string[];
 }
 
 export const BarChart = <T extends BarChartData>({
   data,
   categoryKey,
-  theme = "ocean",
+  theme = "iq",
   variant = "grouped",
   grid = true,
   label = true,
@@ -45,6 +46,7 @@ export const BarChart = <T extends BarChartData>({
   showYAxis = false,
   xAxisLabel,
   yAxisLabel,
+  customColors,
 }: BarChartProps<T>) => {
   // excluding the categoryKey
   const dataKeys = Object.keys(data[0] || {}).filter((key) => key !== categoryKey);
@@ -52,6 +54,9 @@ export const BarChart = <T extends BarChartData>({
   const palette = getPalette(theme);
   const colors = getDistributedColors(palette, dataKeys.length);
   const { layout } = useLayoutContext();
+
+  let [maxDataset, setMaxDataset] = useState(0);
+  let [minDataset, setMinDataset] = useState(0);
 
   // Create Config
   const chartConfig: ChartConfig = dataKeys.reduce(
@@ -145,6 +150,27 @@ export const BarChart = <T extends BarChartData>({
   const getTickMargin = (data: T) => {
     return data.length <= 6 ? 10 : 15;
   };
+  useEffect(()=>{
+    let min = 0, max = 0;
+    dataKeys.map((key)=>{
+      data.map((item, index)=>{
+        if(item?.[key] && typeof item[key] === 'number'){
+          if(!index){
+            max = item[key];
+            min = item[key];
+          }
+          if(item[key] > max){
+            max = item[key];
+          }
+          if(item[key] < min){
+            min = item[key];
+          }
+        }
+      })
+    })
+    setMaxDataset(Math.ceil(max * 1.05));
+    setMinDataset(Math.floor( min * 0.95 ));
+  }, [data])
 
   return (
     <ChartContainer config={chartConfig}>
@@ -174,6 +200,7 @@ export const BarChart = <T extends BarChartData>({
         />
         {showYAxis && (
           <YAxis
+            domain={[minDataset, maxDataset]}
             label={{
               value: yAxisLabel,
               position: "insideLeft",
@@ -183,9 +210,12 @@ export const BarChart = <T extends BarChartData>({
           />
         )}
         <ChartTooltip content={<ChartTooltipContent />} />
-        {dataKeys.map((key) => {
+        {dataKeys.map((key, index) => {
           const transformedKey = keyTransform(key);
-          const color = `var(--color-${transformedKey})`;
+          const color =
+            customColors && !!customColors.length
+              ? customColors[index]
+              : `var(--color-${transformedKey})`;
           if (label) {
             return (
               <Bar
@@ -202,6 +232,13 @@ export const BarChart = <T extends BarChartData>({
                     offset={12}
                     className="crayon-chart-label-list"
                     fontSize={12}
+                    formatter={(value: number | string) => {
+                      // Format number to include commas for thousands
+                      if (typeof value === "number") {
+                        return value.toLocaleString();
+                      }
+                      return value;
+                    }}
                   />
                 )}
               </Bar>
