@@ -19,7 +19,7 @@ export interface PieChartProps<T extends PieChartData> {
   data: T;
   categoryKey: keyof T[number];
   dataKey: keyof T[number];
-  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid";
+  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid" | "iq";
   variant?: "pie" | "donut";
   format?: "percentage" | "number";
   legend?: boolean;

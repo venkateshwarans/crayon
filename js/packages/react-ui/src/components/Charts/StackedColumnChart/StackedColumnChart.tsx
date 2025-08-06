@@ -29,7 +29,7 @@ export interface StackedColumnChartProps<T extends StackedColumnChartData> {
    * The color palette theme for the chart. Each theme provides a different set of colors for the columns.
    * @default "ocean"
    */
-  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid";
+  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid" | "iq";
   /**
    * Whether to display the background grid lines in the chart
    * @default true

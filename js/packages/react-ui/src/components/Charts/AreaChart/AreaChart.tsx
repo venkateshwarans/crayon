@@ -18,7 +18,7 @@ export type AreaChartData = Array<Record<string, string | number>>;
 export interface AreaChartProps<T extends AreaChartData> {
   data: T;
   categoryKey: keyof T[number];
-  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid";
+  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid" | "iq";
   variant?: "linear" | "natural" | "step";
   grid?: boolean;
   label?: boolean;
@@ -46,7 +46,6 @@ export const AreaChart = <T extends AreaChartData>({
   xAxisLabel,
   yAxisLabel,
 }: AreaChartProps<T>) => {
-  console.log(data)
   // excluding the categoryKey
   const dataKeys = Object.keys(data[0] || {}).filter((key) => key !== categoryKey);
 
