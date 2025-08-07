@@ -1,3 +1,4 @@
 .vercel/
 vercel-build.js
 vercel.json
+.vercel-output/
