@@ -58,3 +58,30 @@ export const HistogramStory: StoryObj<HistogramProps> = {
     },
   },
 };
+
+export const HistogramWithThemeStory: StoryObj<HistogramProps> = {
+  name: "Histogram with Theme",
+  args: {
+    data: histogramData,
+    width: "1024px",
+    height: "500px",
+    title: "Lengths of dinosaurs, in meters",
+    theme: "ocean",
+    legend: {
+      position: "bottom",
+      alignment: "center",
+    },
+    hAxis: {
+      title: "Length",
+    },
+    vAxis: {
+      title: "Dinosaurs",
+    },
+    histogram: {
+      bucketSize: 1,
+      maxNumBuckets: 10,
+      minValue: 0,
+      maxValue: 40,
+    },
+  },
+};

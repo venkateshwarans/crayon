@@ -66,7 +66,7 @@ const meta: Meta<ScatterPlotProps> = {
       },
     },
     theme: {
-      description: "Theme for chart styling (not currently used).",
+      description: "Theme for chart styling.",
       control: "select",
       options: ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid"],
       table: {
@@ -74,7 +74,7 @@ const meta: Meta<ScatterPlotProps> = {
       },
     },
     variant: {
-      description: "Variant of point style (not currently used).",
+      description: "Variant of point style.",
       control: "select",
       options: ["circle", "square", "diamond"],
       table: {

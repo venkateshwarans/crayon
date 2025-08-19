@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { CandleStickChart, CandleStickChartProps } from "../CandleStickChart";
+import { CandleStickChart, CandleStickChartProps } from "../CandlestickChart";
 
 const data = [
   ["Day", "", "", "", ""],
@@ -41,5 +41,6 @@ export const CandlestickChartStory: StoryObj<CandleStickChartProps> = {
       fallingColor: { strokeWidth: 0, fill: "#a52714" },
       risingColor: { strokeWidth: 0, fill: "#0f9d58" },
     },
+    theme: "ocean", // added theme prop
   },
 };
