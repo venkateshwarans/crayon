@@ -17,6 +17,9 @@ const meta: Meta<GeoChartProps> = {
     region: {
       description: 'For a list of available regions, please refer to the [Google GeoChart documentation](https://developers.google.com/chart/interactive/docs/gallery/geochart#Continent_Hierarchy).',
     },
+    theme: {
+      description: 'Select a theme to apply to the chart.',
+    },
   },
   tags: ['!dev', 'autodocs'],
 };
@@ -42,6 +45,7 @@ export const GeoChartStory: StoryObj<GeoChartProps> = {
     datalessRegionColor: '#f5f5f5',
     defaultColor: '#f5f5f5',
     legend: 'none',
+    theme: 'ocean',
   },
 };
 
@@ -58,6 +62,7 @@ export const CustomRegion: StoryObj<GeoChartProps> = {
     datalessRegionColor: '#f5f5f5',
     defaultColor: '#f5f5f5',
     legend: 'none',
+    theme: 'orchid',
   },
 };
 
@@ -70,5 +75,15 @@ export const CustomColors: StoryObj<GeoChartProps> = {
     datalessRegionColor: '#f5f5f5',
     defaultColor: '#f5f5f5',
     legend: 'none',
+    theme: 'emerald',
+  },
+};
+
+export const ThemedGeoChart: StoryObj<GeoChartProps> = {
+  name: 'Themed Geo Chart',
+  args: {
+    data: geoChartData,
+    region: 'world',
+    theme: 'sunset',
   },
 };

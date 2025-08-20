@@ -1,5 +1,6 @@
 import React from 'react';
 import { Chart } from 'react-google-charts';
+import { getPalette } from '../utils/PalletUtils';
 
 export type HistogramProps = {
   data: any;
@@ -10,6 +11,7 @@ export type HistogramProps = {
     position: string;
     alignment: string;
   };
+  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid";
   colors?: string[];
   backgroundColor?: string;
   hAxis?: { title: string };
@@ -28,27 +30,31 @@ export const Histogram: React.FC<HistogramProps> = ({
   height,
   title,
   legend,
-  colors,
+  theme = "ocean",
   backgroundColor,
   hAxis,
   vAxis,
   histogram,
 }) => {
+  const palette = getPalette(theme);
+
+  const options = {
+    title,
+    legend,
+    colors: palette.colors,
+    backgroundColor: backgroundColor,
+    hAxis,
+    vAxis,
+    histogram,
+  };
+
   return (
     <Chart
       chartType="Histogram"
       width={width}
       height={height}
       data={data}
-      options={{
-        title,
-        legend,
-        colors,
-        backgroundColor,
-        hAxis,
-        vAxis,
-        histogram,
-      }}
+      options={options}
     />
   );
 };

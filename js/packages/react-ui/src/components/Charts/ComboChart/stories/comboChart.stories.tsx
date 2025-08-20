@@ -61,3 +61,29 @@ export const ComboChartStory: StoryObj<ComboChartProps> = {
     },
   },
 };
+
+export const ComboChartWithThemeStory: StoryObj<ComboChartProps> = {
+  name: "Combo Chart with Theme",
+  args: {
+    data: comboChartData,
+    width: "1024px",
+    height: "500px",
+    seriesType: "bars",
+    theme: "ocean",
+    vAxis: { title: "Cups" },
+    hAxis: { title: "Month" },
+    legend: {
+      position: "bottom",
+      alignment: "center",
+    },
+    bar: { groupWidth: "80%" },
+    annotations: {
+      alwaysOutside: true,
+      textStyle: {
+        fontSize: 14,
+        color: "#000",
+        auraColor: "none",
+      },
+    },
+  },
+};

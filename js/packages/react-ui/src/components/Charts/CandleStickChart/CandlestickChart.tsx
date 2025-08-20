@@ -1,5 +1,6 @@
 import React from "react";
 import { Chart } from "react-google-charts";
+import { getPalette } from '../utils/PalletUtils';
 
 export type CandleStickChartProps = {
   data: any;
@@ -18,6 +19,7 @@ export type CandleStickChartProps = {
       fill: string;
     };
   };
+  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid";
 };
 
 export const CandleStickChart: React.FC<CandleStickChartProps> = ({
@@ -28,7 +30,27 @@ export const CandleStickChart: React.FC<CandleStickChartProps> = ({
   legend,
   bar,
   candlestick,
+  theme = 'ocean',
 }) => {
+  const palette = getPalette(theme);
+  const colors = palette.colors;
+
+  const options = {
+    title,
+    legend,
+    bar,
+    candlestick: {
+      fallingColor: {
+        strokeWidth: 0,
+        fill: colors[0],
+      },
+      risingColor: {
+        strokeWidth: 0,
+        fill: colors[1],
+      },
+    },
+  };
+
   return (
     <Chart
       chartType="CandlestickChart"
@@ -42,21 +64,7 @@ export const CandleStickChart: React.FC<CandleStickChartProps> = ({
         ["Thu", 77, 77, 66, 50],
         ["Fri", 68, 66, 22, 15],
       ]}
-      options={{
-        title,
-        legend,
-        bar,
-        candlestick,
-      }}
+      options={options}
     />
   );
-};
-
-export const options = {
-  legend: "none",
-  bar: { groupWidth: "100%" },
-  candlestick: {
-    fallingColor: { strokeWidth: 0, fill: "#a52714" },
-    risingColor: { strokeWidth: 0, fill: "#0f9d58" },
-  },
 };

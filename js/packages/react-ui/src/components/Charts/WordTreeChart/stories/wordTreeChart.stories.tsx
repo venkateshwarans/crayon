@@ -56,3 +56,26 @@ export const ExplicitWordTreeStory: StoryObj<WordTreeProps> = {
     format: "explicit",
   },
 };
+
+export const ImplicitWordTreeWithThemeStory: StoryObj<WordTreeProps> = {
+  name: "Implicit Word Tree with Theme",
+  args: {
+    data: implicitData,
+    width: "100%",
+    height: "100%",
+    format: "implicit",
+    word: "cats",
+    theme: "ocean",
+  },
+};
+
+export const ExplicitWordTreeWithThemeStory: StoryObj<WordTreeProps> = {
+  name: "Explicit Word Tree with Theme",
+  args: {
+    data: explicitData,
+    width: "100%",
+    height: "100%",
+    format: "explicit",
+    theme: "ocean",
+  },
+};

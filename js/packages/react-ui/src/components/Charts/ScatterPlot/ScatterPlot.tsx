@@ -1,5 +1,6 @@
 import React from "react";
 import { Chart } from "react-google-charts";
+import { getPalette } from "../utils/PalletUtils";
 
 export interface ScatterPlotProps {
   data: any[];
@@ -37,12 +38,17 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
     ...data.map((row) => [row[xKey], row[yKey]]),
   ];
 
+  const palette = getPalette(theme);
+  const colors = palette.colors;
+
   const options = {
     title: "",
     curveType: "function",
     legend: { position: "bottom" },
     hAxis: { title: xAxisLabel },
     vAxis: { title: yAxisLabel },
+    colors: colors,
+    backgroundColor: "white",
   };
 
   return (
