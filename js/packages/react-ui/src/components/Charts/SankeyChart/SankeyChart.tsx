@@ -1,5 +1,6 @@
 import React from "react";
 import { Chart } from "react-google-charts";
+import { getPalette } from '../utils/PalletUtils';
 
 export type SankeyChartProps = {
   data: any;
@@ -12,6 +13,7 @@ export type SankeyChartProps = {
   linkColor?: string;
   linkOpacity?: number;
   tooltip?: { trigger: string };
+  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid";
 };
 
 export const SankeyChart: React.FC<SankeyChartProps> = ({
@@ -25,22 +27,28 @@ export const SankeyChart: React.FC<SankeyChartProps> = ({
   linkColor,
   linkOpacity,
   tooltip,
+  theme = 'ocean',
 }) => {
+  const palette = getPalette(theme);
+  const colors = palette.colors;
+
+  const options = {
+    title,
+    nodeColor: colors[0],
+    nodeWidth,
+    nodePadding,
+    linkColor: colors[1],
+    linkOpacity,
+    tooltip,
+  };
+
   return (
     <Chart
       chartType="Sankey"
       width={width}
       height={height}
       data={data}
-      options={{
-        title,
-        nodeColor,
-        nodeWidth,
-        nodePadding,
-        linkColor,
-        linkOpacity,
-        tooltip,
-      }}
+      options={options}
     />
   );
 };
