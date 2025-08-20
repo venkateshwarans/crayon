@@ -1,1 +1,1 @@
-export * from "./CandleStickChart";
+export * from "./CandlestickChart";
