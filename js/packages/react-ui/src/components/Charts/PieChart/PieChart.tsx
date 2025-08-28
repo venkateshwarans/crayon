@@ -125,8 +125,17 @@ export const PieChart = <T extends PieChartData>({
   const renderCustomLabel = ({ payload, cx, cy, x, y, textAnchor, dominantBaseline }: any) => {
     if (payload.percentage <= 10) return null;
     const displayValue = format === "percentage" ? payload.percentage : payload[dataKey];
+    
+    // Format numbers with commas as thousand separators
+    const formatNumber = (num: number) => {
+      return num.toLocaleString('en-US');
+    };
+    
+    const formattedDisplayValue = format === "percentage" ? displayValue : 
+      (typeof displayValue === 'number' ? formatNumber(displayValue) : displayValue);
+    
     const formattedValue =
-      String(displayValue).length > 7 ? `${String(displayValue).slice(0, 7)}...` : displayValue;
+      String(formattedDisplayValue).length > 7 ? `${String(formattedDisplayValue).slice(0, 7)}...` : formattedDisplayValue;
 
     return (
       <g>
