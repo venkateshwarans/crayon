@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { CandleStickChart, CandleStickChartProps } from "../CandlestickChart";
+import { CandleStickChart, CandleStickChartProps } from "../CandleStickChart";
 
 const data = [
   ["Day", "", "", "", ""],
