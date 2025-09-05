@@ -41,6 +41,6 @@ export const CandlestickChartStory: StoryObj<CandleStickChartProps> = {
       fallingColor: { strokeWidth: 0, fill: "#a52714" },
       risingColor: { strokeWidth: 0, fill: "#0f9d58" },
     },
-    theme: "ocean",
+    theme: "ocean", // added theme prop
   },
 };
