@@ -60,7 +60,7 @@ const meta: Meta<MiniBarChartProps> = {
       description:
         "The color palette theme for the chart. Each theme provides a different set of colors for the bars.",
       control: "select",
-      options: ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid"],
+      options: ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid", "iq"],
       table: {
         defaultValue: { summary: "ocean" },
         category: "Appearance",
@@ -195,7 +195,7 @@ export const DifferentThemes: Story = {
   name: "Different Themes",
   render: () => (
     <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
-      {(["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid"] as const).map((theme) => (
+      {(["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid", "iq"] as const).map((theme) => (
         <Card key={theme} style={{ width: "200px", padding: "16px" }}>
           <h4
             style={{

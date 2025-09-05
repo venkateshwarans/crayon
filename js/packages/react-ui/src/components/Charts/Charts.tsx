@@ -394,6 +394,10 @@ function getPayloadConfigFromPayload(config: ChartConfig, payload: unknown, key:
   return configLabelKey in config ? config[configLabelKey] : config[key];
 }
 
+function keyTransform(key: string) {
+  return key.replaceAll(/\s/g, "-").replaceAll("%", "__per__");
+}
+
 export {
   ChartContainer,
   ChartLegend,
@@ -403,4 +407,5 @@ export {
   ChartTooltipContent,
   getPayloadConfigFromPayload,
   useChart,
+  keyTransform
 };

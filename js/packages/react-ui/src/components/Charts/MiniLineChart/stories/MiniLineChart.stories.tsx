@@ -52,7 +52,7 @@ const meta: Meta<typeof MiniLineChart> = {
       description:
         "The color palette theme for the chart. Each theme provides a different color for the line.",
       control: "select",
-      options: ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid"],
+      options: ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid", "iq"],
       table: {
         defaultValue: { summary: "ocean" },
         category: "Appearance",

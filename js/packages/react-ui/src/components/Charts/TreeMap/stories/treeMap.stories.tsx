@@ -144,7 +144,7 @@ const meta: Meta<TreeMapProps> = {
     theme: {
       description: "The color theme for the chart",
       control: "select",
-      options: ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid"],
+      options: ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid", "iq"],
       table: {
         type: { summary: "string" },
         defaultValue: { summary: "ocean" },

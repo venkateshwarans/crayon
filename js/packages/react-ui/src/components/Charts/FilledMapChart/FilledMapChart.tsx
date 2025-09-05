@@ -1,6 +1,6 @@
 import React from "react";
 import { Chart } from "react-google-charts";
-import { getPalette } from "../utils/PalletUtils";
+import { getPalette, PaletteName } from "../utils/PalletUtils";
 
 export type FilledMapChartProps = {
   data: any;
@@ -10,7 +10,7 @@ export type FilledMapChartProps = {
   legend?: string;
   region?: string;
   colors?: string[];
-  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid";
+  theme?: PaletteName;
 };
 
 export const FilledMapChart: React.FC<FilledMapChartProps> = ({

@@ -98,7 +98,7 @@ const meta: Meta<BubbleChartProps<typeof bubbleChartData>> = {
       description:
         "The color palette theme for the chart. Each theme provides a different set of colors for the bubbles.",
       control: "select",
-      options: ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid"],
+      options: ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid", "iq"],
       table: {
         defaultValue: { summary: "ocean" },
         category: "Appearance",
@@ -212,11 +212,16 @@ export const BubbleChartStory: Story = {
     yAxisLabel: "Users",
     seriesKey: "device",
   },
-  render: (args) => (
-    <Card style={{ width: "600px", height: "auto" }}>
-      <BubbleChart {...args} icons={icons} />
-    </Card>
-  ),
+  render: (args) => {
+    // Destructure required props to ensure they're passed correctly
+    const { data, xAxisKey, yAxisKey, ...restArgs } = args;
+    
+    return (
+      <Card style={{ width: "600px", height: "auto" }}>
+        <BubbleChart data={data} xAxisKey={xAxisKey} yAxisKey={yAxisKey} {...restArgs} icons={icons} />
+      </Card>
+    );
+  },
   parameters: {
     docs: {
       source: {
@@ -281,11 +286,16 @@ export const WithoutSeries: Story = {
     xAxisLabel: "Sales",
     yAxisLabel: "Users",
   },
-  render: (args) => (
-    <Card style={{ width: "600px", height: "auto" }}>
-      <BubbleChart {...args} />
-    </Card>
-  ),
+  render: (args) => {
+    // Destructure required props to ensure they're passed correctly
+    const { data, xAxisKey, yAxisKey, ...restArgs } = args;
+    
+    return (
+      <Card style={{ width: "600px", height: "auto" }}>
+        <BubbleChart data={data} xAxisKey={xAxisKey} yAxisKey={yAxisKey} {...restArgs} />
+      </Card>
+    );
+  },
   parameters: {
     docs: {
       source: {
@@ -340,9 +350,14 @@ export const CustomTheme: Story = {
     showXAxis: true,
     seriesKey: "device",
   },
-  render: (args) => (
-    <Card style={{ width: "600px", height: "auto" }}>
-      <BubbleChart {...args} icons={icons} />
-    </Card>
-  ),
+  render: (args) => {
+    // Destructure required props to ensure they're passed correctly
+    const { data, xAxisKey, yAxisKey, ...restArgs } = args;
+    
+    return (
+      <Card style={{ width: "600px", height: "auto" }}>
+        <BubbleChart data={data} xAxisKey={xAxisKey} yAxisKey={yAxisKey} {...restArgs} icons={icons} />
+      </Card>
+    );
+  },
 };

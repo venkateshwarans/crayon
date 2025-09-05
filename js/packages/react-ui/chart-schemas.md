@@ -821,7 +821,7 @@ The Scorecard schema defines the data format for the `Scorecard` component, whic
     },
     "theme": {
       "type": "string",
-      "enum": ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid"],
+      "enum": ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid", "iq"],
       "description": "Color theme for the scorecard",
       "default": "ocean"
     },

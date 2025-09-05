@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import clsx from "clsx";
 import { Bar, LabelList, BarChart as RechartsBarChart, XAxis, YAxis } from "recharts";
 import { useId } from "../../../polyfills";
 import { useTheme } from "../../ThemeProvider";
@@ -49,9 +50,9 @@ type BarClickData = Parameters<NonNullable<BarChartOnClick>>[0];
 export interface BarChartProps<T extends BarChartData> {
   data: T;
   categoryKey: keyof T[number];
-  theme?: PaletteName | "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid" | "iq";
+  theme?: PaletteName;
   customPalette?: string[];
-  variant?: BarChartVariant | "grouped" | "stacked";
+  variant?: BarChartVariant;
   tickVariant?: XAxisTickVariant;
   grid?: boolean;
   radius?: number;

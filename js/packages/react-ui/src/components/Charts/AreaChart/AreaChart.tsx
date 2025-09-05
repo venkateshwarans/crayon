@@ -41,9 +41,9 @@ type AreaClickData = Parameters<NonNullable<AreaChartOnClick>>[0];
 export interface AreaChartProps<T extends AreaChartData> {
   data: T;
   categoryKey: keyof T[number];
-  theme?: PaletteName | "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid" | "iq";
+  theme?: PaletteName;
   customPalette?: string[];
-  variant?: AreaChartVariant | "linear" | "natural" | "step";
+  variant?: AreaChartVariant;
   tickVariant?: XAxisTickVariant;
   grid?: boolean;
   legend?: boolean;

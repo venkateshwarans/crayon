@@ -148,7 +148,7 @@ const salesData = [
       description:
         "The color palette for the chart. Provides a set of aesthetically pleasing colors.",
       control: "select",
-      options: ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid"],
+      options: ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid", "iq"],
       table: {
         defaultValue: { summary: "ocean" },
         category: "🎨 Visual Styling",
@@ -270,14 +270,17 @@ export const DefaultConfiguration: Story = {
     cornerRadius: 0,
     paddingAngle: 0,
   },
-  render: (args: any) => (
-    <Card style={{ width: "650px", height: "auto", padding: "24px" }}>
-      <h3 style={{ marginBottom: "20px", fontSize: "18px", fontWeight: 600 }}>
-        Monthly Sales Performance
-      </h3>
-      <PieChart {...args} />
-    </Card>
-  ),
+  render: (args: any) => {
+    const { data, categoryKey, dataKey, ...restArgs } = args;
+    return (
+      <Card style={{ width: "650px", height: "auto", padding: "24px" }}>
+        <h3 style={{ marginBottom: "20px", fontSize: "18px", fontWeight: 600 }}>
+          Monthly Sales Performance
+        </h3>
+        <PieChart data={data} categoryKey={categoryKey} dataKey={dataKey} {...restArgs} />
+      </Card>
+    );
+  },
 };
 
 /**
@@ -303,34 +306,37 @@ export const LayoutAndVariantOptions: Story = {
     cornerRadius: 0,
     paddingAngle: 0,
   },
-  render: (args: any) => (
-    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "40px", width: "800px" }}>
-      <div>
-        <h4 style={{ textAlign: "center", marginBottom: "16px" }}>Pie - Circular</h4>
-        <Card style={{ padding: "20px" }}>
-          <PieChart {...args} variant="pie" appearance="circular" />
-        </Card>
+  render: (args: any) => {
+    const { data, categoryKey, dataKey, ...restArgs } = args;
+    return (
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "40px", width: "800px" }}>
+        <div>
+          <h4 style={{ textAlign: "center", marginBottom: "16px" }}>Pie - Circular</h4>
+          <Card style={{ padding: "20px" }}>
+            <PieChart data={data} categoryKey={categoryKey} dataKey={dataKey} {...restArgs} variant="pie" appearance="circular" />
+          </Card>
+        </div>
+        <div>
+          <h4 style={{ textAlign: "center", marginBottom: "16px" }}>Donut - Circular</h4>
+          <Card style={{ padding: "20px" }}>
+            <PieChart data={data} categoryKey={categoryKey} dataKey={dataKey} {...restArgs} variant="donut" appearance="circular" />
+          </Card>
+        </div>
+        <div>
+          <h4 style={{ textAlign: "center", marginBottom: "16px" }}>Pie - Semicircle</h4>
+          <Card style={{ padding: "20px" }}>
+            <PieChart data={data} categoryKey={categoryKey} dataKey={dataKey} {...restArgs} variant="pie" appearance="semiCircular" />
+          </Card>
+        </div>
+        <div>
+          <h4 style={{ textAlign: "center", marginBottom: "16px" }}>Donut - Semicircle</h4>
+          <Card style={{ padding: "20px" }}>
+            <PieChart data={data} categoryKey={categoryKey} dataKey={dataKey} {...restArgs} variant="donut" appearance="semiCircular" />
+          </Card>
+        </div>
       </div>
-      <div>
-        <h4 style={{ textAlign: "center", marginBottom: "16px" }}>Donut - Circular</h4>
-        <Card style={{ padding: "20px" }}>
-          <PieChart {...args} variant="donut" appearance="circular" />
-        </Card>
-      </div>
-      <div>
-        <h4 style={{ textAlign: "center", marginBottom: "16px" }}>Pie - Semicircle</h4>
-        <Card style={{ padding: "20px" }}>
-          <PieChart {...args} variant="pie" appearance="semiCircular" />
-        </Card>
-      </div>
-      <div>
-        <h4 style={{ textAlign: "center", marginBottom: "16px" }}>Donut - Semicircle</h4>
-        <Card style={{ padding: "20px" }}>
-          <PieChart {...args} variant="donut" appearance="semiCircular" />
-        </Card>
-      </div>
-    </div>
-  ),
+    );
+  },
 };
 
 /**
@@ -353,14 +359,17 @@ export const CustomPalette: Story = {
     cornerRadius: 4,
     paddingAngle: 2,
   },
-  render: (args: any) => (
-    <Card style={{ width: "650px", height: "auto", padding: "24px" }}>
-      <h3 style={{ marginBottom: "20px", fontSize: "18px", fontWeight: 600 }}>
-        Chart with Custom Palette
-      </h3>
-      <PieChart {...args} />
-    </Card>
-  ),
+  render: (args: any) => {
+    const { data, categoryKey, dataKey, ...restArgs } = args;
+    return (
+      <Card style={{ width: "650px", height: "auto", padding: "24px" }}>
+        <h3 style={{ marginBottom: "20px", fontSize: "18px", fontWeight: 600 }}>
+          Chart with Custom Palette
+        </h3>
+        <PieChart data={data} categoryKey={categoryKey} dataKey={dataKey} {...restArgs} />
+      </Card>
+    );
+  },
 };
 
 /**
@@ -385,11 +394,14 @@ export const LargeDatasetWithCarousel: Story = {
     cornerRadius: 4,
     paddingAngle: 1,
   },
-  render: (args: any) => (
-    <Card style={{ width: "700px", padding: "24px" }}>
-      <PieChart {...args} />
-    </Card>
-  ),
+  render: (args: any) => {
+    const { data, categoryKey, dataKey, ...restArgs } = args;
+    return (
+      <Card style={{ width: "700px", padding: "24px" }}>
+        <PieChart data={data} categoryKey={categoryKey} dataKey={dataKey} {...restArgs} />
+      </Card>
+    );
+  },
 };
 
 export const ResponsiveDemo: Story = {
@@ -407,6 +419,7 @@ export const ResponsiveDemo: Story = {
     cornerRadius: 8,
   },
   render: (args: any) => {
+    const { data, categoryKey, dataKey, ...restArgs } = args;
     const [dimensions, setDimensions] = useState<{ width: number; height: number | string }>({
       width: 700,
       height: "auto",
@@ -490,7 +503,7 @@ export const ResponsiveDemo: Story = {
             cursor: "default",
           }}
         >
-          <PieChart {...args} />
+          <PieChart data={data} categoryKey={categoryKey} dataKey={dataKey} {...restArgs} />
 
           {/* Resize Handles */}
           <div

@@ -186,7 +186,7 @@ const exampleData = [
 - **vivid**: High-contrast colors (accessibility, clarity)
 `,
       control: "select",
-      options: ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid"],
+      options: ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid", "iq"],
       table: {
         defaultValue: { summary: "ocean" },
         category: "🎨 Visual Styling",
@@ -573,7 +573,7 @@ export const ThemeShowcase: Story = {
         width: "900px",
       }}
     >
-      {(["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid"] as const).map((theme) => (
+      {(["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid", "iq"] as const).map((theme) => (
         <div key={theme}>
           <h4
             style={{

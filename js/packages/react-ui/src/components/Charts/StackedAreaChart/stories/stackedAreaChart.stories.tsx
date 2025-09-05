@@ -55,7 +55,7 @@ const meta: Meta<StackedAreaChartProps<typeof stackedAreaChartData>> = {
       description:
         "The color palette theme for the chart. Each theme provides a different set of colors for the areas.",
       control: "select",
-      options: ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid"],
+      options: ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid", "iq"],
       table: {
         defaultValue: { summary: "ocean" },
         category: "Appearance",
@@ -175,11 +175,16 @@ export const StackedAreaChartStory: Story = {
     isAnimationActive: true,
     showYAxis: false,
   },
-  render: (args) => (
-    <Card style={{ width: "500px" }}>
-      <StackedAreaChart {...args} />
-    </Card>
-  ),
+  render: (args) => {
+    // Destructure required props to ensure they're passed correctly
+    const { data, categoryKey, ...restArgs } = args;
+    
+    return (
+      <Card style={{ width: "500px" }}>
+        <StackedAreaChart data={data} categoryKey={categoryKey} {...restArgs} />
+      </Card>
+    );
+  },
   parameters: {
     docs: {
       source: {
@@ -217,11 +222,16 @@ export const StackedAreaChartStoryWithIcons: Story = {
     ...StackedAreaChartStory.args,
     icons: icons,
   },
-  render: (args) => (
-    <Card style={{ width: "500px" }}>
-      <StackedAreaChart {...args} />
-    </Card>
-  ),
+  render: (args) => {
+    // Destructure required props to ensure they're passed correctly
+    const { data, categoryKey, ...restArgs } = args;
+    
+    return (
+      <Card style={{ width: "500px" }}>
+        <StackedAreaChart data={data} categoryKey={categoryKey} {...restArgs} />
+      </Card>
+    );
+  },
   parameters: {
     docs: {
       source: {
@@ -270,11 +280,16 @@ export const StackedAreaChartStoryWithYAxis: Story = {
     xAxisLabel: "Time Period",
     yAxisLabel: "Number of Users",
   },
-  render: (args) => (
-    <Card style={{ width: "500px" }}>
-      <StackedAreaChart {...args} />
-    </Card>
-  ),
+  render: (args) => {
+    // Destructure required props to ensure they're passed correctly
+    const { data, categoryKey, ...restArgs } = args;
+    
+    return (
+      <Card style={{ width: "500px" }}>
+        <StackedAreaChart data={data} categoryKey={categoryKey} {...restArgs} />
+      </Card>
+    );
+  },
   parameters: {
     docs: {
       source: {
@@ -315,28 +330,33 @@ export const StackedAreaChartStoryWithThemes: Story = {
     ...StackedAreaChartStory.args,
     theme: "vivid",
   },
-  render: (args) => (
-    <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-      <Card style={{ width: "500px" }}>
-        <StackedAreaChart {...args} theme="ocean" />
-      </Card>
-      <Card style={{ width: "500px" }}>
-        <StackedAreaChart {...args} theme="orchid" />
-      </Card>
-      <Card style={{ width: "500px" }}>
-        <StackedAreaChart {...args} theme="emerald" />
-      </Card>
-      <Card style={{ width: "500px" }}>
-        <StackedAreaChart {...args} theme="sunset" />
-      </Card>
-      <Card style={{ width: "500px" }}>
-        <StackedAreaChart {...args} theme="spectrum" />
-      </Card>
-      <Card style={{ width: "500px" }}>
-        <StackedAreaChart {...args} theme="vivid" />
-      </Card>
-    </div>
-  ),
+  render: (args) => {
+    // Destructure required props to ensure they're passed correctly
+    const { data, categoryKey, ...restArgs } = args;
+    
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+        <Card style={{ width: "500px" }}>
+          <StackedAreaChart data={data} categoryKey={categoryKey} {...restArgs} theme="ocean" />
+        </Card>
+        <Card style={{ width: "500px" }}>
+          <StackedAreaChart data={data} categoryKey={categoryKey} {...restArgs} theme="orchid" />
+        </Card>
+        <Card style={{ width: "500px" }}>
+          <StackedAreaChart data={data} categoryKey={categoryKey} {...restArgs} theme="emerald" />
+        </Card>
+        <Card style={{ width: "500px" }}>
+          <StackedAreaChart data={data} categoryKey={categoryKey} {...restArgs} theme="sunset" />
+        </Card>
+        <Card style={{ width: "500px" }}>
+          <StackedAreaChart data={data} categoryKey={categoryKey} {...restArgs} theme="spectrum" />
+        </Card>
+        <Card style={{ width: "500px" }}>
+          <StackedAreaChart data={data} categoryKey={categoryKey} {...restArgs} theme="vivid" />
+        </Card>
+      </div>
+    );
+  },
   parameters: {
     docs: {
       source: {
@@ -352,22 +372,22 @@ const stackedAreaChartData = [
 
 <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
   <Card style={{ width: "500px" }}>
-    <StackedAreaChart {...args} theme="ocean" />
+    <StackedAreaChart data={stackedAreaChartData} categoryKey="month" theme="ocean" />
   </Card>
   <Card style={{ width: "500px" }}>
-    <StackedAreaChart {...args} theme="orchid" />
+    <StackedAreaChart data={stackedAreaChartData} categoryKey="month" theme="orchid" />
   </Card>
   <Card style={{ width: "500px" }}>
-    <StackedAreaChart {...args} theme="emerald" />
+    <StackedAreaChart data={stackedAreaChartData} categoryKey="month" theme="emerald" />
   </Card>
   <Card style={{ width: "500px" }}>
-    <StackedAreaChart {...args} theme="sunset" />
+    <StackedAreaChart data={stackedAreaChartData} categoryKey="month" theme="sunset" />
   </Card>
   <Card style={{ width: "500px" }}>
-    <StackedAreaChart {...args} theme="spectrum" />
+    <StackedAreaChart data={stackedAreaChartData} categoryKey="month" theme="spectrum" />
   </Card>
   <Card style={{ width: "500px" }}>
-    <StackedAreaChart {...args} theme="vivid" />
+    <StackedAreaChart data={stackedAreaChartData} categoryKey="month" theme="vivid" />
   </Card>
 </div>`,
       },

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Chart } from 'react-google-charts';
-import { getPalette } from '../utils/PalletUtils';
+import { getPalette, PaletteName } from '../utils/PalletUtils';
 
 export type HistogramProps = {
   data: any;
@@ -11,7 +11,7 @@ export type HistogramProps = {
     position: string;
     alignment: string;
   };
-  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid";
+  theme?: PaletteName;
   colors?: string[];
   backgroundColor?: string;
   hAxis?: { title: string };

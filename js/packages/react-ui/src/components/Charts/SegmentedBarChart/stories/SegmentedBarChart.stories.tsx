@@ -71,7 +71,7 @@ The component automatically calculates the percentage width for each segment bas
 - **vivid**: High-contrast colors
 `,
       control: "select",
-      options: ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid"],
+      options: ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid", "iq"],
       table: {
         defaultValue: { summary: "ocean" },
         category: "🎨 Visual Styling",

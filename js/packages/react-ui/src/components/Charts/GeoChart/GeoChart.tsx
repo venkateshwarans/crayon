@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Chart as GoogleGeoChart } from "react-google-charts";
-import { getPalette } from '../utils/PalletUtils';
+import { getPalette, PaletteName } from '../utils/PalletUtils';
 
 export type GeoChartProps = {
   data: any;
@@ -12,7 +12,7 @@ export type GeoChartProps = {
   datalessRegionColor?: string;
   defaultColor?: string;
   legend?: string;
-  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid";
+  theme?: PaletteName;
 }
 
 export const GeoChart: FC<GeoChartProps> = ({

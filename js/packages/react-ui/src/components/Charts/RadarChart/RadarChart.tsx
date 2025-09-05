@@ -6,7 +6,7 @@ import { SideBarTooltipProvider } from "../context/SideBarTooltipContext";
 import { useTransformedKeys } from "../hooks/useTransformKey";
 import { ActiveDot, CustomTooltipContent, DefaultLegend } from "../shared";
 import { LegendItem } from "../types";
-import { useChartPalette } from "../utils/PalletUtils";
+import { PaletteName, useChartPalette } from "../utils/PalletUtils";
 import { get2dChartConfig, getDataKeys, getLegendItems } from "../utils/dataUtils";
 import { AxisLabel } from "./components/AxisLabel";
 import { RadarChartData } from "./types";
@@ -17,7 +17,7 @@ const MAX_CHART_SIZE = 296;
 export interface RadarChartProps<T extends RadarChartData> {
   data: T;
   categoryKey: keyof T[number];
-  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid";
+  theme?: PaletteName;
   customPalette?: string[];
   variant?: "line" | "area";
   grid?: boolean;

@@ -572,7 +572,7 @@ const salesData = [
       description:
         "Specifies the color palette for the chart's lines, tooltips, and legend. Ignored when customPalette is provided.",
       control: "select",
-      options: ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid"],
+      options: ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid", "iq"],
       table: {
         defaultValue: { summary: "ocean" },
         category: "🎨 Visual Styling",

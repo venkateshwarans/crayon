@@ -1,6 +1,6 @@
 import React from "react";
 import { Chart } from "react-google-charts";
-import { getPalette } from "../utils/PalletUtils";
+import { getPalette, PaletteName } from "../utils/PalletUtils";
 
 export type ComboChartProps = {
   data: any;
@@ -14,7 +14,7 @@ export type ComboChartProps = {
     position: string;
     alignment: string;
   };
-  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid";
+  theme?: PaletteName;
   backgroundColor?: string;
   bar?: { groupWidth: string };
   annotations?: {

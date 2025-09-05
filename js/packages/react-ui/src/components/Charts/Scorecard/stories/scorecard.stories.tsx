@@ -110,7 +110,7 @@ const meta: Meta<ScorecardProps> = {
     theme: {
       description: "Color theme for the scorecard",
       control: "select",
-      options: ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid"],
+      options: ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid", "iq"],
       table: {
         type: { summary: "string" },
         defaultValue: { summary: "ocean" },

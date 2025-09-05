@@ -55,7 +55,7 @@ const meta: Meta<StackedColumnChartProps<typeof stackedColumnChartData>> = {
       description:
         "The color palette theme for the chart. Each theme provides a different set of colors for the columns.",
       control: "select",
-      options: ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid"],
+      options: ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid", "iq"],
       table: {
         defaultValue: { summary: "ocean" },
         category: "Appearance",
@@ -163,13 +163,22 @@ export const StackedColumnChartStory: Story = {
     isAnimationActive: true,
     showYAxis: false,
   },
-  render: (args) => (
-    <Card style={{ width: "600px", maxWidth: "100%", height: "auto", minHeight: "300px" }}>
-      <div style={{ width: "100%", height: "100%" }}>
-        <StackedColumnChart {...args} />
-      </div>
-    </Card>
-  ),
+  render: (args) => {
+    // Destructure required props to ensure they're passed correctly
+    const { data, categoryKey, ...restArgs } = args;
+    
+    return (
+      <Card style={{ width: "600px", maxWidth: "100%", height: "auto", minHeight: "300px" }}>
+        <div style={{ width: "100%", height: "100%" }}>
+          <StackedColumnChart 
+            data={data}
+            categoryKey={categoryKey}
+            {...restArgs}
+          />
+        </div>
+      </Card>
+    );
+  },
   parameters: {
     docs: {
       source: {
@@ -208,13 +217,22 @@ export const StackedColumnChartStoryWithIcons: Story = {
     ...StackedColumnChartStory.args,
     icons: icons,
   },
-  render: (args) => (
-    <Card style={{ width: "600px", maxWidth: "100%", height: "auto", minHeight: "300px" }}>
-      <div style={{ width: "100%", height: "100%" }}>
-        <StackedColumnChart {...args} />
-      </div>
-    </Card>
-  ),
+  render: (args) => {
+    // Destructure required props to ensure they're passed correctly
+    const { data, categoryKey, ...restArgs } = args;
+    
+    return (
+      <Card style={{ width: "600px", maxWidth: "100%", height: "auto", minHeight: "300px" }}>
+        <div style={{ width: "100%", height: "100%" }}>
+          <StackedColumnChart 
+            data={stackedColumnChartData}
+            categoryKey="month"
+            {...restArgs}
+          />
+        </div>
+      </Card>
+    );
+  },
   parameters: {
     docs: {
       source: {
@@ -264,13 +282,22 @@ export const StackedColumnChartStoryWithYAxis: Story = {
     xAxisLabel: "Time Period",
     yAxisLabel: "Number of Users",
   },
-  render: (args) => (
-    <Card style={{ width: "600px", maxWidth: "100%", height: "auto", minHeight: "300px" }}>
-      <div style={{ width: "100%", height: "100%" }}>
-        <StackedColumnChart {...args} />
-      </div>
-    </Card>
-  ),
+  render: (args) => {
+    // Destructure required props to ensure they're passed correctly
+    const { data, categoryKey, ...restArgs } = args;
+    
+    return (
+      <Card style={{ width: "600px", maxWidth: "100%", height: "auto", minHeight: "300px" }}>
+        <div style={{ width: "100%", height: "100%" }}>
+          <StackedColumnChart 
+            data={stackedColumnChartData}
+            categoryKey="month"
+            {...restArgs}
+          />
+        </div>
+      </Card>
+    );
+  },
   parameters: {
     docs: {
       source: {
@@ -312,36 +339,96 @@ export const StackedColumnChartStoryWithThemes: Story = {
     ...StackedColumnChartStory.args,
     theme: "vivid",
   },
-  render: (args) => (
+  render: () => (
     <div style={{ display: "flex", flexDirection: "column", gap: "20px", width: "100%" }}>
       <Card style={{ width: "600px", maxWidth: "100%", height: "auto", minHeight: "300px" }}>
         <div style={{ width: "100%", height: "100%" }}>
-          <StackedColumnChart {...args} theme="ocean" />
+          <StackedColumnChart 
+            data={stackedColumnChartData} 
+            categoryKey="month" 
+            theme="ocean" 
+            radius={4}
+            grid={true}
+            label={true}
+            legend={true}
+            isAnimationActive={true}
+            showYAxis={false}
+          />
         </div>
       </Card>
       <Card style={{ width: "600px", maxWidth: "100%", height: "auto", minHeight: "300px" }}>
         <div style={{ width: "100%", height: "100%" }}>
-          <StackedColumnChart {...args} theme="orchid" />
+          <StackedColumnChart 
+            data={stackedColumnChartData} 
+            categoryKey="month" 
+            theme="orchid" 
+            radius={4}
+            grid={true}
+            label={true}
+            legend={true}
+            isAnimationActive={true}
+            showYAxis={false}
+          />
         </div>
       </Card>
       <Card style={{ width: "600px", maxWidth: "100%", height: "auto", minHeight: "300px" }}>
         <div style={{ width: "100%", height: "100%" }}>
-          <StackedColumnChart {...args} theme="emerald" />
+          <StackedColumnChart 
+            data={stackedColumnChartData} 
+            categoryKey="month" 
+            theme="emerald" 
+            radius={4}
+            grid={true}
+            label={true}
+            legend={true}
+            isAnimationActive={true}
+            showYAxis={false}
+          />
         </div>
       </Card>
       <Card style={{ width: "600px", maxWidth: "100%", height: "auto", minHeight: "300px" }}>
         <div style={{ width: "100%", height: "100%" }}>
-          <StackedColumnChart {...args} theme="sunset" />
+          <StackedColumnChart 
+            data={stackedColumnChartData} 
+            categoryKey="month" 
+            theme="sunset" 
+            radius={4}
+            grid={true}
+            label={true}
+            legend={true}
+            isAnimationActive={true}
+            showYAxis={false}
+          />
         </div>
       </Card>
       <Card style={{ width: "600px", maxWidth: "100%", height: "auto", minHeight: "300px" }}>
         <div style={{ width: "100%", height: "100%" }}>
-          <StackedColumnChart {...args} theme="spectrum" />
+          <StackedColumnChart 
+            data={stackedColumnChartData} 
+            categoryKey="month" 
+            theme="spectrum" 
+            radius={4}
+            grid={true}
+            label={true}
+            legend={true}
+            isAnimationActive={true}
+            showYAxis={false}
+          />
         </div>
       </Card>
       <Card style={{ width: "600px", maxWidth: "100%", height: "auto", minHeight: "300px" }}>
         <div style={{ width: "100%", height: "100%" }}>
-          <StackedColumnChart {...args} theme="vivid" />
+          <StackedColumnChart 
+            data={stackedColumnChartData} 
+            categoryKey="month" 
+            theme="vivid" 
+            radius={4}
+            grid={true}
+            label={true}
+            legend={true}
+            isAnimationActive={true}
+            showYAxis={false}
+          />
         </div>
       </Card>
     </div>
@@ -362,32 +449,92 @@ const stackedColumnChartData = [
 <div style={{ display: "flex", flexDirection: "column", gap: "20px", width: "100%" }}>
   <Card style={{ width: "600px", maxWidth: "100%", height: "auto", minHeight: "300px" }}>
     <div style={{ width: "100%", height: "100%" }}>
-      <StackedColumnChart {...args} theme="ocean" />
+      <StackedColumnChart 
+        data={stackedColumnChartData} 
+        categoryKey="month" 
+        theme="ocean" 
+        radius={4}
+        grid={true}
+        label={true}
+        legend={true}
+        isAnimationActive={true}
+        showYAxis={false}
+      />
     </div>
   </Card>
   <Card style={{ width: "600px", maxWidth: "100%", height: "auto", minHeight: "300px" }}>
     <div style={{ width: "100%", height: "100%" }}>
-      <StackedColumnChart {...args} theme="orchid" />
+      <StackedColumnChart 
+        data={stackedColumnChartData} 
+        categoryKey="month" 
+        theme="orchid" 
+        radius={4}
+        grid={true}
+        label={true}
+        legend={true}
+        isAnimationActive={true}
+        showYAxis={false}
+      />
     </div>
   </Card>
   <Card style={{ width: "600px", maxWidth: "100%", height: "auto", minHeight: "300px" }}>
     <div style={{ width: "100%", height: "100%" }}>
-      <StackedColumnChart {...args} theme="emerald" />
+      <StackedColumnChart 
+        data={stackedColumnChartData} 
+        categoryKey="month" 
+        theme="emerald" 
+        radius={4}
+        grid={true}
+        label={true}
+        legend={true}
+        isAnimationActive={true}
+        showYAxis={false}
+      />
     </div>
   </Card>
   <Card style={{ width: "600px", maxWidth: "100%", height: "auto", minHeight: "300px" }}>
     <div style={{ width: "100%", height: "100%" }}>
-      <StackedColumnChart {...args} theme="sunset" />
+      <StackedColumnChart 
+        data={stackedColumnChartData} 
+        categoryKey="month" 
+        theme="sunset" 
+        radius={4}
+        grid={true}
+        label={true}
+        legend={true}
+        isAnimationActive={true}
+        showYAxis={false}
+      />
     </div>
   </Card>
   <Card style={{ width: "600px", maxWidth: "100%", height: "auto", minHeight: "300px" }}>
     <div style={{ width: "100%", height: "100%" }}>
-      <StackedColumnChart {...args} theme="spectrum" />
+      <StackedColumnChart 
+        data={stackedColumnChartData} 
+        categoryKey="month" 
+        theme="spectrum" 
+        radius={4}
+        grid={true}
+        label={true}
+        legend={true}
+        isAnimationActive={true}
+        showYAxis={false}
+      />
     </div>
   </Card>
   <Card style={{ width: "600px", maxWidth: "100%", height: "auto", minHeight: "300px" }}>
     <div style={{ width: "100%", height: "100%" }}>
-      <StackedColumnChart {...args} theme="vivid" />
+      <StackedColumnChart 
+        data={stackedColumnChartData} 
+        categoryKey="month" 
+        theme="vivid" 
+        radius={4}
+        grid={true}
+        label={true}
+        legend={true}
+        isAnimationActive={true}
+        showYAxis={false}
+      />
     </div>
   </Card>
 </div>`,
