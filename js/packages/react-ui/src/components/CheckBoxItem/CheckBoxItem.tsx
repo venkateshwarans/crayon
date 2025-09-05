@@ -1,11 +1,11 @@
 import * as Checkbox from "@radix-ui/react-checkbox";
 import clsx from "clsx";
-import { Check } from "lucide-react";
 import { CSSProperties, forwardRef, ReactNode } from "react";
 import { useId } from "../../polyfills";
 
 export interface CheckBoxItemProps {
   label?: ReactNode;
+  description?: ReactNode;
   className?: string;
   style?: CSSProperties;
   checked?: boolean;
@@ -18,7 +18,7 @@ export interface CheckBoxItemProps {
 }
 
 const CheckBoxItem = forwardRef<HTMLButtonElement, CheckBoxItemProps>((props, ref) => {
-  const { label, onChange, className, disabled, required, ...rest } = props;
+  const { label, description, onChange, className, disabled, required, ...rest } = props;
   const id = useId();
   return (
     <div className="crayon-checkbox-item-container">
@@ -32,14 +32,31 @@ const CheckBoxItem = forwardRef<HTMLButtonElement, CheckBoxItemProps>((props, re
         required={required}
       >
         <Checkbox.Indicator className="crayon-checkbox-item-indicator">
-          <Check size={11} />
+          <svg
+            width="10"
+            height="8"
+            viewBox="0 0 10 8"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9 1L3.5 6.5L1 4"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
         </Checkbox.Indicator>
       </Checkbox.Root>
-      {label && (
-        <label htmlFor={id} className="crayon-checkbox-item-label">
-          {label}
-        </label>
-      )}
+      <div className="crayon-checkbox-item-content">
+        {label && (
+          <label htmlFor={id} className="crayon-checkbox-item-label">
+            {label}
+          </label>
+        )}
+        {description && <p className="crayon-checkbox-item-description">{description}</p>}
+      </div>
     </div>
   );
 });

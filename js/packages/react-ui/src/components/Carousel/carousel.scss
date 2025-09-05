@@ -33,10 +33,10 @@
     @include cssUtils.typography(body, default);
     display: flex;
     flex-direction: column;
-    gap: cssUtils.$spacing-s;
-    min-width: 200px;
-    max-width: 200px;
-    border-radius: cssUtils.$rounded-m;
+    gap: cssUtils.$spacing-m;
+    min-width: 280px;
+    max-width: 280px;
+    border-radius: cssUtils.$rounded-2xl;
     background-color: cssUtils.$bg-container;
     padding: cssUtils.$spacing-m;
     border: 1px solid cssUtils.$stroke-default;
@@ -47,13 +47,24 @@
     top: 50%;
     z-index: 10;
     transform: translateY(-50%);
+    background: cssUtils.$bg-container;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: cssUtils.$rounded-s;
 
     &-left {
-      left: 0;
+      left: -12px;
     }
 
     &-right {
-      right: 0;
+      right: -12px;
+    }
+  }
+  @media (max-width: 400px) {
+    .crayon-carousel-item {
+      min-width: 248px;
+      max-width: 248px;
     }
   }
 }

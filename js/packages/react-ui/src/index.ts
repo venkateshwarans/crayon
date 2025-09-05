@@ -28,6 +28,7 @@ export * from "./components/MessageLoading";
 export * from "./components/RadioGroup";
 export * from "./components/RadioItem";
 export * from "./components/Select";
+export * from "./components/Separator";
 export * as Shell from "./components/Shell";
 export * from "./components/Slider";
 export * from "./components/Steps";
@@ -38,6 +39,7 @@ export * from "./components/Tabs";
 export * from "./components/Tag";
 export * from "./components/TagBlock";
 export * from "./components/TextArea";
+export * from "./components/TextCallout";
 export * from "./components/TextContent";
 export { Theme, ThemeProvider, themePresets } from "./components/ThemeProvider";
 

@@ -3,6 +3,7 @@ import { uniqueId } from "lodash-es";
 import { ComponentProps, createContext, forwardRef, useContext, useMemo } from "react";
 import * as RechartsPrimitive from "recharts";
 import { useId } from "../../polyfills";
+import { useTheme } from "../ThemeProvider";
 
 /**
  * @module Charts
@@ -23,9 +24,20 @@ export type ChartConfig = {
   [k in string]: {
     label?: React.ReactNode;
     icon?: React.ComponentType;
+    transformed?: string;
   } & (
-    | { color?: string; theme?: never }
-    | { color?: never; theme: Record<keyof typeof THEMES, string> }
+    | { color?: string; secondaryColor?: string; theme?: never }
+    | {
+        color?: never;
+        theme: Record<
+          keyof typeof THEMES,
+          | string
+          | {
+              color: string;
+              secondaryColor?: string;
+            }
+        >;
+      }
   );
 };
 
@@ -34,6 +46,7 @@ export type ChartConfig = {
  */
 type ChartContextProps = {
   config: ChartConfig;
+  id: string;
 };
 
 const ChartContext = createContext<ChartContextProps | null>(null);
@@ -50,10 +63,6 @@ function useChart() {
   }
 
   return context;
-}
-
-export function keyTransform(key: string) {
-  return key.replaceAll(/\s/g, "-").replaceAll("%", "__per__");
 }
 
 /**
@@ -74,11 +83,24 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
             ([theme, prefix]) => `
     ${prefix} [data-chart=${id}] {
     ${colorConfig
-      .map(([key, itemConfig]) => {
-        const transformedKey = keyTransform(key);
+      .map(([_, itemConfig]) => {
+        const transformedKey = itemConfig.transformed;
+        const themeValue = itemConfig.theme?.[theme as keyof typeof itemConfig.theme];
         const color =
-          itemConfig.theme?.[theme as keyof typeof itemConfig.theme] || itemConfig.color;
-        return color ? `  --color-${transformedKey}: ${color};` : null;
+          typeof themeValue === "string" ? themeValue : themeValue?.color || itemConfig.color;
+        const secondaryColor =
+          typeof themeValue === "object"
+            ? themeValue?.secondaryColor
+            : "secondaryColor" in itemConfig
+              ? itemConfig.secondaryColor
+              : undefined;
+
+        return [
+          color ? `  --color-${transformedKey}: ${color};` : null,
+          secondaryColor ? `  --color-${transformedKey}-secondary: ${secondaryColor};` : null,
+        ]
+          .filter(Boolean)
+          .join("\n");
       })
       .filter(Boolean)
       .join("\n")}
@@ -99,21 +121,35 @@ const ChartContainer = forwardRef<
   ComponentProps<"div"> & {
     config: ChartConfig;
     children: React.ComponentProps<typeof RechartsPrimitive.ResponsiveContainer>["children"];
+    rechartsProps?: Omit<
+      React.ComponentProps<typeof RechartsPrimitive.ResponsiveContainer>,
+      "children"
+    >;
   }
->(({ id, className, children, config, ...props }, ref) => {
+>(({ id, className, children, config, rechartsProps, style, ...props }, ref) => {
   const uniqueId = useId();
-  const chartId = `chart-${id || uniqueId.replace(/:/g, "")}`;
+  const chartId = `crayon-chart-${id || uniqueId.replace(/:/g, "")}`;
+  const { theme } = useTheme();
 
   return (
-    <ChartContext.Provider value={{ config }}>
+    <ChartContext.Provider value={{ config, id: chartId }}>
       <div
         data-chart={chartId}
         ref={ref}
         className={clsx("crayon-chart-container", className)}
+        style={
+          {
+            "--crayon-container-fills": theme.containerFills,
+            "--crayon-primary-text": theme.primaryText,
+            ...style,
+          } as React.CSSProperties
+        }
         {...props}
       >
         <ChartStyle id={chartId} config={config} />
-        <RechartsPrimitive.ResponsiveContainer>{children}</RechartsPrimitive.ResponsiveContainer>
+        <RechartsPrimitive.ResponsiveContainer {...rechartsProps}>
+          {children}
+        </RechartsPrimitive.ResponsiveContainer>
       </div>
     </ChartContext.Provider>
   );
@@ -268,6 +304,9 @@ const ChartTooltipContent = forwardRef<
 );
 ChartTooltipContent.displayName = "ChartTooltip";
 
+// this is not used any more, in the new chart, we are using the default legend which is rendered outside the charts container,
+// older charts are still using this legend.
+
 /**
  * Re-exported Legend component from Recharts
  */
@@ -362,4 +401,6 @@ export {
   ChartStyle,
   ChartTooltip,
   ChartTooltipContent,
+  getPayloadConfigFromPayload,
+  useChart,
 };

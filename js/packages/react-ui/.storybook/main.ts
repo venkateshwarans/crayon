@@ -31,7 +31,10 @@ const config: StorybookConfig = {
   `,
   viteFinal: async (config) => {
     return mergeConfig(config, {
-      base: "/",
+      server: {
+        allowedHosts: [".trycloudflare.com", "127.0.0.1", "localhost"],
+      },
+      base: "/ui/",
       resolve: {
         alias: {
           "@crayonai/react-core": path.resolve(__dirname, "../../react-core/src/index.ts"),
