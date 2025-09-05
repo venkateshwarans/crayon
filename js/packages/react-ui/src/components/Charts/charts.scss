@@ -152,12 +152,12 @@
         font-variant-numeric: tabular-nums;
         color: cssUtils.$primary-text;
         @include cssUtils.typography(label, default);
+        margin-left: 4px;
+        font-weight: 800;
 
         &--percentage {
           padding-left: cssUtils.$spacing-s;
         }
-        margin-left: 4px;
-        font-weight: 800;
       }
     }
   }
