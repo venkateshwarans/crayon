@@ -2,6 +2,12 @@ import clsx from "clsx";
 import { memo } from "react";
 import ReactMarkdown, { Components, type Options } from "react-markdown";
 import { oneLight, vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
+import rehypeKatex from "rehype-katex";
+import remarkBreaks from "remark-breaks";
+import remarkEmoji from "remark-emoji";
+import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
+import "katex/dist/katex.min.css";
 import { CodeBlock } from "../CodeBlock";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../Table";
 import { useTheme } from "../ThemeProvider";
@@ -59,9 +65,21 @@ export const MarkDownRenderer = memo((props: MarkDownRendererProps) => {
     td: TableCell,
   };
 
+  // Create a properly typed configuration for markdown rendering
   const markdownProps = {
     ...props.options,
     components: { ...components, ...props.options?.components },
+    // Apply all remark plugins for enhanced markdown features
+    remarkPlugins: [
+      ...(props.options?.remarkPlugins || []),
+      remarkGfm,
+      remarkMath,
+      remarkEmoji,
+      // Apply remarkBreaks with options
+      remarkBreaks
+    ],
+    // Apply KaTeX for math rendering
+    rehypePlugins: [...(props.options?.rehypePlugins || []), rehypeKatex],
   };
 
   return (

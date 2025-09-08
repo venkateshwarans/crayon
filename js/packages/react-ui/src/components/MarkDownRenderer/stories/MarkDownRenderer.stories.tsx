@@ -141,6 +141,34 @@ $$
 \\frac{1}{\\Bigl(\\sqrt{\\phi \\sqrt{5}}-\\phi\\Bigr) e^{\\frac25 \\pi}} = 1+\\frac{e^{-2\\pi}} {1+\\frac{e^{-4\\pi}} {1+\\frac{e^{-6\\pi}} {1+\\frac{e^{-8\\pi}} {1+\\ldots} } } }
 $$
 
+
+Inline Math (single dollar): $ L = \\frac{1}{2} \\rho v^2 S C_L $
+
+
+Block Math: (Double $ symbol)
+
+$$
+L = \\frac{1}{2} \\rho v^2 S C_L
+$$
+
+
+$ \\frac{9,696,695.81}{109,353,384.49} \\times 100 \\% = 8.87\\% $
+
+# Average Spending: (using $$)
+
+$$
+\\text{Average Spending} = \\frac{\\text{Total Gross Sales}}{\\text{Number of New Customers}} = \\frac{30,412,532.16}{221,146} \\approx 137.54
+$$
+
+Block Math: (using \`\`\`math)
+
+\`\`\`math
+\\text{Average Spending} = \\frac{\\text{Total Gross Sales}}{\\text{Number of New Customers}} = \\frac{30,412,532.16}{221,146} \\approx 137.54
+\`\`\`
+
+
+
+
 ## Tables
 
 | Header 1 | Header 2 | Header 3 |
@@ -151,6 +179,62 @@ $$
 ## Emojis
 
 :smile: :heart:
+
+"Here is a table chart representing the top-selling products based on total quantity sold:
+
+| Product Name                           | Total Quantity Sold |
+|----------------------------------------|---------------------|
+| 10% CashBack                           | 1,003,263           |
+| AirTag Cash Strap                      | 277,768             |
+| Ridge Wallet - Gunmetal: Cash Strap    | 262,369             |
+| Ridge Wallet - Gunmetal: Money Clip    | 239,426             |
+| Ridge Wallet - Royal Black: Cash Strap | 230,697             |
+| Ridge Wallet - Carbon Fiber 3K: Cash Strap | 194,810         |
+| Ridge Wallet - Royal Black: Money Clip | 191,437             |
+| Ridge Wallet - Carbon Fiber 3K: Money Clip | 177,318         |
+| Ridge Wallet - Alpine Navy: Cash Strap | 165,729             |
+| Ridge Mystery Crate                    | 152,548             |
+
+This table provides a clear and straightforward view of the sales figures for each product."
+
+
+
+"Here is a table chart representing the top-selling products based on total quantity sold:
+
+| Product Name                           | Total Quantity Sold |
+|----------------------------------------|---------------------|
+| 10% CashBack                           | 1,003,263           |
+| AirTag Cash Strap                      | 277,768             |
+| Ridge Wallet - Gunmetal: Cash Strap    | 262,369             |
+| Ridge Wallet - Gunmetal: Money Clip    | 239,426             |
+| Ridge Wallet - Royal Black: Cash Strap | 230,697             |
+| Ridge Wallet - Carbon Fiber 3K: Cash Strap | 194,810         |
+| Ridge Wallet - Royal Black: Money Clip | 191,437             |
+| Ridge Wallet - Carbon Fiber 3K: Money Clip | 177,318         |
+| Ridge Wallet - Alpine Navy: Cash Strap | 165,729             |
+| Ridge Mystery Crate                    | 152,548             |
+
+This table provides a clear and straightforward view of the sales figures for each product."
+
+
+"Here is a table chart representing the top-selling products based on total quantity sold:
+
+| Product Name                           | Total Quantity Sold |
+|----------------------------------------|---------------------|
+| 10% CashBack                           | 1,003,263           |
+| AirTag Cash Strap                      | 277,768             |
+| Ridge Wallet - Gunmetal: Cash Strap    | 262,369             |
+| Ridge Wallet - Gunmetal: Money Clip    | 239,426             |
+| Ridge Wallet - Royal Black: Cash Strap | 230,697             |
+| Ridge Wallet - Carbon Fiber 3K: Cash Strap | 194,810         |
+| Ridge Wallet - Royal Black: Money Clip | 191,437             |
+| Ridge Wallet - Carbon Fiber 3K: Money Clip | 177,318         |
+| Ridge Wallet - Alpine Navy: Cash Strap | 165,729             |
+| Ridge Mystery Crate                    | 152,548             |
+
+This table provides a clear and straightforward view of the sales figures for each product."
+
+
 `,
   },
   parameters: {
