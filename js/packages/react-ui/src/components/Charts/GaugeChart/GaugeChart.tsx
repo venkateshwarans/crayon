@@ -2,7 +2,7 @@ import React from "react";
 import { PieChart as RechartsPieChart, Pie, Cell, Sector, Tooltip, ResponsiveContainer } from "recharts";
 import { useLayoutContext } from "../../../context/LayoutContext";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "../Charts";
-import { getPalette } from "../utils/PalletUtils";
+import { getPalette, PaletteName } from "../utils/PalletUtils";
 
 export interface GaugeChartProps {
   /**
@@ -24,7 +24,7 @@ export interface GaugeChartProps {
   /**
    * The color theme for the gauge
    */
-  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid" | "iq";
+  theme?: PaletteName;
   /**
    * Whether to animate the gauge
    */

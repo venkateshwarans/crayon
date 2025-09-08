@@ -1,6 +1,6 @@
 import React from "react";
 import { Chart } from "react-google-charts";
-import { getPalette } from "../utils/PalletUtils";
+import { getPalette, PaletteName } from "../utils/PalletUtils";
 
 export type BubbleMapChartProps = {
   data: any;
@@ -16,7 +16,7 @@ export type BubbleMapChartProps = {
       fontSize: number;
     };
   };
-  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid";
+  theme?: PaletteName;
 };
 
 export const BubbleMapChart: React.FC<BubbleMapChartProps> = ({

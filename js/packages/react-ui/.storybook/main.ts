@@ -7,7 +7,6 @@ const config: StorybookConfig = {
   addons: [
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
-    "@storybook/addon-onboarding",
     "@storybook/core-events",
     "@storybook/blocks",
   ],
@@ -31,6 +30,9 @@ const config: StorybookConfig = {
   `,
   viteFinal: async (config) => {
     return mergeConfig(config, {
+      server: {
+        allowedHosts: [".trycloudflare.com", "127.0.0.1", "localhost"],
+      },
       base: "/",
       resolve: {
         alias: {

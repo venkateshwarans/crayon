@@ -1,6 +1,6 @@
 import React from "react";
 import { Chart } from "react-google-charts";
-import { getPalette } from '../utils/PalletUtils';
+import { getPalette, PaletteName } from '../utils/PalletUtils';
 
 export type CandleStickChartProps = {
   data: any;
@@ -19,7 +19,7 @@ export type CandleStickChartProps = {
       fill: string;
     };
   };
-  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid";
+  theme?: PaletteName;
 };
 
 export const CandleStickChart: React.FC<CandleStickChartProps> = ({

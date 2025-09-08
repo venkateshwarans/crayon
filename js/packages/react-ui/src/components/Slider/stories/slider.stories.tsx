@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { Volume1Icon, Volume2Icon } from "lucide-react";
+import { useState } from "react";
 import { Slider, SliderProps } from "../Slider";
 
 const meta: Meta<SliderProps> = {
@@ -17,13 +19,13 @@ const meta: Meta<SliderProps> = {
   argTypes: {
     variant: {
       control: false,
-      options: ["continuous", "discrete", "range"],
+      options: ["continuous", "discrete"],
       description:
-        "The type of slider - continuous for smooth sliding, discrete for stepped values, or range for selecting a range",
+        "The type of slider - continuous for smooth sliding, or discrete for stepped values. Range functionality is enabled by passing an array with multiple values to `value` or `defaultValue`.",
       defaultValue: "continuous",
       table: {
         category: "Appearance",
-        type: { summary: "'continuous' | 'discrete' | 'range'" },
+        type: { summary: "'continuous' | 'discrete'" },
         required: true,
       },
     },
@@ -107,6 +109,22 @@ const meta: Meta<SliderProps> = {
         type: { summary: "React.CSSProperties" },
       },
     },
+    leftContent: {
+      control: "text",
+      description: "Content to display on the left side of the slider",
+      table: {
+        category: "Appearance",
+        type: { summary: "React.ReactNode" },
+      },
+    },
+    rightContent: {
+      control: "text",
+      description: "Content to display on the right side of the slider",
+      table: {
+        category: "Appearance",
+        type: { summary: "React.ReactNode" },
+      },
+    },
   },
 
   decorators: [
@@ -126,9 +144,7 @@ export const Continuous: Story = {
     variant: "continuous",
     min: 0,
     max: 100,
-    step: 1,
     defaultValue: [25],
-    disabled: false,
   },
   parameters: {
     docs: {
@@ -159,16 +175,97 @@ export const Discrete: Story = {
 
 export const Range: Story = {
   args: {
-    variant: "range",
+    variant: "continuous",
     min: 0,
     max: 100,
-    step: 1,
-    defaultValue: [25, 75],
+    defaultValue: [20, 80],
   },
   parameters: {
     docs: {
       description: {
         story: "A range slider allows selection of a value range using two handles.",
+      },
+    },
+  },
+};
+
+export const DiscreteRange: Story = {
+  args: {
+    variant: "discrete",
+    min: 0,
+    max: 100,
+    step: 10,
+    defaultValue: [20, 80],
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "A discrete range slider combines the features of a discrete slider and a range slider.",
+      },
+    },
+  },
+};
+
+export const Controlled: Story = {
+  render: () => {
+    const [value, setValue] = useState([50]);
+    return (
+      <Slider
+        variant="continuous"
+        min={0}
+        max={100}
+        step={1}
+        value={value}
+        onValueChange={setValue}
+        disabled={false}
+      />
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "A controlled slider where the value is managed by component state via the `value` prop.",
+      },
+    },
+  },
+  name: "Controlled (with value prop)",
+};
+
+export const UncontrolledWithoutDefault: Story = {
+  name: "Without Value or DefaultValue",
+  args: {
+    variant: "continuous",
+    min: 0,
+    max: 100,
+    step: 1,
+    disabled: false,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "A slider without an initial `value` or `defaultValue` prop. It defaults to the minimum value.",
+      },
+    },
+  },
+};
+
+export const WithIcons: Story = {
+  name: "With Icons",
+  args: {
+    variant: "continuous",
+    min: 0,
+    max: 100,
+    defaultValue: [40],
+    leftContent: <Volume1Icon />,
+    rightContent: <Volume2Icon />,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: "A slider can have icons or other content on either side.",
       },
     },
   },

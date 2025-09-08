@@ -2,12 +2,9 @@
 
 .crayon-radio-item-container {
   display: flex;
-  align-items: center;
-  gap: cssUtils.$spacing-xs;
-  padding-top: cssUtils.$spacing-3xs;
-  padding-bottom: cssUtils.$spacing-3xs;
-  padding-left: cssUtils.$spacing-0;
-  padding-right: cssUtils.$spacing-2xs;
+  align-items: flex-start;
+  gap: cssUtils.$spacing-s;
+  padding: cssUtils.$spacing-3xs cssUtils.$spacing-0;
   width: 100%;
   max-width: 100%;
   overflow: hidden;
@@ -15,12 +12,14 @@
 
 .crayon-radio-item-root {
   box-sizing: border-box;
+  flex-shrink: 0;
   border-radius: cssUtils.$rounded-full;
   border: none;
-  height: 14px;
-  width: 14px;
+  height: 16px;
+  width: 16px;
   cursor: pointer;
   background-color: transparent;
+  margin-top: cssUtils.$spacing-2xs;
 
   &[data-state] {
     // This makes the root element a styling context for children
@@ -52,7 +51,7 @@
   }
 
   .crayon-radio-item-root[data-state="checked"] & {
-    fill: cssUtils.$bg-container;
+    fill: cssUtils.$interactive-accent;
   }
 }
 
@@ -63,14 +62,14 @@
   }
 
   .crayon-radio-item-root[data-state="checked"] & {
-    stroke: cssUtils.$stroke-interactive-el-hover;
+    stroke: cssUtils.$stroke-accent;
   }
 }
 
 // Inner circle path
 .crayon-radio-item-svg-inner {
   .crayon-radio-item-root[data-state="checked"] & {
-    fill: cssUtils.$bg-brand-el;
+    fill: cssUtils.$bg-container;
   }
 
   .crayon-radio-item-root[data-state="unchecked"] & {
@@ -78,7 +77,7 @@
   }
 
   .crayon-radio-item-root[data-state="unchecked"]:hover:not(:disabled) & {
-    fill: cssUtils.$stroke-default;
+    fill: cssUtils.$stroke-interactive-el;
   }
 }
 .crayon-radio-item-label {
@@ -88,4 +87,9 @@
   &:disabled {
     color: cssUtils.$disabled-text;
   }
+}
+
+.crayon-radio-item-description {
+  @include cssUtils.typography(body, default);
+  color: cssUtils.$secondary-text;
 }

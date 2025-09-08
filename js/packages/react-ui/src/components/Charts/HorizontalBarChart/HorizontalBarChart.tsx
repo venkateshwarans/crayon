@@ -1,254 +1,491 @@
-import React from "react";
-import { Bar, LabelList, BarChart as RechartsBarChart, XAxis, YAxis } from "recharts";
-import { useLayoutContext } from "../../../context/LayoutContext";
+import clsx from "clsx";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Bar, BarChart as RechartsBarChart, XAxis, YAxis } from "recharts";
+import { useId } from "../../../polyfills";
+import { useTheme } from "../../ThemeProvider";
+import { ChartConfig, ChartContainer, ChartTooltip } from "../Charts";
+import { SideBarChartData, SideBarTooltipProvider } from "../context/SideBarTooltipContext";
+import { useTransformedKeys } from "../hooks";
+import { useHorizontalBarLabelHeight } from "../hooks/useMaxLabelHeight";
 import {
-  ChartConfig,
-  ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
-  ChartTooltip,
-  ChartTooltipContent,
-  keyTransform,
-} from "../Charts";
-import { cartesianGrid } from "../cartesianGrid";
-import { getDistributedColors, getPalette } from "../utils/PalletUtils";
+  CustomTooltipContent,
+  DefaultLegend,
+  SideBarTooltip,
+  verticalCartesianGrid,
+  YAxisTick,
+} from "../shared";
+import { ScrollButtonsVertical } from "../shared/ScrollButtonsVertical";
 
-export type HorizontalBarChartData = Array<Record<string, string | number>>;
+import { type LegendItem } from "../types/Legend";
+import { useChartPalette, type PaletteName } from "../utils/PalletUtils";
+
+import { LabelTooltipProvider } from "../shared/LabelTooltip/LabelTooltip";
+import {
+  findNearestSnapPosition,
+  getBarStackInfo,
+  getRadiusArray,
+} from "../utils/BarCharts/BarChartsUtils";
+import {
+  get2dChartConfig,
+  getColorForDataKey,
+  getDataKeys,
+  getLegendItems,
+} from "../utils/dataUtils";
+import { numberTickFormatter } from "../utils/styleUtils";
+import { CustomBarShape } from "./components/CustomBarShape";
+import { useMaxCategoryLabelWidth } from "./hooks/useMaxCategoryLabelWidth";
+import { HorizontalBarChartData, HorizontalBarChartVariant } from "./types";
+import {
+  BAR_GAP,
+  BAR_HEIGHT,
+  getHeightOfData,
+  getPadding,
+  getSnapPositions,
+} from "./utils/HorizontalBarChartUtils";
+
+// Type for onClick event
+type HorizontalBarChartOnClick = React.ComponentProps<typeof RechartsBarChart>["onClick"];
+type HorizontalBarClickData = Parameters<NonNullable<HorizontalBarChartOnClick>>[0];
 
 export interface HorizontalBarChartProps<T extends HorizontalBarChartData> {
-  /**
-   * An array of data objects where each object represents a data point.
-   * Each object should have a category field (e.g., month) and one or more numeric values for the bars.
-   */
   data: T;
-  /**
-   * The key from your data object to be used as the y-axis categories (e.g., 'month', 'year', 'date')
-   */
   categoryKey: keyof T[number];
-  /**
-   * The color palette theme for the chart. Each theme provides a different set of colors for the bars.
-   * @default "ocean"
-   */
-  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid" | "iq";
-  /**
-   * The style of the bar chart. 'grouped' shows bars side by side, while 'stacked' shows bars stacked.
-   * @default "grouped"
-   */
-  variant?: "grouped" | "stacked";
-  /**
-   * Whether to display the background grid lines in the chart
-   * @default true
-   */
+  theme?: PaletteName;
+  customPalette?: string[];
+  variant?: HorizontalBarChartVariant;
   grid?: boolean;
-  /**
-   * Whether to display data point labels at the end of each bar
-   * @default true
-   */
-  label?: boolean;
-  /**
-   * Whether to display the chart legend showing the data series names and their corresponding colors/icons
-   * @default true
-   */
-  legend?: boolean;
-  /**
-   * The radius of the rounded corners of the bars
-   * @default 4
-   */
   radius?: number;
-  /**
-   * An object that maps data keys to icon components. These icons will appear in the legend next to their corresponding data series.
-   * @default {}
-   */
   icons?: Partial<Record<keyof T[number], React.ComponentType>>;
-  /**
-   * Whether to animate the chart
-   * @default true
-   */
   isAnimationActive?: boolean;
-  /**
-   * Whether to display the x-axis
-   * @default false
-   */
   showXAxis?: boolean;
-  /**
-   * The label for the x-axis
-   */
   xAxisLabel?: React.ReactNode;
-  /**
-   * The label for the y-axis
-   */
   yAxisLabel?: React.ReactNode;
+  legend?: boolean;
+  className?: string;
+  height?: number;
+  width?: number;
 }
 
-/**
- * HorizontalBarChart component displays data horizontally to show comparisons among categories.
- * It's particularly useful when category names are long or when comparing values across multiple categories.
- */
-export const HorizontalBarChart = <T extends HorizontalBarChartData>({
+const X_AXIS_HEIGHT = 40; // Height of X-axis chart when shown
+const BAR_CATEGORY_GAP = "20%"; // Gap between categories
+const BAR_INTERNAL_LINE_WIDTH = 1;
+const BAR_RADIUS = 4;
+
+const HorizontalBarChartComponent = <T extends HorizontalBarChartData>({
   data,
   categoryKey,
   theme = "ocean",
+  customPalette,
   variant = "grouped",
   grid = true,
-  label = true,
-  legend = true,
   icons = {},
-  radius = 4,
-  isAnimationActive = true,
-  showXAxis = false,
+  radius = BAR_RADIUS,
+  isAnimationActive = false,
+  showXAxis = true,
   xAxisLabel,
   yAxisLabel,
+  legend = true,
+  className,
+  height,
+  width,
 }: HorizontalBarChartProps<T>) => {
-  // excluding the categoryKey
-  const dataKeys = Object.keys(data[0] || {}).filter((key) => key !== categoryKey);
+  const maxCategoryLabelWidth = useMaxCategoryLabelWidth(data, categoryKey as string);
 
-  const palette = getPalette(theme);
-  const colors = getDistributedColors(palette, dataKeys.length);
-  const { layout } = useLayoutContext();
+  const chartContainerRef = useRef<HTMLDivElement>(null);
+  const mainContainerRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState<number>(0);
+  const [canScrollUp, setCanScrollUp] = useState(false);
+  const [canScrollDown, setCanScrollDown] = useState(false);
+  const [hoveredCategory, setHoveredCategory] = useState<string | number | null>(null);
+  const [isLegendExpanded, setIsLegendExpanded] = useState(false);
+  const [isSideBarTooltipOpen, setIsSideBarTooltipOpen] = useState(false);
+  const [sideBarTooltipData, setSideBarTooltipData] = useState<SideBarChartData>({
+    title: "",
+    values: [],
+  });
 
-  // Create Config
-  const chartConfig: ChartConfig = dataKeys.reduce(
-    (config, key, index) => ({
-      ...config,
-      [key]: {
-        label: key,
-        icon: icons[key],
-        color: colors[index],
-      },
-    }),
-    {},
+  // Calculate chart width for internal calculations (legend, xAxis, etc.)
+  const effectiveWidth = useMemo(() => {
+    return width ?? containerWidth;
+  }, [width, containerWidth]);
+
+  // Calculate label height for better group height calculation
+  // Use chart width for label height calculation since labels span full width
+  const labelHeight = useHorizontalBarLabelHeight(data, categoryKey as string, effectiveWidth);
+
+  const dataKeys = useMemo(() => {
+    return getDataKeys(data, categoryKey as string);
+  }, [data, categoryKey]);
+
+  const transformedKeys = useTransformedKeys(dataKeys);
+
+  const colors = useChartPalette({
+    chartThemeName: theme,
+    customPalette,
+    themePaletteName: "barChartPalette",
+    dataLength: dataKeys.length,
+  });
+
+  const chartConfig: ChartConfig = useMemo(() => {
+    return get2dChartConfig(dataKeys, colors, transformedKeys, undefined, icons);
+  }, [dataKeys, icons, colors, transformedKeys]);
+
+  // Use provided height or observed height
+  const effectiveHeight = useMemo(() => {
+    return height ?? 296 + X_AXIS_HEIGHT;
+  }, [height]);
+
+  // Calculate effective container height (excluding X-axis)
+  const effectiveContainerHeight = useMemo(() => {
+    const xAxisHeight = showXAxis ? X_AXIS_HEIGHT : 0;
+    return Math.max(0, effectiveHeight - xAxisHeight);
+  }, [effectiveHeight, showXAxis]);
+
+  const padding = useMemo(() => {
+    return getPadding(data, categoryKey as string, effectiveContainerHeight, variant, labelHeight);
+  }, [data, categoryKey, effectiveContainerHeight, variant, labelHeight]);
+
+  const dataHeight = useMemo(() => {
+    return getHeightOfData(data, categoryKey as string, variant, labelHeight);
+  }, [data, categoryKey, variant, labelHeight]);
+
+  // Calculate snap positions for proper group alignment
+  const snapPositions = useMemo(() => {
+    return getSnapPositions(data, categoryKey as string, variant, labelHeight);
+  }, [data, categoryKey, variant, labelHeight]);
+
+  // Check scroll boundaries
+  const updateScrollState = useCallback(() => {
+    if (mainContainerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = mainContainerRef.current;
+      setCanScrollUp(scrollTop > 0);
+      setCanScrollDown(scrollTop < scrollHeight - clientHeight - 1);
+    }
+  }, []);
+
+  const scrollUp = useCallback(() => {
+    if (mainContainerRef.current) {
+      const currentScroll = mainContainerRef.current.scrollTop;
+      const targetIndex = findNearestSnapPosition(snapPositions, currentScroll, "up");
+      const targetPosition = snapPositions[targetIndex] ?? 0;
+
+      mainContainerRef.current.scrollTo({
+        top: targetPosition,
+        behavior: "smooth",
+      });
+    }
+  }, [snapPositions]);
+
+  const scrollDown = useCallback(() => {
+    if (mainContainerRef.current) {
+      const currentScroll = mainContainerRef.current.scrollTop;
+      const targetIndex = findNearestSnapPosition(snapPositions, currentScroll, "down");
+      const targetPosition = snapPositions[targetIndex] ?? 0;
+
+      mainContainerRef.current.scrollTo({
+        top: targetPosition,
+        behavior: "smooth",
+      });
+    }
+  }, [snapPositions]);
+
+  useEffect(() => {
+    // Set up ResizeObserver if height or width is not provided
+    if (!chartContainerRef.current) {
+      return () => {};
+    }
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        if (!width) {
+          setContainerWidth(entry.contentRect.width);
+        }
+      }
+    });
+
+    resizeObserver.observe(chartContainerRef.current);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [height, width]);
+
+  // Update scroll state when container dimensions or data height changes
+  useEffect(() => {
+    updateScrollState();
+  }, [effectiveContainerHeight, dataHeight, containerWidth, updateScrollState]);
+
+  useEffect(() => {
+    setIsSideBarTooltipOpen(false);
+    setIsLegendExpanded(false);
+  }, [dataKeys]);
+
+  // Add scroll event listener to update button states
+  useEffect(() => {
+    const mainContainer = mainContainerRef.current;
+    if (!mainContainer) return;
+
+    const handleScroll = () => {
+      updateScrollState();
+    };
+
+    mainContainer.addEventListener("scroll", handleScroll);
+    return () => {
+      mainContainer.removeEventListener("scroll", handleScroll);
+    };
+  }, [updateScrollState]);
+
+  // Memoize legend items creation
+  const legendItems: LegendItem[] = useMemo(() => {
+    return getLegendItems(dataKeys, colors, icons);
+  }, [dataKeys, colors, icons]);
+
+  const id = useId();
+
+  const xAxis = useMemo(() => {
+    if (!showXAxis) {
+      return null;
+    }
+    return (
+      <div className="crayon-horizontal-bar-chart-x-axis-container">
+        {/* X-axis only chart - synchronized with main chart */}
+        <ChartContainer
+          config={chartConfig}
+          style={{ width: "100%", height: X_AXIS_HEIGHT }}
+          rechartsProps={{
+            height: X_AXIS_HEIGHT,
+          }}
+        >
+          <RechartsBarChart
+            key={`x-axis-horizontal-bar-chart-${id}`}
+            data={data}
+            layout="vertical"
+            margin={{
+              top: 0,
+              bottom: 0,
+              left: 5,
+              right: 2,
+            }}
+            stackOffset="sign"
+          >
+            <XAxis
+              type="number"
+              height={X_AXIS_HEIGHT}
+              tickLine={false}
+              axisLine={false}
+              tickFormatter={numberTickFormatter}
+              tick={{ fontSize: 12 }}
+            />
+            {/* Invisible bars to maintain scale synchronization */}
+            {dataKeys.map((key) => {
+              return (
+                <Bar
+                  key={`x-axis-horizontal-bar-chart-${key}`}
+                  dataKey={key}
+                  fill="transparent"
+                  stackId={variant === "stacked" ? "a" : undefined}
+                  isAnimationActive={false}
+                  maxBarSize={0}
+                />
+              );
+            })}
+          </RechartsBarChart>
+        </ChartContainer>
+      </div>
+    );
+  }, [showXAxis, chartConfig, data, dataKeys, variant, id]);
+
+  // Handle mouse events for group hovering
+  const handleChartMouseMove = useCallback((state: any) => {
+    if (state && state.activeLabel !== undefined) {
+      setHoveredCategory(state.activeLabel);
+    }
+  }, []);
+
+  const handleChartMouseLeave = useCallback(() => {
+    setHoveredCategory(null);
+  }, []);
+
+  const { mode } = useTheme();
+
+  const barInternalLineColor = useMemo(() => {
+    if (mode === "light") {
+      return "rgba(255, 255, 255, 0.3)";
+    }
+    return "rgba(0, 0, 0, 0.3)";
+  }, [mode]);
+
+  const onBarsClick = useCallback(
+    (data: HorizontalBarClickData) => {
+      if (data?.activePayload?.length && data.activePayload.length > 10) {
+        setIsSideBarTooltipOpen(true);
+        setSideBarTooltipData({
+          title: data.activeLabel as string,
+          values: data.activePayload.map((payload) => ({
+            value: payload.value as number,
+            label: payload.name || payload.dataKey,
+            color: getColorForDataKey(payload.dataKey, dataKeys, colors),
+          })),
+        });
+      }
+    },
+    [dataKeys, colors],
   );
 
-  const getTickFormatter = (data: T) => {
-    const dataLength = data.length;
-    const maxLengthMap = {
-      mobile: {
-        default: 10,
-        10: 8,
-        11: 7,
-      },
-      tray: {
-        default: 12,
-        8: 10,
-        9: 9,
-        10: 8,
-        11: 7,
-      },
-      copilot: {
-        default: 12,
-        8: 10,
-        9: 9,
-        10: 8,
-        11: 7,
-      },
-      fullscreen: {
-        default: 15,
-        11: 12,
-      },
-    };
-
-    const layoutConfig =
-      maxLengthMap[layout as keyof typeof maxLengthMap] || maxLengthMap.fullscreen;
-
-    const maxLength =
-      dataLength >= 11
-        ? 7
-        : layoutConfig[dataLength as keyof typeof layoutConfig] || layoutConfig.default;
-
-    return (value: string) => {
-      if (value.length > maxLength) {
-        return `${value.slice(0, maxLength)}...`;
-      }
-      return value;
-    };
-  };
+  const setLabelWidth = useCallback(() => {}, []);
 
   return (
-    <ChartContainer config={chartConfig}>
-      <RechartsBarChart
-        accessibilityLayer
-        data={data}
-        layout="vertical" // This is what makes the bar chart horizontal
-        margin={{
-          top: 20,
-          right: label ? 70 : 40, // Increased right margin to accommodate labels
-          left: 100, // Increased left margin to align Y-axis labels
-          bottom: 10,
-        }}
+    <LabelTooltipProvider>
+      <SideBarTooltipProvider
+        isSideBarTooltipOpen={isSideBarTooltipOpen}
+        setIsSideBarTooltipOpen={setIsSideBarTooltipOpen}
+        data={sideBarTooltipData}
+        setData={setSideBarTooltipData}
       >
-        {grid && cartesianGrid()}
-        <XAxis 
-          type="number"
-          axisLine={false}
-          tickLine={false}
-          domain={[0, 'dataMax']} // Ensure the domain starts at 0 and ends at the maximum value
-          padding={{ left: 0, right: 10 }} // Add padding to prevent bars from touching the edge
-          label={
-            xAxisLabel ? {
-              value: xAxisLabel,
-              position: "insideBottom",
-              offset: -10,
-              className: "crayon-chart-axis-label",
-            } : undefined
-          }
-        />
-        <YAxis
-          dataKey={categoryKey as string}
-          type="category"
-          tickLine={false}
-          axisLine={false}
-          tickFormatter={getTickFormatter(data)}
-          width={90} // Increased width for better alignment
-          tick={{ textAnchor: 'end', alignmentBaseline: 'middle' }} // Improve text alignment
-          label={
-            yAxisLabel ? {
-              value: yAxisLabel,
-              position: "insideLeft",
-              angle: -90,
-              offset: -80, // Adjusted offset for better positioning
-              className: "crayon-chart-axis-label",
-            } : undefined
-          }
-        />
-        <ChartTooltip content={<ChartTooltipContent />} />
-        {dataKeys.map((key) => {
-          const transformedKey = keyTransform(key);
-          const color = `var(--color-${transformedKey})`;
-          if (label) {
-            return (
-              <Bar
-                key={key}
-                dataKey={key}
-                fill={color}
-                radius={radius}
-                stackId={variant === "stacked" ? "a" : undefined}
-                isAnimationActive={isAnimationActive}
-              >
-                {label && (
-                  <LabelList
-                    position="right"
-                    offset={5} // Reduced offset to keep labels closer to bars
-                    className="crayon-chart-label-list"
-                    fontSize={12}
-                    formatter={(value: number | string) => value} // Fixed TypeScript error
-                  />
-                )}
-              </Bar>
-            );
-          }
-          return (
-            <Bar
-              key={key}
-              dataKey={key}
-              fill={color}
-              radius={radius}
-              stackId={variant === "stacked" ? "a" : undefined}
-              isAnimationActive={isAnimationActive}
+        <div className={clsx("crayon-horizontal-bar-chart-container", className)}>
+          <div
+            className="crayon-horizontal-bar-chart-container-inner-wrapper"
+            style={{
+              height: height ? `${height}px` : effectiveHeight,
+            }}
+          >
+            <div className="crayon-horizontal-bar-chart-container-inner" ref={chartContainerRef}>
+              <div className="crayon-horizontal-bar-chart-main-container" ref={mainContainerRef}>
+                <ChartContainer
+                  config={chartConfig}
+                  style={{ height: dataHeight, minHeight: "100%", width: "100%" }}
+                >
+                  <RechartsBarChart
+                    accessibilityLayer
+                    key={`horizontal-bar-chart-${id}`}
+                    data={data}
+                    layout="vertical"
+                    onClick={onBarsClick}
+                    onMouseMove={handleChartMouseMove}
+                    onMouseLeave={handleChartMouseLeave}
+                    barGap={BAR_GAP}
+                    barCategoryGap={BAR_CATEGORY_GAP}
+                    margin={{
+                      top: 0,
+                      bottom: 0,
+                      left: 2,
+                      right: 2,
+                    }}
+                    stackOffset="sign"
+                  >
+                    {grid && verticalCartesianGrid()}
+                    {/* this x axis is not visible but is needed for the chart to work */}
+                    <XAxis type="number" tickLine={false} axisLine={false} hide />
+                    <YAxis
+                      type="category"
+                      dataKey={categoryKey as string}
+                      tickLine={false}
+                      axisLine={false}
+                      width={maxCategoryLabelWidth}
+                      tick={<YAxisTick setLabelWidth={setLabelWidth} />}
+                      interval={0}
+                      // gives the padding on the 2 sides see the function for reference
+                      padding={padding}
+                      hide
+                    />
+
+                    <ChartTooltip
+                      cursor={{
+                        fill: "var(--crayon-sunk-fills)",
+                        stroke: "var(--crayon-stroke-default)",
+                        opacity: 1,
+                        strokeWidth: 1,
+                      }}
+                      content={<CustomTooltipContent parentRef={mainContainerRef} />}
+                      offset={15}
+                    />
+
+                    {dataKeys.map((key, index) => {
+                      const transformedKey = transformedKeys[key];
+                      const color = `var(--color-${transformedKey})`;
+
+                      return (
+                        <Bar
+                          key={`main-${key}`}
+                          dataKey={key}
+                          fill={color}
+                          stackId={variant === "stacked" ? "a" : undefined}
+                          isAnimationActive={isAnimationActive}
+                          maxBarSize={BAR_HEIGHT}
+                          barSize={BAR_HEIGHT}
+                          shape={(props: any) => {
+                            const { payload, value, dataKey } = props;
+
+                            const { isNegative, isFirstInStack, isLastInStack } = getBarStackInfo(
+                              variant,
+                              value,
+                              dataKey,
+                              payload,
+                              dataKeys,
+                            );
+
+                            const customRadius = getRadiusArray(
+                              variant,
+                              radius,
+                              "horizontal",
+                              isFirstInStack,
+                              isLastInStack,
+                              isNegative,
+                            );
+
+                            return (
+                              <CustomBarShape
+                                {...props}
+                                radius={customRadius}
+                                index={index}
+                                categoryKey={categoryKey as string}
+                                effectiveWidth={effectiveWidth}
+                                labelHeight={labelHeight}
+                                barInternalLineColor={barInternalLineColor}
+                                internalLineWidth={BAR_INTERNAL_LINE_WIDTH}
+                                hoveredCategory={hoveredCategory}
+                                variant={variant}
+                              />
+                            );
+                          }}
+                        />
+                      );
+                    })}
+                  </RechartsBarChart>
+                </ChartContainer>
+              </div>
+              {/* X-axis of the chart */}
+              {xAxis}
+            </div>
+            {/* if the data height is greater than the effective height, then show the scroll buttons */}
+            <ScrollButtonsVertical
+              dataHeight={dataHeight}
+              effectiveHeight={effectiveContainerHeight}
+              canScrollUp={canScrollUp}
+              canScrollDown={canScrollDown}
+              isSideBarTooltipOpen={isSideBarTooltipOpen}
+              onScrollUp={scrollUp}
+              onScrollDown={scrollDown}
             />
-          );
-        })}
-        {legend && <ChartLegend content={<ChartLegendContent />} />}
-      </RechartsBarChart>
-    </ChartContainer>
+            {isSideBarTooltipOpen && <SideBarTooltip height={effectiveHeight} />}
+          </div>
+          {legend && (
+            <DefaultLegend
+              items={legendItems}
+              yAxisLabel={yAxisLabel}
+              xAxisLabel={xAxisLabel}
+              containerWidth={effectiveWidth}
+              isExpanded={isLegendExpanded}
+              setIsExpanded={setIsLegendExpanded}
+            />
+          )}
+        </div>
+      </SideBarTooltipProvider>
+    </LabelTooltipProvider>
   );
 };
+
+// Added React.memo for performance optimization to avoid unnecessary re-renders
+export const HorizontalBarChart = React.memo(
+  HorizontalBarChartComponent,
+) as typeof HorizontalBarChartComponent;

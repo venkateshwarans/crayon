@@ -1,6 +1,6 @@
 import React from 'react';
 import { Chart } from 'react-google-charts';
-import { getPalette } from '../utils/PalletUtils';
+import { getPalette, PaletteName } from '../utils/PalletUtils';
 
 export type WordTreeProps = {
   data: any;
@@ -9,7 +9,7 @@ export type WordTreeProps = {
   format?: 'implicit' | 'explicit';
   type?: 'suffix' | 'prefix';
   word?: string
-  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid";
+  theme?: PaletteName;
 };
 
 export const WordTree: React.FC<WordTreeProps> = ({

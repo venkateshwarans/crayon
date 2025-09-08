@@ -68,7 +68,7 @@ const meta: Meta<ScatterPlotProps> = {
     theme: {
       description: "Theme for chart styling.",
       control: "select",
-      options: ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid"],
+      options: ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid", "iq"],
       table: {
         category: "Appearance",
       },
@@ -158,11 +158,14 @@ export const BasicScatterPlot: Story = {
     xAxisLabel: "Age (years)",
     yAxisLabel: "Weight (kg)",
   },
-  render: (args) => (
-    <Card style={{ width: "500px", height: "400px" }}>
-      <ScatterPlot {...args} />
-    </Card>
-  ),
+  render: (args) => {
+    const { data, xKey, yKey, ...restArgs } = args;
+    return (
+      <Card style={{ width: "500px", height: "400px" }}>
+        <ScatterPlot data={data} xKey={xKey} yKey={yKey} {...restArgs} />
+      </Card>
+    );
+  },
   parameters: {
     docs: {
       source: {

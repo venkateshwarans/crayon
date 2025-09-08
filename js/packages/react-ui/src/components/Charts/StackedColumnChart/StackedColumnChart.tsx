@@ -11,7 +11,7 @@ import {
   keyTransform,
 } from "../Charts";
 import { cartesianGrid } from "../cartesianGrid";
-import { getDistributedColors, getPalette } from "../utils/PalletUtils";
+import { getDistributedColors, getPalette, PaletteName } from "../utils/PalletUtils";
 
 export type StackedColumnChartData = Array<Record<string, string | number>>;
 
@@ -29,7 +29,7 @@ export interface StackedColumnChartProps<T extends StackedColumnChartData> {
    * The color palette theme for the chart. Each theme provides a different set of colors for the columns.
    * @default "ocean"
    */
-  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid" | "iq";
+  theme?: PaletteName;
   /**
    * Whether to display the background grid lines in the chart
    * @default true
@@ -101,7 +101,7 @@ export const StackedColumnChart = <T extends StackedColumnChartData>({
 );
 
   const palette = getPalette(theme);
-  const colors = getDistributedColors(palette, dataKeys.length);
+  const colors = getDistributedColors(palette.colors, dataKeys.length);
   const { layout } = useLayoutContext();
 
   // Create Config
@@ -268,9 +268,8 @@ export const StackedColumnChart = <T extends StackedColumnChartData>({
           wrapperStyle={{ zIndex: 100 }}
           isAnimationActive={false}
         />
-        {dataKeys.map((key) => {
-          const transformedKey = keyTransform(key);
-          const color = `var(--color-${transformedKey})`;
+        {dataKeys.map((key, index) => {
+          const color = colors[index];
           if (label) {
             return (
               <Bar

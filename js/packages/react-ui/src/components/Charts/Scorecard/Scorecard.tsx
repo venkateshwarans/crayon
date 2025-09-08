@@ -2,7 +2,7 @@ import React from "react";
 import { ResponsiveContainer } from "recharts";
 import { useLayoutContext } from "../../../context/LayoutContext";
 import { ChartConfig, ChartContainer } from "../Charts";
-import { getPalette } from "../utils/PalletUtils";
+import { getPalette, PaletteName } from "../utils/PalletUtils";
 
 export interface ScorecardProps {
   /**
@@ -55,7 +55,7 @@ export interface ScorecardProps {
   /**
    * Color theme for the scorecard
    */
-  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid" | "iq";
+  theme?: PaletteName;
   
   /**
    * Color for positive changes/values

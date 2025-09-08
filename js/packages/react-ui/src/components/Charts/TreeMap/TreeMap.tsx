@@ -8,7 +8,7 @@ import {
   ChartLegendContent,
   keyTransform,
 } from "../Charts";
-import { getDistributedColors, getPalette } from "../utils/PalletUtils";
+import { getDistributedColors, getPalette, PaletteName } from "../utils/PalletUtils";
 
 export type TreeMapData = Array<{
   name: string;
@@ -31,7 +31,7 @@ export interface TreeMapProps {
   /**
    * Color theme for the chart
    */
-  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid" | "iq";
+  theme?: PaletteName;
   /**
    * Whether to show the legend
    */
@@ -100,7 +100,7 @@ export const TreeMap: React.FC<TreeMapProps> = ({
 
   // Create color palette
   const palette = getPalette(theme);
-  const colors = getDistributedColors(palette, categoryNames.length);
+  const colors = getDistributedColors(palette.colors, categoryNames.length);
 
   // Create chart config
   const chartConfig: ChartConfig = categoryNames.reduce(
@@ -157,7 +157,8 @@ export const TreeMap: React.FC<TreeMapProps> = ({
           width={width}
           height={height}
           style={{
-            fill: root.children?.[index]?.color || '#000',
+            fill: props.color || root.children?.[index]?.color || '#000',
+            fillOpacity: props.fillOpacity || 1,
             stroke,
             strokeWidth,
             strokeOpacity: 1,
@@ -174,7 +175,8 @@ export const TreeMap: React.FC<TreeMapProps> = ({
   const processedData = useMemo(() => {
     const result = [...data];
     categoryNames.forEach((category, index) => {
-      const color = `var(--color-${keyTransform(category)})`;
+      // Use the actual color value from the colors array instead of CSS variable
+      const color = colors[index];
       const item = result.find(item => item.name === category);
       if (item) {
         (item as any).color = color;
@@ -199,7 +201,7 @@ export const TreeMap: React.FC<TreeMapProps> = ({
       }
     });
     return result;
-  }, [data, categoryNames]);
+  }, [data, categoryNames, colors]);
 
   return (
     <ChartContainer config={chartConfig}>

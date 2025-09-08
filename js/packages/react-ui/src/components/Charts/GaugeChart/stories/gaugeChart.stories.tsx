@@ -53,7 +53,7 @@ const meta: Meta<GaugeChartProps> = {
     theme: {
       description: "The color theme for the gauge",
       control: "select",
-      options: ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid"],
+      options: ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid", "iq"],
       table: {
         defaultValue: { summary: "ocean" },
         category: "Appearance",
@@ -242,11 +242,14 @@ export const DefaultGauge: Story = {
     showValue: true,
     showTooltip: true,
   },
-  render: (args) => (
-    <Card style={{ width: "300px", height: "auto" }}>
-      <GaugeChart {...args} />
-    </Card>
-  ),
+  render: (args) => {
+    const { value, min, max, unit, ...restArgs } = args;
+    return (
+      <Card style={{ width: "300px", height: "auto" }}>
+        <GaugeChart value={value} min={min} max={max} unit={unit} {...restArgs} />
+      </Card>
+    );
+  },
   parameters: {
     docs: {
       source: {
@@ -297,11 +300,14 @@ export const CustomRanges: Story = {
     showValue: true,
     showTooltip: true,
   },
-  render: (args) => (
-    <Card style={{ width: "300px", height: "auto" }}>
-      <GaugeChart {...args} />
-    </Card>
-  ),
+  render: (args) => {
+    const { value, min, max, unit, ...restArgs } = args;
+    return (
+      <Card style={{ width: "300px", height: "auto" }}>
+        <GaugeChart value={value} min={min} max={max} unit={unit} {...restArgs} />
+      </Card>
+    );
+  },
   parameters: {
     docs: {
       source: {
@@ -354,11 +360,14 @@ export const GaugeWithMinMaxLabels: Story = {
     showMinMax: true,
     minMaxLabelSize: 14,
   },
-  render: (args) => (
-    <Card style={{ width: "300px", height: "auto" }}>
-      <GaugeChart {...args} />
-    </Card>
-  ),
+  render: (args) => {
+    const { value, min, max, unit, ...restArgs } = args;
+    return (
+      <Card style={{ width: "300px", height: "auto" }}>
+        <GaugeChart value={value} min={min} max={max} unit={unit} {...restArgs} />
+      </Card>
+    );
+  },
   parameters: {
     docs: {
       source: {
@@ -415,11 +424,14 @@ export const GaugeWithRanges: Story = {
       { min: 75, max: 100, color: "#2196F3" }, // Blue - Excellent
     ],
   },
-  render: (args) => (
-    <Card style={{ width: "300px", height: "auto" }}>
-      <GaugeChart {...args} />
-    </Card>
-  ),
+  render: (args) => {
+    const { value, min, max, unit, ...restArgs } = args;
+    return (
+      <Card style={{ width: "300px", height: "auto" }}>
+        <GaugeChart value={value} min={min} max={max} unit={unit} {...restArgs} />
+      </Card>
+    );
+  },
   parameters: {
     docs: {
       source: {
@@ -475,14 +487,17 @@ export const GaugeWithLargeNumbers: Story = {
     showTooltip: true,
     showMinMax: true,
     minMaxLabelSize: 14,
-    minMaxFormatter: (value) => value === 0 ? "0" : `${Math.round(value/1000)}k`,
+    minMaxFormatter: (value: number) => value === 0 ? "0" : `${Math.round(value/1000)}k`,
     showRanges: false,
   },
-  render: (args) => (
-    <Card style={{ width: "300px", height: "auto" }}>
-      <GaugeChart {...args} />
-    </Card>
-  ),
+  render: (args) => {
+    const { value, min, max, unit, ...restArgs } = args;
+    return (
+      <Card style={{ width: "300px", height: "auto" }}>
+        <GaugeChart value={value} min={min} max={max} unit={unit} {...restArgs} />
+      </Card>
+    );
+  },
   parameters: {
     docs: {
       source: {
@@ -530,11 +545,14 @@ export const SemiCircleGauge: Story = {
     showValue: true,
     showTooltip: true,
   },
-  render: (args) => (
-    <Card style={{ width: "300px", height: "auto" }}>
-      <GaugeChart {...args} />
-    </Card>
-  ),
+  render: (args) => {
+    const { value, min, max, unit, ...restArgs } = args;
+    return (
+      <Card style={{ width: "300px", height: "auto" }}>
+        <GaugeChart value={value} min={min} max={max} unit={unit} {...restArgs} />
+      </Card>
+    );
+  },
   parameters: {
     docs: {
       source: {
@@ -579,11 +597,14 @@ export const CustomAngleGauge: Story = {
     showValue: true,
     showTooltip: true,
   },
-  render: (args) => (
-    <Card style={{ width: "300px", height: "auto" }}>
-      <GaugeChart {...args} />
-    </Card>
-  ),
+  render: (args) => {
+    const { value, min, max, unit, ...restArgs } = args;
+    return (
+      <Card style={{ width: "300px", height: "auto" }}>
+        <GaugeChart value={value} min={min} max={max} unit={unit} {...restArgs} />
+      </Card>
+    );
+  },
   parameters: {
     docs: {
       source: {
@@ -628,11 +649,14 @@ export const LongUnitTextGauge: Story = {
     showValue: true,
     showTooltip: true,
   },
-  render: (args) => (
-    <Card style={{ width: "300px", height: "auto" }}>
-      <GaugeChart {...args} />
-    </Card>
-  ),
+  render: (args) => {
+    const { value, min, max, unit, ...restArgs } = args;
+    return (
+      <Card style={{ width: "300px", height: "auto" }}>
+        <GaugeChart value={value} min={min} max={max} unit={unit} {...restArgs} />
+      </Card>
+    );
+  },
   parameters: {
     docs: {
       source: {

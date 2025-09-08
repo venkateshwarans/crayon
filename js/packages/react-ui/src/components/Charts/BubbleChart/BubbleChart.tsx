@@ -11,7 +11,7 @@ import {
   keyTransform,
 } from "../Charts";
 import { cartesianGrid } from "../cartesianGrid";
-import { getDistributedColors, getPalette } from "../utils/PalletUtils";
+import { getDistributedColors, getPalette, PaletteName } from "../utils/PalletUtils";
 
 export type BubbleChartData = Array<Record<string, string | number>>;
 
@@ -21,7 +21,7 @@ export interface BubbleChartProps<T extends BubbleChartData> {
   yAxisKey: keyof T[number];
   zAxisKey?: keyof T[number]; // For bubble size
   nameKey?: keyof T[number]; // For identifying each bubble (used in tooltip)
-  theme?: "ocean" | "orchid" | "emerald" | "sunset" | "spectrum" | "vivid" | "iq";
+  theme?: PaletteName;
   grid?: boolean;
   legend?: boolean;
   isAnimationActive?: boolean;
@@ -96,7 +96,7 @@ export const BubbleChart = <T extends BubbleChartData>({
 
   const seriesNames = transformedData.map((series) => series.name);
   const palette = getPalette(theme);
-  const colors = getDistributedColors(palette, seriesNames.length);
+  const colors = getDistributedColors(palette.colors, seriesNames.length);
   const { layout } = useLayoutContext();
 
   // Create Config
@@ -232,9 +232,10 @@ export const BubbleChart = <T extends BubbleChartData>({
           content={<ChartTooltipContent indicator="dot" formatter={bubbleTooltipFormatter} />} 
         />
         
-        {transformedData.map((series) => {
+        {transformedData.map((series, index) => {
           const transformedKey = keyTransform(series.name);
-          const color = `var(--color-${transformedKey})`;
+          // Use the actual color from the distributed colors array
+          const color = colors[index];
           
           return (
             <Scatter
