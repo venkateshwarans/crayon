@@ -73,7 +73,8 @@ export const MarkDownRenderer = memo((props: MarkDownRendererProps) => {
     remarkPlugins: [
       ...(props.options?.remarkPlugins || []),
       remarkGfm,
-      remarkMath,
+      // Use a custom configuration for remarkMath to only use $$ for math
+      [remarkMath, { singleDollarTextMath: false }] as any,
       remarkEmoji,
       // Apply remarkBreaks with options
       remarkBreaks
