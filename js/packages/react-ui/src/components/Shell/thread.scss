@@ -36,8 +36,8 @@ $center-align-spacing: calc(32px + cssUtils.$spacing-s);
 
 .crayon-shell-thread-message-assistant {
   width: 100%;
-  display: flex;
-  gap: cssUtils.$spacing-s;
+  // display: flex;
+  // gap: cssUtils.$spacing-s;
   padding-right: $center-align-spacing;
   overflow: hidden;
 
@@ -71,6 +71,18 @@ $center-align-spacing: calc(32px + cssUtils.$spacing-s);
     width: 32px;
     height: 32px;
     border-radius: cssUtils.$rounded-m;
+  }
+
+  &__logo-wrapper{
+    display: flex;
+    gap: 6px;
+  }
+  &__logo-name{
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    vertical-align: middle;
   }
 }
 
