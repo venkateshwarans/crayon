@@ -92,9 +92,11 @@ const DefaultTextRenderer = ({
 export const AssistantMessageContainer = ({
   children,
   className,
+  assistantLogo
 }: {
   children?: React.ReactNode;
   className?: string;
+  assistantLogo: any;
 }) => {
   const { logoUrl } = useShellStore((store) => ({
     logoUrl: store.logoUrl,
@@ -102,7 +104,12 @@ export const AssistantMessageContainer = ({
 
   return (
     <div className={clsx("crayon-shell-thread-message-assistant", className)}>
-      <img src={logoUrl} alt="Assistant" className="crayon-shell-thread-message-assistant__logo" />
+      <div className="crayon-shell-thread-message-assistant__logo-wrapper">
+        {
+          assistantLogo || <img src={logoUrl} alt="Assistant" className="crayon-shell-thread-message-assistant__logo" />
+        }
+        <span className="crayon-shell-thread-message-assistant__logo-name">Saras IQ</span>
+      </div>
       <div className="crayon-shell-thread-message-assistant__content">{children}</div>
     </div>
   );
@@ -114,6 +121,7 @@ export const UserMessageContainer = ({
 }: {
   children?: React.ReactNode;
   className?: string;
+  assistantLogo?: any;
 }) => {
   return (
     <div className={clsx("crayon-shell-thread-message-user", className)}>
@@ -130,7 +138,7 @@ export const RenderMessage = memo(
 
     if (message.role === "assistant") {
       return (
-        <MessageContainer className={className}>
+        <MessageContainer className={className} assistantLogo={message.assistantLogo}>
           {message.message?.map((stringOrTemplate, i) => {
             if (stringOrTemplate.type === "text") {
               const TextRenderer = responseTemplates["text"]?.Component || DefaultTextRenderer;
