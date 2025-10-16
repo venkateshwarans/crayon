@@ -23,6 +23,7 @@
   "author": "engineering@crayon.ai",
   "license": "MIT",
   "dependencies": {
+    "@radix-ui/react-tooltip": "^1.2.8",
     "react-google-charts": "^5.2.1"
   }
 }
