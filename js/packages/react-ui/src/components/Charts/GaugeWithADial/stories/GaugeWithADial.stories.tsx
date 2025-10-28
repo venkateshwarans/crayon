@@ -57,7 +57,7 @@ export const Default: Story = {
   },
   render: (args) => (
     <Card style={{ width: "400px", height: "auto" }}>
-      <GaugeWithADial {...args} />
+      <GaugeWithADial value={args['value']} max={args['max']} min={args['min']} theme={args['theme']} label={args['label']} />
     </Card>
   ),
 };
@@ -72,7 +72,7 @@ export const CustomRange: Story = {
   },
   render: (args) => (
     <Card style={{ width: "400px", height: "auto" }}>
-      <GaugeWithADial {...args} />
+      <GaugeWithADial value={args['value']} max={args['max']} min={args['min']} theme={args['theme']} label={args['label']} />
     </Card>
   ),
 };

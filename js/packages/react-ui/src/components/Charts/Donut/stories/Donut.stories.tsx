@@ -63,7 +63,7 @@ export const Default: Story = {
   },
   render: (args) => (
     <Card style={{ width: "600px", height: "auto" }}>
-      <Donut {...args} />
+      <Donut data={args['data']} theme={args['theme']} innerRadius={args['innerRadius']} outerRadius={args['outerRadius']} legend={args['legend']} />
     </Card>
   ),
 };
@@ -77,7 +77,7 @@ export const CustomSize: Story = {
   },
   render: (args) => (
     <Card style={{ width: "600px", height: "auto" }}>
-      <Donut {...args} />
+      <Donut data={args['data']} theme={args['theme']} innerRadius={args['innerRadius']} outerRadius={args['outerRadius']} />
     </Card>
   ),
 };

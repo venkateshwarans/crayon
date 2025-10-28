@@ -59,7 +59,7 @@ export const Default: Story = {
   },
   render: (args) => (
     <Card style={{ width: "600px", height: "auto" }}>
-      <BubbleMap {...args} />
+      <BubbleMap data={args['data']} theme={args['theme']} maxBubbleSize={args['maxBubbleSize']} minBubbleSize={args['minBubbleSize']} />
     </Card>
   ),
 };
@@ -71,7 +71,7 @@ export const CustomTheme: Story = {
   },
   render: (args) => (
     <Card style={{ width: "600px", height: "auto" }}>
-      <BubbleMap {...args} />
+      <BubbleMap data={args['data']} theme={args['theme']} />
     </Card>
   ),
 };

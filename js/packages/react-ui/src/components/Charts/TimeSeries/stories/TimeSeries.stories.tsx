@@ -57,7 +57,7 @@ export const Default: Story = {
   },
   render: (args) => (
     <Card style={{ width: "600px", height: "auto" }}>
-      <TimeSeries {...args} />
+      <TimeSeries data={args['data']} theme={args['theme']} />
     </Card>
   ),
 };

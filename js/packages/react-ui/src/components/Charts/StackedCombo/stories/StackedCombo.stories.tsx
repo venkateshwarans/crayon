@@ -64,7 +64,7 @@ export const Default: Story = {
   },
   render: (args) => (
     <Card style={{ width: "600px", height: "auto" }}>
-      <StackedCombo {...args} />
+      <StackedCombo data={args['data']} theme={args['theme']} xAxisKey={args['xAxisKey']} barKeys={args['barKeys']} lineKeys={args['lineKeys']} />
     </Card>
   ),
 };

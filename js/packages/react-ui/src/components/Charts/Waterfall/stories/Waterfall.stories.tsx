@@ -46,7 +46,7 @@ export const Default: Story = {
   },
   render: (args) => (
     <Card style={{ width: "600px", height: "auto" }}>
-      <Waterfall {...args} />
+      <Waterfall data={args['data']} theme={args['theme']} />
     </Card>
   ),
 };

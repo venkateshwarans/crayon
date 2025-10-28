@@ -39,26 +39,28 @@ export const GaugeWithADial: React.FC<GaugeWithADialProps> = ({
 
   return (
     <ChartContainer config={chartConfig}>
-      <ResponsiveContainer width="100%" height={300}>
-        <PieChart>
-          <Pie
-            data={data}
-            cx="50%"
-            cy="50%"
-            startAngle={180}
-            endAngle={0}
-            innerRadius={60}
-            outerRadius={100}
-            dataKey="value"
-          >
-            <Cell fill={palette.colors[0]} />
-            <Cell fill="#E5E7EB" />
-          </Pie>
-        </PieChart>
-      </ResponsiveContainer>
-      <div style={{ textAlign: "center", marginTop: "-50px" }}>
-        <div style={{ fontSize: "24px", fontWeight: "bold" }}>{value}</div>
-        <div style={{ fontSize: "14px", color: "#666" }}>{label}</div>
+      <div style={{ position: "relative" }}>
+        <ResponsiveContainer width="100%" height={300}>
+          <PieChart>
+            <Pie
+              data={data}
+              cx="50%"
+              cy="50%"
+              startAngle={180}
+              endAngle={0}
+              innerRadius={60}
+              outerRadius={100}
+              dataKey="value"
+            >
+              <Cell fill={palette.colors[0]} />
+              <Cell fill="#E5E7EB" />
+            </Pie>
+          </PieChart>
+        </ResponsiveContainer>
+        <div style={{ textAlign: "center", marginTop: "-50px" }}>
+          <div style={{ fontSize: "24px", fontWeight: "bold" }}>{value}</div>
+          <div style={{ fontSize: "14px", color: "#666" }}>{label}</div>
+        </div>
       </div>
     </ChartContainer>
   );

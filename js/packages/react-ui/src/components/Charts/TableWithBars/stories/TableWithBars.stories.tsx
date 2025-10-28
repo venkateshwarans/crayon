@@ -51,7 +51,7 @@ export const Default: Story = {
   },
   render: (args) => (
     <Card style={{ width: "600px", height: "auto" }}>
-      <TableWithBars {...args} />
+      <TableWithBars data={args['data']} theme={args['theme']} />
     </Card>
   ),
 };

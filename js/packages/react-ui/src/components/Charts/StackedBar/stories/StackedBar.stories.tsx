@@ -58,7 +58,7 @@ export const Default: Story = {
   },
   render: (args) => (
     <Card style={{ width: "600px", height: "auto" }}>
-      <StackedBar {...args} />
+      <StackedBar data={args['data']} theme={args['theme']} xAxisKey={args['xAxisKey']} stackKeys={args['stackKeys']} />
     </Card>
   ),
 };

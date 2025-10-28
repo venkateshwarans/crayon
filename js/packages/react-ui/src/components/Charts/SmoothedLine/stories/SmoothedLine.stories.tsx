@@ -53,7 +53,7 @@ export const Default: Story = {
   },
   render: (args) => (
     <Card style={{ width: "600px", height: "auto" }}>
-      <SmoothedLine {...args} />
+      <SmoothedLine data={args['data']} theme={args['theme']} smooth={args['smooth']} />
     </Card>
   ),
 };

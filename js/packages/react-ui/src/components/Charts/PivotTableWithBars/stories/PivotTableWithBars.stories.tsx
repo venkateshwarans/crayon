@@ -64,7 +64,7 @@ export const Default: Story = {
   },
   render: (args) => (
     <Card style={{ width: "700px", height: "auto" }}>
-      <PivotTableWithBars {...args} />
+      <PivotTableWithBars data={args['data']} theme={args['theme']} rows={args['rows']} columns={args['columns']} values={args['values']} />
     </Card>
   ),
 };

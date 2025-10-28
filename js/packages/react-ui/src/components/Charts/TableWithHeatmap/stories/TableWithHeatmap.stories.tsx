@@ -52,7 +52,7 @@ export const Default: Story = {
   },
   render: (args) => (
     <Card style={{ width: "600px", height: "auto" }}>
-      <TableWithHeatmap {...args} />
+      <TableWithHeatmap data={args['data']} theme={args['theme']} />
     </Card>
   ),
 };

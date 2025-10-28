@@ -54,7 +54,7 @@ export const Default: Story = {
   },
   render: (args) => (
     <Card style={{ width: "600px", height: "auto" }}>
-      <Heatmap {...args} />
+      <Heatmap data={args['data']} theme={args['theme']} cellSize={args['cellSize']} />
     </Card>
   ),
 };
