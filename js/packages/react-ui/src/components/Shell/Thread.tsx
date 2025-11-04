@@ -96,13 +96,16 @@ export const AssistantMessageContainer = ({
   children?: React.ReactNode;
   className?: string;
 }) => {
-  const { logoUrl } = useShellStore((store) => ({
+  const { logoUrl, loadingUrl } = useShellStore((store) => ({
     logoUrl: store.logoUrl,
+    loadingUrl: store.loadingUrl,
   }));
+
+  const { isLoadingMessages } = useThreadState();
 
   return (
     <div className={clsx("crayon-shell-thread-message-assistant", className)}>
-      <img src={logoUrl} alt="Assistant" className="crayon-shell-thread-message-assistant__logo" />
+      {<span className="crayon-shell-thread-message-assistant__logo">{(isLoadingMessages && loadingUrl) ? loadingUrl : logoUrl}</span>}
       <div className="crayon-shell-thread-message-assistant__content">{children}</div>
     </div>
   );

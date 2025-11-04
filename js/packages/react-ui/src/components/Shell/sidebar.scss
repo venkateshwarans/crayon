@@ -47,8 +47,8 @@ $sidebar-mobile-padding: cssUtils.$spacing-l;
   gap: cssUtils.$spacing-s;
 
   &__logo {
-    width: 36px;
-    height: 36px;
+    width: auto;
+    height: auto;
     border-radius: cssUtils.$rounded-s;
   }
 
