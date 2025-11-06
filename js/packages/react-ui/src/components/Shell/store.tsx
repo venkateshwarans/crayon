@@ -6,13 +6,13 @@ interface ShellState {
   isSidebarOpen: boolean;
   agentName: string;
   logoUrl: any;
-  loadingUrl?: any;
+  loadingUrl?: {id: string, component: any};
   setIsSidebarOpen: (isOpen: boolean) => void;
   setAgentName: (name: string) => void;
   setLogoUrl: (url: any) => void;
 }
 
-export const createShellStore = ({ logoUrl, agentName, loadingUrl }: { logoUrl: any; agentName: string; loadingUrl?: any }) =>
+export const createShellStore = ({ logoUrl, agentName, loadingUrl }: { logoUrl: any; agentName: string; loadingUrl?: {id: string, component: any} }) =>
   create<ShellState>((set) => ({
     isSidebarOpen: true,
     agentName: agentName,
@@ -43,7 +43,7 @@ export const ShellStoreProvider = ({
   children: React.ReactNode;
   logoUrl: any;
   agentName: string;
-  loadingUrl?: any;
+  loadingUrl?: {id: string, component: any};
 }) => {
   const shellStore = useMemo(() => createShellStore({ agentName, logoUrl, loadingUrl }), []);
 
