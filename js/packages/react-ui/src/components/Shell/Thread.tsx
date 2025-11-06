@@ -7,7 +7,7 @@ import {
 } from "@crayonai/react-core";
 import clsx from "clsx";
 import { ArrowRight, Square } from "lucide-react";
-import React, { memo, useLayoutEffect, useRef } from "react";
+import React, { memo, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useComposerState } from "../../hooks/useComposerState";
 import { ScrollVariant, useScrollToBottom } from "../../hooks/useScrollToBottom";
 import { IconButton } from "../IconButton";
@@ -92,17 +92,26 @@ const DefaultTextRenderer = ({
 export const AssistantMessageContainer = ({
   children,
   className,
+  message,
 }: {
   children?: React.ReactNode;
   className?: string;
+  message?: any;
 }) => {
-  const { logoUrl } = useShellStore((store) => ({
+  const { logoUrl, loadingUrl } = useShellStore((store) => ({
     logoUrl: store.logoUrl,
+    loadingUrl: store.loadingUrl,
   }));
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(()=>{
+    setIsLoading(loadingUrl?.id ? message.id === loadingUrl.id : false);
+  }, [message]);
 
   return (
     <div className={clsx("crayon-shell-thread-message-assistant", className)}>
-      <img src={logoUrl} alt="Assistant" className="crayon-shell-thread-message-assistant__logo" />
+      {<span className="crayon-shell-thread-message-assistant__logo">{(isLoading && loadingUrl?.component) ? loadingUrl.component : logoUrl}</span>}
       <div className="crayon-shell-thread-message-assistant__content">{children}</div>
     </div>
   );
@@ -130,7 +139,7 @@ export const RenderMessage = memo(
 
     if (message.role === "assistant") {
       return (
-        <MessageContainer className={className}>
+        <MessageContainer className={className} message={message}>
           {message.message?.map((stringOrTemplate, i) => {
             if (stringOrTemplate.type === "text") {
               const TextRenderer = responseTemplates["text"]?.Component || DefaultTextRenderer;

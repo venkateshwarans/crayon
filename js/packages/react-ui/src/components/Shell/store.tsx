@@ -5,18 +5,19 @@ import { useShallow } from "zustand/react/shallow";
 interface ShellState {
   isSidebarOpen: boolean;
   agentName: string;
-  logoUrl: string;
+  logoUrl: any;
+  loadingUrl?: {id: string, component: any};
   setIsSidebarOpen: (isOpen: boolean) => void;
   setAgentName: (name: string) => void;
-  setLogoUrl: (url: string) => void;
+  setLogoUrl: (url: any) => void;
 }
 
-export const createShellStore = ({ logoUrl, agentName }: { logoUrl: string; agentName: string }) =>
+export const createShellStore = ({ logoUrl, agentName, loadingUrl }: { logoUrl: any; agentName: string; loadingUrl?: {id: string, component: any} }) =>
   create<ShellState>((set) => ({
     isSidebarOpen: true,
     agentName: agentName,
     logoUrl: logoUrl,
-
+    loadingUrl: loadingUrl,
     setIsSidebarOpen: (isOpen: boolean) => set({ isSidebarOpen: isOpen }),
     setAgentName: (name: string) => set({ agentName: name }),
     setLogoUrl: (url: string) => set({ logoUrl: url }),
@@ -37,12 +38,14 @@ export const ShellStoreProvider = ({
   children,
   agentName,
   logoUrl,
+  loadingUrl,
 }: {
   children: React.ReactNode;
-  logoUrl: string;
+  logoUrl: any;
   agentName: string;
+  loadingUrl?: {id: string, component: any};
 }) => {
-  const shellStore = useMemo(() => createShellStore({ agentName, logoUrl }), []);
+  const shellStore = useMemo(() => createShellStore({ agentName, logoUrl, loadingUrl }), []);
 
   useEffect(() => {
     const { setAgentName, setLogoUrl } = shellStore.getState();
