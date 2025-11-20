@@ -25,11 +25,17 @@ export interface FilledMapProps {
 
 export const FilledMap: React.FC<FilledMapProps> = ({
   data,
-  theme = "iq",
+  theme = 'iq',
   region = "world",
+  width = "100%",
+  height = 400,
+  legend = "none",
+  backgroundColor,
+  datalessRegionColor,
+  defaultColor,
+  colorAxis,
 }) => {
   const palette = getPalette(theme);
-  const oceanPalette = getPalette(theme === "ocean" ? "iq" : "ocean");
   
   const chartConfig: ChartConfig = {
     value: {
@@ -40,15 +46,15 @@ export const FilledMap: React.FC<FilledMapProps> = ({
 
   return (
     <ChartContainer config={chartConfig} className="sa-filledmap">
-      <ResponsiveContainer width="100%" height={400}>
+      <ResponsiveContainer width={width} height={height as number}>
         <GeoChart data={data} 
           theme={theme}
           region={region}
-          colorAxis={{ colors: data.map((item: any) => palette.colors[4]) }}
-          backgroundColor={'#fff'}
-          datalessRegionColor={palette.colors[1]}
-          defaultColor={palette.colors[1]}
-          legend="none"
+          colorAxis={{ colors: colorAxis?.colors ?? data.map((item: any) => palette.colors[4]) }}
+          backgroundColor={backgroundColor ?? '#fff'}
+          datalessRegionColor={datalessRegionColor ?? palette.colors[1]}
+          defaultColor={defaultColor ?? palette.colors[1]}
+          legend={legend}
           />
       </ResponsiveContainer>
     </ChartContainer>

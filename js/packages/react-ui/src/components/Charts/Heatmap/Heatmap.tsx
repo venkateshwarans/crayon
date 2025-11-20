@@ -2,55 +2,59 @@ import React from "react";
 import { ResponsiveContainer } from "recharts";
 import { ChartConfig, ChartContainer } from "../Charts";
 import { getPalette, PaletteName } from "../utils/PalletUtils";
+import { GeoChart } from "../GeoChart";
 
-export type HeatmapData = Array<{
-  x: string | number;
-  y: string | number;
-  value: number;
-  [key: string]: any;
-}>;
+export type HeatmapData = any; // Expecting a google-data-table shape like: [["Country","Value"],["US", 100], ...]
 
 export interface HeatmapProps {
-  data: HeatmapData;
+  data: any;
+  width?: number | string;
+  height?: number | string;
+  region?: string;
+  colorAxis?: { colors: string[] };
+  backgroundColor?: string;
+  datalessRegionColor?: string;
+  defaultColor?: string;
+  legend?: string;
   theme?: PaletteName;
-  cellSize?: number;
 }
 
 export const Heatmap: React.FC<HeatmapProps> = ({
   data,
-  theme = "ocean",
-  cellSize = 20,
+  theme = 'iq',
+  region = "world",
+  width = "100%",
+  height = 400,
+  legend = "none",
+  backgroundColor,
+  datalessRegionColor,
+  defaultColor,
+  colorAxis,
 }) => {
   const palette = getPalette(theme);
-  const maxValue = Math.max(...data.map(d => d.value));
-  
-  const getColor = (value: number) => {
-    const intensity = value / maxValue;
-    return `${palette.colors[0]}${Math.floor(intensity * 255).toString(16).padStart(2, '0')}`;
-  };
+  // Build a gradient from the palette if none provided (use multiple stops for smoother scale)
+  const gradient = colorAxis?.colors ?? palette.colors.slice(1);
 
   const chartConfig: ChartConfig = {
     value: {
       label: "Value",
-      color: palette.colors[0],
+      color: gradient[Math.min(gradient.length - 1, 2)] ?? palette.colors[0],
     },
   };
 
   return (
     <ChartContainer config={chartConfig}>
-      <ResponsiveContainer width="100%" height={400}>
-        <svg>
-          {data.map((item, index) => (
-            <rect
-              key={index}
-              x={Number(item.x) * cellSize}
-              y={Number(item.y) * cellSize}
-              width={cellSize}
-              height={cellSize}
-              fill={getColor(item.value)}
-            />
-          ))}
-        </svg>
+      <ResponsiveContainer width={width} height={height as number}>
+        <GeoChart
+          data={data}
+          theme={theme}
+          region={region}
+          colorAxis={{ colors: gradient }}
+          datalessRegionColor={datalessRegionColor ?? palette.colors[0]}
+          defaultColor={defaultColor ?? palette.colors[0]}
+          backgroundColor={backgroundColor}
+          legend={legend}
+        />
       </ResponsiveContainer>
     </ChartContainer>
   );
