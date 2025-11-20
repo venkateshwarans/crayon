@@ -1,6 +1,7 @@
 import React from 'react';
 import { StoryObj, Meta } from '@storybook/react';
 import { GeoChart, GeoChartProps } from '../GeoChart';
+import { getPalette } from '../../utils';
 
 const meta: Meta<GeoChartProps> = {
   title: 'Components/Charts/GeoChart',
@@ -27,25 +28,32 @@ const meta: Meta<GeoChartProps> = {
 export default meta;
 
 const geoChartData = [
-  ['Country', 'Value'],
-  ['USA', 100],
-  ['Canada', 80],
-  ['Mexico', 60],
-  ['Germany', 40],
-  ['France', 20],
-  ['India', 90],
+    ['Lat', 'Long', 'City', 'Population (M)', 'Size'], // Headers
+    [37.4232, -122.0853, 'California, US', 0.08, 4],
+    [40.7128, -74.0060, 'New York, NY', 8.4, 2],
+    [51.5074, -0.1278, 'London, UK', 8.9, 3],
+    [35.6895, 139.6917, 'Tokyo, JP', 13.9, 1],
+
 ];
 
+const geoChartData2 = [
+  ['Country', 'Population'],
+  ['IN', 13.9],
+  ['US', 3.2],
+  ['JP', 12.6],
+  ['CA', 14.2],
+]
 export const GeoChartStory: StoryObj<GeoChartProps> = {
   name: 'Geo Chart',
   args: {
-    data: geoChartData,
+    data: geoChartData2,
     region: 'world',
-    colorAxis: { colors: ['#ff0000', '#00ff00', '#0000ff'] },
-    datalessRegionColor: '#f5f5f5',
-    defaultColor: '#f5f5f5',
+    colorAxis: { colors: getPalette('iq').colors || [] },
+    datalessRegionColor: '#fff',
+    defaultColor: '#fff',
+    backgroundColor: getPalette('ocean').colors[0],
     legend: 'none',
-    theme: 'ocean',
+    theme: 'iq',
   },
 };
 

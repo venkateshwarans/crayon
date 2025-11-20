@@ -1,7 +1,8 @@
 import React from "react";
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from "recharts";
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "../Charts";
+import { ResponsiveContainer } from "recharts";
+import { ChartConfig, ChartContainer } from "../Charts";
 import { getPalette, PaletteName } from "../utils/PalletUtils";
+import { GeoChart } from "../GeoChart";
 
 export type FilledMapData = Array<{
   region: string;
@@ -10,36 +11,45 @@ export type FilledMapData = Array<{
 }>;
 
 export interface FilledMapProps {
-  data: FilledMapData;
+  data: any;
+  width?: number | string;
+  height?: number | string;
+  region?: string;
+  colorAxis?: { colors: string[] };
+  backgroundColor?: string;
+  datalessRegionColor?: string;
+  defaultColor?: string;
+  legend?: string;
   theme?: PaletteName;
-  valueKey?: string;
-  regionKey?: string;
 }
 
 export const FilledMap: React.FC<FilledMapProps> = ({
   data,
-  theme = "ocean",
-  valueKey = "value",
-  regionKey = "region",
+  theme = "iq",
+  region = "world",
 }) => {
   const palette = getPalette(theme);
+  const oceanPalette = getPalette(theme === "ocean" ? "iq" : "ocean");
   
   const chartConfig: ChartConfig = {
-    [valueKey]: {
+    value: {
       label: "Value",
-      color: palette.colors[0],
+      color: palette.colors[2],
     },
   };
 
   return (
-    <ChartContainer config={chartConfig}>
+    <ChartContainer config={chartConfig} className="sa-filledmap">
       <ResponsiveContainer width="100%" height={400}>
-        <BarChart data={data}>
-          <XAxis dataKey={regionKey} />
-          <YAxis />
-          <Bar dataKey={valueKey} fill={palette.colors[0]} />
-          <ChartTooltip content={<ChartTooltipContent />} />
-        </BarChart>
+        <GeoChart data={data} 
+          theme={theme}
+          region={region}
+          colorAxis={{ colors: data.map((item: any) => palette.colors[4]) }}
+          backgroundColor={'#fff'}
+          datalessRegionColor={palette.colors[1]}
+          defaultColor={palette.colors[1]}
+          legend="none"
+          />
       </ResponsiveContainer>
     </ChartContainer>
   );

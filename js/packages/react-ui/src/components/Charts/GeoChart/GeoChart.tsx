@@ -30,20 +30,23 @@ export const GeoChart: FC<GeoChartProps> = ({
   region = "world",
   colorAxis = { colors: ["#aec6cf", "#034f84"] },
   backgroundColor = "#f8f8f8",
-  datalessRegionColor = "#f0f0f0",
-  defaultColor = "#f5f5f5",
+  datalessRegionColor,
+  defaultColor,
   legend = "none",
   theme = 'ocean',
 }: GeoChartProps) => {
   const palette = getPalette(theme);
-  const colors = palette.colors;
+  const paletteColors = palette.colors;
+  const colors = colorAxis?.colors ?? paletteColors;
+  const resolvedDataless = datalessRegionColor ?? paletteColors[1] ?? "#f0f0f0";
+  const resolvedDefault = defaultColor ?? paletteColors[2] ?? "#f5f5f5";
 
   const options = {
     region,
     colorAxis: { colors },
     backgroundColor,
-    datalessRegionColor: colors[1],
-    defaultColor: colors[2],
+    datalessRegionColor: resolvedDataless,
+    defaultColor: resolvedDefault,
     legend,
   };
 
