@@ -1,13 +1,16 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Card } from "../../../Card";
 import { BubbleMap, BubbleMapProps } from "../BubbleMap";
+import { getPalette } from "../../utils";
 
+// Markers (bubbles) data: [Lat, Long, Label, Value, Size]
 const bubbleMapData = [
-  { name: "New York", x: -74, y: 40.7, value: 8400000 },
-  { name: "Los Angeles", x: -118.2, y: 34.05, value: 3900000 },
-  { name: "Chicago", x: -87.6, y: 41.8, value: 2700000 },
-  { name: "Houston", x: -95.3, y: 29.7, value: 2300000 },
-  { name: "Phoenix", x: -112, y: 33.4, value: 1600000 },
+  ["Lat", "Long", "City", "Sales Increase", "Size"],
+  [40.7128, -74.0060, "New York, US", 8.4, 8.4],
+  [34.0522, -118.2437, "Los Angeles, US", 3.9, 3.9],
+  [41.8781, -87.6298, "Chicago, US", 2.7, 2.7],
+  [29.7604, -95.3698, "Houston, US", 2.3, 2.3],
+  [33.4484, -112.0740, "Phoenix, US", 1.6, 1.6],
 ];
 
 const meta: Meta<BubbleMapProps> = {
@@ -17,33 +20,56 @@ const meta: Meta<BubbleMapProps> = {
     layout: "centered",
     docs: {
       description: {
-        component: "```tsx\\nimport { BubbleMap } from '@crayon-ui/react-ui/Charts/BubbleMap';\\n```",
+        component: "```tsx\nimport { BubbleMap } from '@crayon-ui/react-ui/Charts/BubbleMap';\n```",
       },
     },
   },
   tags: ["!dev", "autodocs"],
   argTypes: {
     data: {
-      description: "Array of data points with coordinates and values",
+      description: "Geo data table. First row is headers, subsequent rows are [region, value]",
       control: false,
       table: { category: "Data" },
     },
     theme: {
-      description: "Color theme for the chart",
+      description: "Color theme (used when colorAxis is not provided)",
       control: "select",
       options: ["ocean", "orchid", "emerald", "sunset", "spectrum", "vivid", "iq"],
-      table: { defaultValue: { summary: "ocean" }, category: "Appearance" },
+      table: { defaultValue: { summary: "iq" }, category: "Appearance" },
     },
-    maxBubbleSize: {
-      description: "Maximum bubble size",
-      control: "number",
-      table: { defaultValue: { summary: "2000" }, category: "Appearance" },
+    region: {
+      description: "Region selector (e.g., 'world', 'US', 'IN', UN M49 codes)",
+      control: "text",
+      table: { defaultValue: { summary: "world" }, category: "Appearance" },
     },
-    minBubbleSize: {
-      description: "Minimum bubble size",
-      control: "number",
-      table: { defaultValue: { summary: "400" }, category: "Appearance" },
+    colorAxis: {
+      description: "Color gradient for scale (low → high). Defaults to theme palette.",
+      control: false,
+      table: { category: "Appearance" },
     },
+    datalessRegionColor: {
+      description: "Fill color for regions without data",
+      control: "color",
+      table: { category: "Appearance" },
+    },
+    defaultColor: {
+      description: "Default fill color",
+      control: "color",
+      table: { category: "Appearance" },
+    },
+    backgroundColor: {
+      description: "Map background color",
+      control: "color",
+      table: { category: "Appearance" },
+    },
+    legend: {
+      description: "Legend display mode",
+      control: "select",
+      options: ["none", "auto", "right"],
+      table: { defaultValue: { summary: "none" }, category: "Display" },
+    },
+    width: { control: false },
+    height: { control: false },
   },
 };
 
@@ -53,25 +79,49 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     data: bubbleMapData,
-    theme: "ocean",
-    maxBubbleSize: 2000,
-    minBubbleSize: 400,
+    theme: "iq",
+    region: "US",
+    legend: "none",
+    backgroundColor: "#ffffff",
   },
   render: (args) => (
-    <Card style={{ width: "600px", height: "auto" }}>
-      <BubbleMap data={args['data']} theme={args['theme']} maxBubbleSize={args['maxBubbleSize']} minBubbleSize={args['minBubbleSize']} />
+    <Card style={{ width: "720px", height: "auto" }}>
+      <BubbleMap
+        data={args["data"]}
+        theme={args["theme"]}
+        region={args["region"]}
+        colorAxis={args["colorAxis"]}
+        datalessRegionColor={args["datalessRegionColor"]}
+        defaultColor={args["defaultColor"]}
+        backgroundColor={args["backgroundColor"]}
+        legend={args["legend"]}
+      />
     </Card>
   ),
 };
 
-export const CustomTheme: Story = {
+export const CustomGradient: Story = {
   args: {
     data: bubbleMapData,
-    theme: "sunset",
+    theme: "iq",
+    region: "world",
+    colorAxis: { colors: getPalette('iq').colors }, // low → high
+    datalessRegionColor: "#f5f5f5",
+    defaultColor: "#f5f5f5",
+    legend: "none",
   },
   render: (args) => (
-    <Card style={{ width: "600px", height: "auto" }}>
-      <BubbleMap data={args['data']} theme={args['theme']} />
+    <Card style={{ width: "720px", height: "auto" }}>
+      <BubbleMap
+        data={args["data"]}
+        theme={args["theme"]}
+        region={args["region"]}
+        colorAxis={args["colorAxis"]}
+        datalessRegionColor={args["datalessRegionColor"]}
+        defaultColor={args["defaultColor"]}
+        backgroundColor={args["backgroundColor"]}
+        legend={args["legend"]}
+      />
     </Card>
   ),
 };
