@@ -1,22 +1,23 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Card } from "../../../Card";
-import { TableWithBars, TableWithBarsProps } from "../TableWithBars";
+import { TableWithHeatmap, TableWithHeatmapProps } from "../TableWithHeatmap";
 
-const tableWithBarsData = [
+const tableWithHeatmapData = [
   { name: "Product A", value: 100 },
   { name: "Product B", value: 150 },
   { name: "Product C", value: 80 },
   { name: "Product D", value: 200 },
+  { name: "Product E", value: 120 },
 ];
 
-const meta: Meta<TableWithBarsProps> = {
-  title: "Components/Charts/TableWithBars",
-  component: TableWithBars,
+const meta: Meta<TableWithHeatmapProps> = {
+  title: "Components/Table/TableWithHeatmap",
+  component: TableWithHeatmap,
   parameters: {
     layout: "centered",
     docs: {
       description: {
-        component: "```tsx\\nimport { TableWithBars } from '@crayon-ui/react-ui/Charts/TableWithBars';\\n```",
+        component: "```tsx\\nimport { TableWithHeatmap } from '@crayon-ui/react-ui/Charts/TableWithHeatmap';\\n```",
       },
     },
   },
@@ -34,7 +35,7 @@ const meta: Meta<TableWithBarsProps> = {
       table: { defaultValue: { summary: "ocean" }, category: "Appearance" },
     },
     maxValue: {
-      description: "Maximum value for bar scaling",
+      description: "Maximum value for heatmap scaling",
       control: "number",
       table: { category: "Data" },
     },
@@ -46,12 +47,12 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    data: tableWithBarsData,
-    theme: "ocean",
+    data: tableWithHeatmapData,
+    theme: "iq",
   },
   render: (args) => (
     <Card style={{ width: "600px", height: "auto" }}>
-      <TableWithBars data={args['data']} theme={args['theme']} />
+      <TableWithHeatmap data={args['data']} theme={args['theme']} />
     </Card>
   ),
 };
