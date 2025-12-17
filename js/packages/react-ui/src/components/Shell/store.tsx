@@ -10,6 +10,10 @@ interface ShellState {
   setIsSidebarOpen: (isOpen: boolean) => void;
   setAgentName: (name: string) => void;
   setLogoUrl: (url: any) => void;
+  isArtifactActive: boolean;
+  artifactRenderer: () => React.ReactNode;
+  setIsArtifactActive: (isActive: boolean) => void;
+  setArtifactRenderer: (renderer: () => React.ReactNode) => void;
 }
 
 export const createShellStore = ({ logoUrl, agentName, loadingUrl }: { logoUrl: any; agentName: string; loadingUrl?: {id: string, component: any} }) =>
@@ -18,9 +22,13 @@ export const createShellStore = ({ logoUrl, agentName, loadingUrl }: { logoUrl: 
     agentName: agentName,
     logoUrl: logoUrl,
     loadingUrl: loadingUrl,
+    isArtifactActive: false,
+    artifactRenderer: () => null,
     setIsSidebarOpen: (isOpen: boolean) => set({ isSidebarOpen: isOpen }),
     setAgentName: (name: string) => set({ agentName: name }),
     setLogoUrl: (url: string) => set({ logoUrl: url }),
+    setIsArtifactActive: (isActive: boolean) => set({ isArtifactActive: isActive }),
+    setArtifactRenderer: (renderer: () => React.ReactNode) => set({ artifactRenderer: renderer }),
   }));
 
 export const ShellStoreContext = createContext<ReturnType<typeof createShellStore> | null>(null);

@@ -24,6 +24,7 @@ import {
   getWidthOfData,
   getWidthOfGroup,
 } from "../utils/AreaAndLine/AreaAndLineUtils";
+import { getLineType } from "../utils/AreaAndLine/common";
 import { PaletteName, useChartPalette } from "../utils/PalletUtils";
 import {
   get2dChartConfig,
@@ -65,7 +66,7 @@ const AreaChartComponent = <T extends AreaChartData>({
   categoryKey,
   theme = "ocean",
   customPalette,
-  variant = "natural",
+  variant: areaChartVariant = "natural",
   tickVariant = "multiLine",
   grid = true,
   icons = {},
@@ -81,6 +82,8 @@ const AreaChartComponent = <T extends AreaChartData>({
   const dataKeys = useMemo(() => {
     return getDataKeys(data, categoryKey as string);
   }, [data, categoryKey]);
+
+  const variant = getLineType(areaChartVariant);
 
   const { yAxisWidth, setLabelWidth } = useYAxisLabelWidth(data, dataKeys);
 
@@ -311,7 +314,10 @@ const AreaChartComponent = <T extends AreaChartData>({
                 style={{ width: dataWidth, minWidth: "100%", height: chartHeight }}
                 rechartsProps={{
                   width: "100%",
-                  height: chartHeight,
+                  height: "100%",
+                  minHeight: 1,
+                  minWidth: 1,
+                  initialDimension: { width: 1, height: 1 },
                 }}
               >
                 <RechartsAreaChart
