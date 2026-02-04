@@ -145,8 +145,14 @@ type Story = StoryObj<ScorecardProps>;
 export const Basic: Story = {
   name: "Basic Scorecard",
   args: {
-    value: 62,
+    value: 193613,
     title: "Qty Sold",
+    "comparisonValue": 72.35,
+    "comparisonLabel": "of Total Customers",
+    "valueFormat": "number",
+    "comparisonFormat": "percentage",
+    "showStaticComparison": true,
+    positiveColor: "#F44336"
   },
   render: (args) => (
     <Card className="min-w-[150px] inline-block">
