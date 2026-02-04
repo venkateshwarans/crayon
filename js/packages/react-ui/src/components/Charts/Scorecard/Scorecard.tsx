@@ -83,6 +83,13 @@ export interface ScorecardProps {
   hideComparison?: boolean;
   
   /**
+   * Whether to display the comparison value as-is without calculating percentage change
+   * When true, shows the comparisonValue directly with formatting but still displays arrow/color
+   * Useful for showing absolute metrics like "72.35% of Total Customers"
+   */
+  showStaticComparison?: boolean;
+  
+  /**
    * Custom styles for the container
    */
   style?: React.CSSProperties;
@@ -160,6 +167,7 @@ export const Scorecard: React.FC<ScorecardProps> = ({
   valueFormat = "number",
   comparisonFormat = "percentage",
   showAsProgress = false,
+  showStaticComparison = false,
   showSparkline = false,
   sparklineData = [],
   theme = "ocean",
@@ -201,30 +209,39 @@ export const Scorecard: React.FC<ScorecardProps> = ({
   let comparisonDirection: "positive" | "negative" | "neutral" = "neutral";
   
   if (comparisonValue !== undefined && !hideComparison) {
-    percentageChange = calculatePercentage(
-      value, 
-      comparisonValue, 
-      showAsProgress
-    );
-    
-    // Determine direction for styling
-    if (showAsProgress) {
-      // For progress bars, closer to 100% is positive
-      comparisonDirection = percentageChange < 50 ? "negative" : "positive";
+    if (showStaticComparison) {
+      // Display the comparison value as-is without calculating percentage change
+      formattedComparison = formatValue(comparisonValue, comparisonFormat);
+      // For static comparisons, always show as positive (green/upward)
+      comparisonDirection = "positive";
+      // Store the raw value for potential use
+      percentageChange = comparisonValue;
     } else {
-      // For change indicators, positive change is positive
-      comparisonDirection = percentageChange > 0 ? "positive" : percentageChange < 0 ? "negative" : "neutral";
-    }
-    
-    // Format the comparison value
-    formattedComparison = formatValue(
-      Math.abs(percentageChange), 
-      comparisonFormat
-    );
-    
-    // Add sign for percentage change (not for progress)
-    if (!showAsProgress && comparisonFormat === "percentage") {
-      formattedComparison = `${percentageChange > 0 ? '+' : ''}${formattedComparison}`;
+      percentageChange = calculatePercentage(
+        value, 
+        comparisonValue, 
+        showAsProgress
+      );
+      
+      // Determine direction for styling
+      if (showAsProgress) {
+        // For progress bars, closer to 100% is positive
+        comparisonDirection = percentageChange < 50 ? "negative" : "positive";
+      } else {
+        // For change indicators, positive change is positive
+        comparisonDirection = percentageChange > 0 ? "positive" : percentageChange < 0 ? "negative" : "neutral";
+      }
+      
+      // Format the comparison value
+      formattedComparison = formatValue(
+        Math.abs(percentageChange), 
+        comparisonFormat
+      );
+      
+      // Add sign for percentage change (not for progress)
+      if (!showAsProgress && comparisonFormat === "percentage") {
+        formattedComparison = `${percentageChange > 0 ? '+' : ''}${formattedComparison}`;
+      }
     }
   }
   

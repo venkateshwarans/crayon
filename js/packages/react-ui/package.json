@@ -2,7 +2,7 @@
   "type": "module",
   "name": "@sarasanalytics-com/generative-ui",
   "license": "MIT",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Component library for Generative UI SDK",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -75,6 +75,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "fs-extra": "^11.3.1",
+    "katex": "^0.16.27",
     "lodash-es": "^4.17.21",
     "lucide-react": "^0.469.0",
     "react-day-picker": "^9.5.1",
@@ -129,8 +130,22 @@
     "tsx": "^4.19.2",
     "vite": "^5.0.0"
   },
-  "keywords": [],
+  "keywords": [
+    "crayon",
+    "react",
+    "ui",
+    "components",
+    "generative",
+    "ai",
+    "agentic",
+    "framework"
+  ],
   "author": "engineering@thesys.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thesysdev/crayon.git",
+    "directory": "js/packages/react-ui"
+  },
   "eslintConfig": {
     "extends": [
       "plugin:storybook/recommended"

@@ -142,10 +142,21 @@
   &-show-more-button {
     width: 100%;
     justify-content: center;
+    margin-top: cssUtils.$spacing-2xs;
   }
 
   &-show-less-button {
     width: 100%;
     justify-content: center;
+    margin-top: cssUtils.$spacing-2xs;
   }
+}
+
+.crayon-stacked-legend-separator {
+  margin: cssUtils.$spacing-2xs 0;
+}
+
+.crayon-stacked-legend-header-title {
+  @include cssUtils.typography(label, default);
+  color: cssUtils.$secondary-text;
 }

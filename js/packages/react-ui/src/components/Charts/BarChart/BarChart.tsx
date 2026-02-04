@@ -83,7 +83,7 @@ const BarChartComponent = <T extends BarChartData>({
   tickVariant = "multiLine",
   grid = true,
   icons = {},
-  radius = BAR_RADIUS,
+  radius,
   isAnimationActive = false,
   showYAxis = true,
   xAxisLabel,
@@ -336,7 +336,7 @@ const BarChartComponent = <T extends BarChartData>({
     setHoveredCategory(null);
   }, []);
 
-  const { mode } = useTheme();
+  const { mode, theme: userTheme } = useTheme();
 
   const barInternalLineColor = useMemo(() => {
     if (mode === "light") {
@@ -344,6 +344,21 @@ const BarChartComponent = <T extends BarChartData>({
     }
     return "rgba(0, 0, 0, 0.3)";
   }, [mode]);
+
+  const calculatedRadius = useMemo(() => {
+    let radiusValue: number = BAR_RADIUS;
+
+    if (typeof radius === "number") {
+      radiusValue = radius;
+    } else {
+      const radiusTheme = userTheme.rounded2xs;
+      if (radiusTheme) {
+        radiusValue = typeof radiusTheme === "string" ? parseInt(radiusTheme) : radiusTheme;
+      }
+    }
+
+    return radiusValue;
+  }, [userTheme.rounded2xs, radius]);
 
   const onBarsClick = useCallback(
     (data: BarClickData) => {
@@ -384,7 +399,7 @@ const BarChartComponent = <T extends BarChartData>({
 
             const customRadius = getRadiusArray(
               variant,
-              radius,
+              calculatedRadius,
               "vertical",
               isFirstInStack,
               isLastInStack,
@@ -412,7 +427,7 @@ const BarChartComponent = <T extends BarChartData>({
     dataKeys,
     transformedKeys,
     variant,
-    radius,
+    calculatedRadius,
     isAnimationActive,
     barInternalLineColor,
     hoveredCategory,
@@ -442,7 +457,10 @@ const BarChartComponent = <T extends BarChartData>({
                 style={{ width: dataWidth, minWidth: "100%", height: chartHeight }}
                 rechartsProps={{
                   width: "100%",
-                  height: chartHeight,
+                  height: "100%",
+                  minHeight: 1,
+                  minWidth: 1,
+                  initialDimension: { width: 1, height: 1 },
                 }}
               >
                 <RechartsBarChart

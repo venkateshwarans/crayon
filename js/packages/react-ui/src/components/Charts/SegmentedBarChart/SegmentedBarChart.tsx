@@ -24,9 +24,9 @@ export const SegmentedBar = ({
       return [];
     }
 
-    const total = data.reduce((acc, value) => acc + value, 0);
+    const total = data.reduce((acc: number, value: number) => acc + value, 0);
 
-    return data.map((value, index) => ({
+    return data.map((value: number, index: number) => ({
       value,
       index,
       percentage: total > 0 ? (value / total) * 100 : 0,
@@ -42,7 +42,7 @@ export const SegmentedBar = ({
   // Segmented progress bar
   return (
     <div className={clsx("crayon-segmented-bar-chart", className)} style={style}>
-      {segments.map((segment, index) => {
+      {segments.map((segment: any, index: number) => {
         return (
           <div
             key={`segment-${index}`}

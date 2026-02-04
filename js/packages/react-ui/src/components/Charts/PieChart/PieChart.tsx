@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Cell, Pie, PieChart as RechartsPieChart } from "recharts";
+import { useTheme } from "../../ThemeProvider/ThemeProvider.js";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "../Charts.js";
 import { useTransformedKeys } from "../hooks/index.js";
 import { DefaultLegend } from "../shared/DefaultLegend/DefaultLegend.js";
@@ -13,7 +14,6 @@ import {
   calculateTwoLevelChartDimensions,
   createAnimationConfig,
   createEventHandlers,
-  createSectorStyle,
   getHoverStyles,
   transformDataWithPercentages,
   useChartHover,
@@ -39,11 +39,15 @@ export interface PieChartProps<T extends PieChartData> {
   className?: string;
   maxChartSize?: number;
   minChartSize?: number;
+  // Add height and width props
+  height?: number | string;
+  width?: number | string;
 }
 
 const STACKED_LEGEND_BREAKPOINT = 400;
 const MIN_CHART_SIZE = 150;
 const MAX_CHART_SIZE = 500;
+const CORNER_RADIUS = 0;
 
 const PieChartComponent = <T extends PieChartData>({
   data,
@@ -57,7 +61,7 @@ const PieChartComponent = <T extends PieChartData>({
   legendVariant = "stacked",
   isAnimationActive = true,
   appearance = "circular",
-  cornerRadius = 0,
+  cornerRadius,
   paddingAngle = 0,
   onMouseEnter,
   onMouseLeave,
@@ -65,12 +69,15 @@ const PieChartComponent = <T extends PieChartData>({
   className,
   maxChartSize = MAX_CHART_SIZE,
   minChartSize = MIN_CHART_SIZE,
+  height,
+  width,
 }: PieChartProps<T>) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [wrapperRect, setWrapperRect] = useState({ width: 0, height: 0 });
   const [hoveredLegendKey, setHoveredLegendKey] = useState<string | null>(null);
   const [isLegendExpanded, setIsLegendExpanded] = useState(false);
   const { activeIndex, handleMouseEnter, handleMouseLeave } = useChartHover();
+  const { theme: userTheme } = useTheme();
 
   // Determine layout mode based on container width
   const isRowLayout =
@@ -102,19 +109,31 @@ const PieChartComponent = <T extends PieChartData>({
 
   // Calculate chart dimensions based on the smaller dimension of the container
   const chartSize = useMemo(() => {
-    let size;
-    if (isRowLayout) {
-      const chartContainerWidth = (effectiveWidth - 20) / 2; // Subtract gap
-      size = Math.min(chartContainerWidth, effectiveHeight);
-    } else {
-      size = Math.min(effectiveWidth, effectiveHeight);
-    }
+    // Compute the available width for the chart. In row layout, chart and legend are side-by-side.
+    // Subtract the 20px gap defined in CSS to avoid over-estimating available width.
+    const containerWidth = isRowLayout ? Math.max(0, (effectiveWidth - 20) / 2) : effectiveWidth;
+
+    // If wrapper height isn't explicitly provided (or is very small), it will be driven by the
+    // chart's own content, creating a feedback loop that pins the size to the minimum.
+    // Prefer width in that case to size the chart sensibly.
+    const heightIsUsable = effectiveHeight >= minChartSize;
+
+    let size = heightIsUsable ? Math.min(containerWidth, effectiveHeight) : containerWidth;
     size = Math.min(size, maxChartSize);
     return Math.max(minChartSize, size);
   }, [effectiveWidth, effectiveHeight, isRowLayout]);
 
   const chartSizeStyle = useMemo(() => ({ width: chartSize, height: chartSize }), [chartSize]);
-  const rechartsProps = useMemo(() => ({ width: "100%", height: "100%" }), []);
+  const rechartsProps = useMemo(
+    () => ({
+      width: "100%",
+      height: "100%",
+      minWidth: 1,
+      minHeight: 1,
+      initialDimension: { width: 1, height: 1 },
+    }),
+    [],
+  );
 
   // Memoize expensive data transformations and configurations
   const transformedData = useMemo(
@@ -137,10 +156,24 @@ const PieChartComponent = <T extends PieChartData>({
     [onMouseEnter, onMouseLeave, onClick],
   );
 
-  const sectorStyle = useMemo(
-    () => createSectorStyle(cornerRadius, variant === "donut" ? 0.5 : paddingAngle),
-    [cornerRadius, variant, paddingAngle],
-  );
+  const sectorStyle = useMemo(() => {
+    let cornerRadiusValue: number = CORNER_RADIUS;
+
+    if (typeof cornerRadius === "number") {
+      cornerRadiusValue = cornerRadius;
+    } else {
+      const cornerRadiusTheme = userTheme.rounded2xs;
+      if (cornerRadiusTheme) {
+        cornerRadiusValue =
+          typeof cornerRadiusTheme === "string" ? parseInt(cornerRadiusTheme) : cornerRadiusTheme;
+      }
+    }
+
+    return {
+      cornerRadius: cornerRadiusValue,
+      paddingAngle: variant === "donut" ? 0.5 : paddingAngle,
+    };
+  }, [cornerRadius, variant, paddingAngle, userTheme.rounded2xs]);
 
   const colors = useChartPalette({
     chartThemeName: theme,
@@ -387,8 +420,23 @@ const PieChartComponent = <T extends PieChartData>({
     [className, legend, legendVariant, isRowLayout],
   );
 
+  const wrapperStyle = useMemo(() => {
+    const formatDimension = (value: number | string | undefined) => {
+      if (typeof value === "number") {
+        return `${value}px`;
+      }
+      return value;
+    };
+    const dimensions = {
+      width: formatDimension(width),
+      height: formatDimension(height),
+    };
+
+    return dimensions;
+  }, [width, height]);
+
   return (
-    <div ref={wrapperRef} className={wrapperClassName}>
+    <div ref={wrapperRef} className={wrapperClassName} style={wrapperStyle}>
       <div className="crayon-pie-chart-container">
         <div className="crayon-pie-chart-container-inner">
           <div style={chartSizeStyle}>

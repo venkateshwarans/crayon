@@ -14,6 +14,33 @@
     -ms-overflow-x: hidden;
     scrollbar-width: none;
 
+    &.crayon-carousel-content--mask-left.crayon-carousel-content--mask-right {
+      mask-image: linear-gradient(
+        to right,
+        transparent,
+        black 40px,
+        black calc(100% - 40px),
+        transparent
+      );
+      -webkit-mask-image: linear-gradient(
+        to right,
+        transparent,
+        black 40px,
+        black calc(100% - 40px),
+        transparent
+      );
+    }
+
+    &.crayon-carousel-content--mask-left:not(.crayon-carousel-content--mask-right) {
+      mask-image: linear-gradient(to right, transparent, black 40px, black);
+      -webkit-mask-image: linear-gradient(to right, transparent, black 40px, black);
+    }
+
+    &.crayon-carousel-content--mask-right:not(.crayon-carousel-content--mask-left) {
+      mask-image: linear-gradient(to left, transparent, black 40px, black);
+      -webkit-mask-image: linear-gradient(to left, transparent, black 40px, black);
+    }
+
     &-wrapper {
       display: flex;
       gap: cssUtils.$spacing-m;
@@ -34,8 +61,8 @@
     display: flex;
     flex-direction: column;
     gap: cssUtils.$spacing-m;
-    min-width: 280px;
-    max-width: 280px;
+    width: 280px;
+    flex-shrink: 0;
     border-radius: cssUtils.$rounded-2xl;
     background-color: cssUtils.$bg-container;
     padding: cssUtils.$spacing-m;
@@ -61,10 +88,17 @@
       right: -12px;
     }
   }
+
   @media (max-width: 400px) {
     .crayon-carousel-item {
-      min-width: 248px;
-      max-width: 248px;
+      width: 248px;
+      flex-shrink: 0;
     }
+  }
+}
+
+.crayon-carousel--sunk {
+  .crayon-carousel-item {
+    background-color: cssUtils.$bg-highlight-subtle;
   }
 }
