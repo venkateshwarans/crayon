@@ -2,10 +2,16 @@
 import clsx from "clsx";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Area, AreaChart as RechartsAreaChart, XAxis, YAxis } from "recharts";
+import { usePrintContext } from "../../../context/PrintContext";
 import { useId } from "../../../polyfills";
 import { ChartConfig, ChartContainer, ChartTooltip } from "../Charts";
 import { SideBarChartData, SideBarTooltipProvider } from "../context/SideBarTooltipContext";
-import { useMaxLabelHeight, useTransformedKeys, useYAxisLabelWidth } from "../hooks";
+import {
+  useExportChartData,
+  useMaxLabelHeight,
+  useTransformedKeys,
+  useYAxisLabelWidth,
+} from "../hooks";
 import {
   ActiveDot,
   cartesianGrid,
@@ -79,6 +85,9 @@ const AreaChartComponent = <T extends AreaChartData>({
   height,
   width,
 }: AreaChartProps<T>) => {
+  const printContext = usePrintContext();
+  isAnimationActive = printContext ? false : isAnimationActive;
+
   const dataKeys = useMemo(() => {
     return getDataKeys(data, categoryKey as string);
   }, [data, categoryKey]);
@@ -226,6 +235,17 @@ const AreaChartComponent = <T extends AreaChartData>({
     return getLegendItems(dataKeys, colors, icons);
   }, [dataKeys, colors, icons]);
 
+  const exportData = useExportChartData({
+    type: "area",
+    data,
+    categoryKey: categoryKey as string,
+    dataKeys,
+    colors,
+    legend,
+    xAxisLabel,
+    yAxisLabel,
+  });
+
   const id = useId();
 
   const gradientID = useMemo(() => `area-chart-gradient-${id}`, [id]);
@@ -301,6 +321,7 @@ const AreaChartComponent = <T extends AreaChartData>({
       >
         <div
           className={clsx("crayon-area-chart-container", className)}
+          data-crayon-chart={exportData}
           style={{
             width: width ? `${width}px` : undefined,
           }}

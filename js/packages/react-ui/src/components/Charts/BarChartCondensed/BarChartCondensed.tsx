@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Bar, BarChart as RechartsBarChart, XAxis, YAxis } from "recharts";
+import { usePrintContext } from "../../../context/PrintContext";
 import { useId } from "../../../polyfills";
 import { useTheme } from "../../ThemeProvider";
 import { BarChartData, BarChartVariant } from "../BarChart/types";
@@ -9,6 +10,7 @@ import { DEFAULT_X_AXIS_HEIGHT, X_AXIS_PADDING } from "../constants";
 import { SideBarChartData, SideBarTooltipProvider } from "../context/SideBarTooltipContext";
 import {
   useAutoAngleCalculation,
+  useExportChartData,
   useMaxLabelWidth,
   useTransformedKeys,
   useYAxisLabelWidth,
@@ -18,6 +20,7 @@ import {
   CustomTooltipContent,
   DefaultLegend,
   LineInBarShape,
+  SideBarTooltip,
   SVGXAxisTick,
   SVGXAxisTickVariant,
   YAxisTick,
@@ -25,8 +28,18 @@ import {
 import { LabelTooltipProvider } from "../shared/LabelTooltip/LabelTooltip";
 import { LegendItem } from "../types";
 import { getBarStackInfo, getRadiusArray } from "../utils/BarCharts/BarChartsUtils";
-import { get2dChartConfig, getDataKeys, getLegendItems } from "../utils/dataUtils";
+import {
+  get2dChartConfig,
+  getColorForDataKey,
+  getDataKeys,
+  getLegendItems,
+} from "../utils/dataUtils";
 import { PaletteName, useChartPalette } from "../utils/PalletUtils";
+
+// this a technic to get the type of the onClick event of the bar chart
+// we need to do this because the onClick event type is not exported by recharts
+type BarChartOnClick = React.ComponentProps<typeof RechartsBarChart>["onClick"];
+type BarClickData = Parameters<NonNullable<BarChartOnClick>>[0];
 
 export interface BarChartCondensedProps<T extends BarChartData> {
   data: T;
@@ -46,9 +59,14 @@ export interface BarChartCondensedProps<T extends BarChartData> {
   className?: string;
   height?: number;
   width?: number;
+  /** Maximum bar width in pixels. Prevents bars from becoming too wide. Default: 12 */
+  maxBarWidth?: number;
 }
 
-const BAR_WIDTH = 12;
+// Default maximum bar width - prevents bars from becoming too wide with sparse data
+const DEFAULT_MAX_BAR_WIDTH = 12;
+
+// Layout constants
 const BAR_GAP = 10;
 const BAR_CATEGORY_GAP = "20%";
 const BAR_INTERNAL_LINE_WIDTH = 1;
@@ -74,7 +92,11 @@ const BarChartCondensedComponent = <T extends BarChartData>({
   className,
   height = CHART_HEIGHT,
   width,
+  maxBarWidth = DEFAULT_MAX_BAR_WIDTH,
 }: BarChartCondensedProps<T>) => {
+  const printContext = usePrintContext();
+  isAnimationActive = printContext ? false : isAnimationActive;
+
   const dataKeys = useMemo(() => {
     return getDataKeys(data, categoryKey as string);
   }, [data, categoryKey]);
@@ -90,8 +112,10 @@ const BarChartCondensedComponent = <T extends BarChartData>({
     if (data.length === 0) {
       return 0;
     }
-    return chartContainerWidth / data.length;
-  }, [chartContainerWidth, data]);
+    // Use passed width if available, otherwise use observed chartContainerWidth
+    const chartWidth = width ?? chartContainerWidth;
+    return chartWidth / data.length;
+  }, [chartContainerWidth, data, width]);
 
   const { angle: calculatedAngle, height: xAxisHeight } = useAutoAngleCalculation(
     maxLabelWidth,
@@ -124,6 +148,17 @@ const BarChartCondensedComponent = <T extends BarChartData>({
   }, [dataKeys, icons, colors, transformedKeys]);
 
   const id = useId();
+
+  const exportData = useExportChartData({
+    type: "bar",
+    data,
+    categoryKey: categoryKey as string,
+    dataKeys,
+    colors,
+    legend,
+    xAxisLabel,
+    yAxisLabel,
+  });
 
   const chartMargin = useMemo(
     () => ({
@@ -174,6 +209,39 @@ const BarChartCondensedComponent = <T extends BarChartData>({
     return width ?? containerWidth;
   }, [width, containerWidth]);
 
+  // Calculate explicit chart width when width prop is provided
+  // This allows Recharts to calculate bar dimensions on first render
+  const explicitChartWidth = useMemo(() => {
+    if (!width) return undefined;
+    // Subtract Y-axis width and margins to get the actual chart area width
+    const yAxisSpace = showYAxis ? yAxisWidth : 0;
+    return width - yAxisSpace - chartMargin.left - chartMargin.right;
+  }, [width, showYAxis, yAxisWidth, chartMargin.left, chartMargin.right]);
+
+  // Calculate optimal bar width based on available space
+  // Only applies maximum constraint - Recharts handles thin bars automatically
+  const calculatedBarWidth = useMemo(() => {
+    // Use explicitChartWidth if available, otherwise fall back to chartContainerWidth
+    const availableWidth = explicitChartWidth ?? chartContainerWidth;
+
+    // If no width available, return undefined and let Recharts auto-size
+    if (!availableWidth || availableWidth === 0 || data.length === 0) {
+      return undefined;
+    }
+
+    // Calculate space per category (Recharts handles gaps automatically via barGap and barCategoryGap props)
+    const spacePerCategory = availableWidth / data.length;
+
+    // For grouped charts, multiple bars share the category space
+    const barsPerCategory = variant === "stacked" ? 1 : dataKeys.length;
+
+    // Simple division - let Recharts apply gaps via barGap and barCategoryGap props
+    const barWidth = spacePerCategory / barsPerCategory;
+
+    // Only apply maximum constraint, let Recharts handle thin bars automatically
+    return Math.min(maxBarWidth, barWidth);
+  }, [explicitChartWidth, chartContainerWidth, data.length, dataKeys.length, variant, maxBarWidth]);
+
   // Handle mouse events for bar hovering
   const handleChartMouseMove = useCallback((state: any) => {
     if (state && state.activeLabel !== undefined) {
@@ -185,17 +253,35 @@ const BarChartCondensedComponent = <T extends BarChartData>({
     setHoveredCategory(null);
   }, []);
 
+  const onBarClick = useCallback(
+    (data: BarClickData) => {
+      if (data?.activePayload?.length && data.activePayload.length > 10) {
+        setIsSideBarTooltipOpen(true);
+        setSideBarTooltipData({
+          title: data.activeLabel as string,
+          values: data.activePayload.map((payload) => ({
+            value: payload.value as number,
+            label: payload.name || payload.dataKey,
+            color: getColorForDataKey(payload.dataKey, dataKeys, colors),
+          })),
+        });
+      }
+    },
+    [dataKeys, colors],
+  );
+
   // Observe container width for legend
   useEffect(() => {
-    // Only set up ResizeObserver if width is not provided
-    if (width || !containerRef.current || !chartContainerRef.current) {
+    // Always set up ResizeObserver for chartContainerRef to get accurate bar width calculations
+    if (!chartContainerRef.current) {
       return () => {};
     }
 
     const resizeObserver = new ResizeObserver((entries) => {
       // there is only one entry in the entries array because we are observing the chart container
       for (const entry of entries) {
-        if (entry.target === containerRef.current) {
+        if (entry.target === containerRef.current && !width) {
+          // Only observe containerRef if width is not provided
           setContainerWidth(entry.contentRect.width);
         }
         if (entry.target === chartContainerRef.current) {
@@ -204,8 +290,13 @@ const BarChartCondensedComponent = <T extends BarChartData>({
       }
     });
 
-    resizeObserver.observe(containerRef.current);
+    // Always observe chartContainerRef
     resizeObserver.observe(chartContainerRef.current);
+
+    // Only observe containerRef if width is not provided
+    if (!width && containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+    }
 
     return () => {
       resizeObserver.disconnect();
@@ -291,8 +382,8 @@ const BarChartCondensedComponent = <T extends BarChartData>({
           fill={color}
           stackId={variant === "stacked" ? "a" : undefined}
           isAnimationActive={isAnimationActive}
-          maxBarSize={BAR_WIDTH}
-          barSize={BAR_WIDTH}
+          maxBarSize={calculatedBarWidth}
+          barSize={calculatedBarWidth}
           shape={(props: any) => {
             const { payload, value, dataKey } = props;
 
@@ -334,6 +425,7 @@ const BarChartCondensedComponent = <T extends BarChartData>({
     barInternalLineColor,
     hoveredCategory,
     categoryKey,
+    calculatedBarWidth,
   ]);
 
   return (
@@ -346,6 +438,7 @@ const BarChartCondensedComponent = <T extends BarChartData>({
       >
         <div
           className={clsx("crayon-bar-chart-condensed-container", className)}
+          data-crayon-chart={exportData}
           style={{
             width: width ? `${width}px` : undefined,
           }}
@@ -359,10 +452,13 @@ const BarChartCondensedComponent = <T extends BarChartData>({
             <div className="crayon-bar-chart-condensed" ref={chartContainerRef}>
               <ChartContainer
                 config={chartConfig}
-                style={{ width: "100%", height: effectiveHeight }}
+                style={{
+                  width: explicitChartWidth ? `${explicitChartWidth}px` : "100%",
+                  height: effectiveHeight,
+                }}
                 rechartsProps={{
-                  width: "100%",
-                  height: "100%",
+                  width: explicitChartWidth ?? "100%",
+                  height: effectiveHeight,
                 }}
               >
                 <RechartsBarChart
@@ -375,6 +471,9 @@ const BarChartCondensedComponent = <T extends BarChartData>({
                   barCategoryGap={BAR_CATEGORY_GAP}
                   onMouseMove={handleChartMouseMove}
                   onMouseLeave={handleChartMouseLeave}
+                  onClick={onBarClick}
+                  width={explicitChartWidth}
+                  height={effectiveHeight}
                 >
                   {grid && cartesianGrid()}
 
@@ -411,6 +510,7 @@ const BarChartCondensedComponent = <T extends BarChartData>({
                 </RechartsBarChart>
               </ChartContainer>
             </div>
+            {isSideBarTooltipOpen && <SideBarTooltip height={effectiveHeight} />}
           </div>
           {xAxisLabel && (
             <div className="crayon-bar-chart-condensed-x-axis-label">{xAxisLabel}</div>

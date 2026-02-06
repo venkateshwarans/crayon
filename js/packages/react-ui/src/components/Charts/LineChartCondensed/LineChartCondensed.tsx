@@ -1,12 +1,14 @@
 import clsx from "clsx";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Line, LineChart as RechartsLineChart, XAxis, YAxis } from "recharts";
+import { usePrintContext } from "../../../context/PrintContext";
 import { useId } from "../../../polyfills";
 import { ChartConfig, ChartContainer, ChartTooltip } from "../Charts";
 import { DEFAULT_X_AXIS_HEIGHT, X_AXIS_PADDING } from "../constants";
 import { SideBarChartData, SideBarTooltipProvider } from "../context/SideBarTooltipContext";
 import {
   useAutoAngleCalculation,
+  useExportChartData,
   useMaxLabelWidth,
   useTransformedKeys,
   useYAxisLabelWidth,
@@ -17,6 +19,7 @@ import {
   cartesianGrid,
   CustomTooltipContent,
   DefaultLegend,
+  SideBarTooltip,
   SVGXAxisTick,
   SVGXAxisTickVariant,
   YAxisTick,
@@ -24,8 +27,18 @@ import {
 import { LabelTooltipProvider } from "../shared/LabelTooltip/LabelTooltip";
 import { LegendItem } from "../types";
 import { getLineType } from "../utils/AreaAndLine/common";
-import { get2dChartConfig, getDataKeys, getLegendItems } from "../utils/dataUtils";
+import {
+  get2dChartConfig,
+  getColorForDataKey,
+  getDataKeys,
+  getLegendItems,
+} from "../utils/dataUtils";
 import { PaletteName, useChartPalette } from "../utils/PalletUtils";
+
+// this a technic to get the type of the onClick event of the line chart
+// we need to do this because the onClick event type is not exported by recharts
+type LineChartOnClick = React.ComponentProps<typeof RechartsLineChart>["onClick"];
+type LineClickData = Parameters<NonNullable<LineChartOnClick>>[0];
 
 export interface LineChartCondensedProps<T extends LineChartData> {
   data: T;
@@ -69,6 +82,9 @@ const LineChartCondensedComponent = <T extends LineChartData>({
   width,
   strokeWidth = 2,
 }: LineChartCondensedProps<T>) => {
+  const printContext = usePrintContext();
+  isAnimationActive = printContext ? false : isAnimationActive;
+
   const dataKeys = useMemo(() => {
     return getDataKeys(data, categoryKey as string);
   }, [data, categoryKey]);
@@ -86,8 +102,10 @@ const LineChartCondensedComponent = <T extends LineChartData>({
     if (data.length === 0) {
       return 0;
     }
-    return chartContainerWidth / data.length;
-  }, [chartContainerWidth, data]);
+    // Use passed width if available, otherwise use observed chartContainerWidth
+    const chartWidth = width ?? chartContainerWidth;
+    return chartWidth / data.length;
+  }, [width, chartContainerWidth, data]);
 
   const { angle: calculatedAngle, height: xAxisHeight } = useAutoAngleCalculation(
     maxLabelWidth,
@@ -121,6 +139,20 @@ const LineChartCondensedComponent = <T extends LineChartData>({
 
   const id = useId();
 
+  const exportData = useExportChartData({
+    type: "line",
+    data,
+    categoryKey: categoryKey as string,
+    dataKeys,
+    colors,
+    legend,
+    xAxisLabel,
+    yAxisLabel,
+    extraOptions: {
+      lineSize: strokeWidth,
+    },
+  });
+
   const chartMargin = useMemo(
     () => ({
       top: 10,
@@ -129,6 +161,23 @@ const LineChartCondensedComponent = <T extends LineChartData>({
       left: showYAxis ? 10 : 0,
     }),
     [showYAxis],
+  );
+
+  const onLineClick = useCallback(
+    (data: LineClickData) => {
+      if (data?.activePayload?.length && data.activePayload.length > 10) {
+        setIsSideBarTooltipOpen(true);
+        setSideBarTooltipData({
+          title: data.activeLabel as string,
+          values: data.activePayload.map((payload) => ({
+            value: payload.value as number,
+            label: payload.name || payload.dataKey,
+            color: getColorForDataKey(payload.dataKey, dataKeys, colors),
+          })),
+        });
+      }
+    },
+    [dataKeys, colors],
   );
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -247,6 +296,7 @@ const LineChartCondensedComponent = <T extends LineChartData>({
       >
         <div
           className={clsx("crayon-line-chart-condensed-container", className)}
+          data-crayon-chart={exportData}
           style={{
             width: width ? `${width}px` : undefined,
           }}
@@ -271,6 +321,7 @@ const LineChartCondensedComponent = <T extends LineChartData>({
                   key={`line-chart-condensed-${id}`}
                   data={data}
                   margin={chartMargin}
+                  onClick={onLineClick}
                 >
                   {grid && cartesianGrid()}
 
@@ -316,6 +367,7 @@ const LineChartCondensedComponent = <T extends LineChartData>({
                 </RechartsLineChart>
               </ChartContainer>
             </div>
+            {isSideBarTooltipOpen && <SideBarTooltip height={effectiveHeight} />}
           </div>
           {xAxisLabel && (
             <div className="crayon-line-chart-condensed-x-axis-label">{xAxisLabel}</div>

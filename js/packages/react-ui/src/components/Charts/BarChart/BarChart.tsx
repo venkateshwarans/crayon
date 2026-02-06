@@ -1,11 +1,17 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import { Bar, LabelList, BarChart as RechartsBarChart, XAxis, YAxis } from "recharts";
+import { usePrintContext } from "../../../context/PrintContext";
 import { useId } from "../../../polyfills";
 import { useTheme } from "../../ThemeProvider";
 import { ChartConfig, ChartContainer, ChartTooltip } from "../Charts";
 import { SideBarChartData, SideBarTooltipProvider } from "../context/SideBarTooltipContext";
-import { useMaxLabelHeight, useTransformedKeys, useYAxisLabelWidth } from "../hooks";
+import {
+  useExportChartData,
+  useMaxLabelHeight,
+  useTransformedKeys,
+  useYAxisLabelWidth,
+} from "../hooks";
 import {
   cartesianGrid,
   CustomTooltipContent,
@@ -94,6 +100,9 @@ const BarChartComponent = <T extends BarChartData>({
   height,
   width,
 }: BarChartProps<T>) => {
+  const printContext = usePrintContext();
+  isAnimationActive = printContext ? false : isAnimationActive;
+
   const widthOfGroup = getWidthOfGroup(data, categoryKey as string, variant);
 
   const maxLabelHeight = useMaxLabelHeight(data, categoryKey as string, tickVariant, widthOfGroup);
@@ -268,6 +277,17 @@ const BarChartComponent = <T extends BarChartData>({
   const legendItems: LegendItem[] = useMemo(() => {
     return getLegendItems(dataKeys, colors, icons);
   }, [dataKeys, colors, icons]);
+
+  const exportData = useExportChartData({
+    type: "bar",
+    data,
+    categoryKey: categoryKey as string,
+    dataKeys,
+    colors,
+    legend,
+    xAxisLabel,
+    yAxisLabel,
+  });
 
   const id = useId();
 
@@ -444,6 +464,7 @@ const BarChartComponent = <T extends BarChartData>({
       >
         <div
           className={clsx("crayon-bar-chart-container", className)}
+          data-crayon-chart={exportData}
           style={{
             width: width ? `${width}px` : undefined,
           }}

@@ -54,11 +54,9 @@ export const getCategoricalChartConfig = <T extends CategoricalChartData>(
   data: T,
   categoryKey: keyof T[number],
   theme: PaletteName = "ocean",
+  colors: string[], // Change this from 'theme: string' to 'colors: string[]'
   transformedKeys: Record<string, string>,
 ): ChartConfig => {
-  const palette = getPalette(theme);
-  const colors = getDistributedColors(palette.colors, data.length);
-
   return data.reduce<ChartConfig>((config, item, index) => {
     const originalKey = String(item[categoryKey]);
     const transformedKey = `key-${transformedKeys[originalKey] ?? originalKey}`;

@@ -7,6 +7,7 @@ export * from "./components/Card";
 export * from "./components/CardHeader";
 export * from "./components/Carousel";
 export * from "./components/Charts";
+export type { ExportChartData } from "./components/Charts/Charts";
 export * from "./components/CheckBoxGroup";
 export * from "./components/CheckBoxItem";
 export * from "./components/CodeBlock";
@@ -50,3 +51,12 @@ export {
 
 // this is the context providers that are used in the shell
 export * from "./context/LayoutContext";
+
+export * from "./context/PrintContext";
+
+// Types Export
+export type { ConversationStarterVariant } from "./components/BottomTray/ConversationStarter";
+export type {
+  ConversationStarterIcon,
+  ConversationStarterProps,
+} from "./types/ConversationStarter";

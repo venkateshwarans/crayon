@@ -1,6 +1,7 @@
 import clsx from "clsx";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Area, AreaChart as RechartsAreaChart, XAxis, YAxis } from "recharts";
+import { usePrintContext } from "../../../context/PrintContext";
 import { useId } from "../../../polyfills";
 import { AreaChartData, AreaChartVariant } from "../AreaChart/types";
 import { ChartConfig, ChartContainer, ChartTooltip } from "../Charts";
@@ -8,6 +9,7 @@ import { DEFAULT_X_AXIS_HEIGHT, X_AXIS_PADDING } from "../constants";
 import { SideBarChartData, SideBarTooltipProvider } from "../context/SideBarTooltipContext";
 import {
   useAutoAngleCalculation,
+  useExportChartData,
   useMaxLabelWidth,
   useTransformedKeys,
   useYAxisLabelWidth,
@@ -17,6 +19,7 @@ import {
   cartesianGrid,
   CustomTooltipContent,
   DefaultLegend,
+  SideBarTooltip,
   SVGXAxisTick,
   SVGXAxisTickVariant,
   YAxisTick,
@@ -24,8 +27,18 @@ import {
 import { LabelTooltipProvider } from "../shared/LabelTooltip/LabelTooltip";
 import { LegendItem } from "../types";
 import { getLineType } from "../utils/AreaAndLine/common";
-import { get2dChartConfig, getDataKeys, getLegendItems } from "../utils/dataUtils";
+import {
+  get2dChartConfig,
+  getColorForDataKey,
+  getDataKeys,
+  getLegendItems,
+} from "../utils/dataUtils";
 import { PaletteName, useChartPalette } from "../utils/PalletUtils";
+
+// this a technic to get the type of the onClick event of the area chart
+// we need to do this because the onClick event type is not exported by recharts
+type AreaChartOnClick = React.ComponentProps<typeof RechartsAreaChart>["onClick"];
+type AreaClickData = Parameters<NonNullable<AreaChartOnClick>>[0];
 
 export interface AreaChartCondensedProps<T extends AreaChartData> {
   data: T;
@@ -67,6 +80,9 @@ const AreaChartCondensedComponent = <T extends AreaChartData>({
   height = CHART_HEIGHT,
   width,
 }: AreaChartCondensedProps<T>) => {
+  const printContext = usePrintContext();
+  isAnimationActive = printContext ? false : isAnimationActive;
+
   const dataKeys = useMemo(() => {
     return getDataKeys(data, categoryKey as string);
   }, [data, categoryKey]);
@@ -84,8 +100,10 @@ const AreaChartCondensedComponent = <T extends AreaChartData>({
     if (data.length === 0) {
       return 0;
     }
-    return chartContainerWidth / data.length;
-  }, [chartContainerWidth, data]);
+    // Use passed width if available, otherwise use observed chartContainerWidth
+    const chartWidth = width ?? chartContainerWidth;
+    return chartWidth / data.length;
+  }, [width, chartContainerWidth, data]);
 
   const { angle: calculatedAngle, height: xAxisHeight } = useAutoAngleCalculation(
     maxLabelWidth,
@@ -119,6 +137,17 @@ const AreaChartCondensedComponent = <T extends AreaChartData>({
   }, [dataKeys, icons, colors, transformedKeys]);
 
   const id = useId();
+
+  const exportData = useExportChartData({
+    type: "area",
+    data,
+    categoryKey: categoryKey as string,
+    dataKeys,
+    colors,
+    legend,
+    xAxisLabel,
+    yAxisLabel,
+  });
   const gradientID = useMemo(() => `area-chart-condensed-gradient-${id}`, [id]);
 
   const chartMargin = useMemo(
@@ -129,6 +158,23 @@ const AreaChartCondensedComponent = <T extends AreaChartData>({
       left: showYAxis ? 10 : 0,
     }),
     [showYAxis],
+  );
+
+  const onAreaClick = useCallback(
+    (data: AreaClickData) => {
+      if (data?.activePayload?.length && data.activePayload.length > 10) {
+        setIsSideBarTooltipOpen(true);
+        setSideBarTooltipData({
+          title: data.activeLabel as string,
+          values: data.activePayload.map((payload) => ({
+            value: payload.value as number,
+            label: payload.name || payload.dataKey,
+            color: getColorForDataKey(payload.dataKey, dataKeys, colors),
+          })),
+        });
+      }
+    },
+    [dataKeys, colors],
   );
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -247,6 +293,7 @@ const AreaChartCondensedComponent = <T extends AreaChartData>({
       >
         <div
           className={clsx("crayon-area-chart-condensed-container", className)}
+          data-crayon-chart={exportData}
           style={{
             width: width ? `${width}px` : undefined,
           }}
@@ -271,6 +318,7 @@ const AreaChartCondensedComponent = <T extends AreaChartData>({
                   key={`area-chart-condensed-${id}`}
                   data={data}
                   margin={chartMargin}
+                  onClick={onAreaClick}
                 >
                   {grid && cartesianGrid()}
 
@@ -338,6 +386,7 @@ const AreaChartCondensedComponent = <T extends AreaChartData>({
                 </RechartsAreaChart>
               </ChartContainer>
             </div>
+            {isSideBarTooltipOpen && <SideBarTooltip height={effectiveHeight} />}
           </div>
           {xAxisLabel && (
             <div className="crayon-area-chart-condensed-x-axis-label">{xAxisLabel}</div>

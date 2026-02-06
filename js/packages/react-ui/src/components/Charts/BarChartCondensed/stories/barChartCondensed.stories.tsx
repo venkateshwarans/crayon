@@ -265,7 +265,7 @@ const salesData = [
       },
     },
   },
-  tags: ["!dev", "autodocs"],
+  tags: ["dev", "autodocs"],
   argTypes: {
     data: {
       description: `
@@ -586,6 +586,144 @@ export const DataExplorer: Story = {
       description: {
         story:
           "**🎛️ Interactive Explorer:** This story allows you to explore different datasets, chart variants, and tick variants interactively. Use the buttons to switch between:\n\n**Datasets:**\n- **Default**: Standard 12-month data\n- **Big Labels**: Extremely long category names\n- **Company Names**: Real-world business names\n- **Financial Quarters**: Quarterly financial data\n- **Minimal**: Baseline with 3 items\n- **Weekly Traffic**: 7-day traffic data\n\n**Chart Variants:**\n- **Grouped**: Bars side-by-side for comparison\n- **Stacked**: Bars stacked to show totals\n\n**Tick Variants:**\n- **Horizontal Labels**: Standard single-line labels with collision detection\n- **Angled Labels**: Rotated labels for better space utilization",
+      },
+    },
+  },
+};
+
+/**
+ * ## Large Dataset with Sidebar Tooltip
+ *
+ * This story demonstrates the sidebar tooltip feature that appears when you have
+ * more than 10 data series. Click on any bar in the chart to see the sidebar
+ * tooltip in action. This provides a better UX for viewing many data series at once.
+ */
+export const LargeDatasetWithSidebarTooltip: Story = {
+  name: "🎯 Large Dataset (>10 Series) - Sidebar Tooltip",
+  args: {
+    data: [
+      {
+        quarter: "Q1",
+        metric1: 120,
+        metric2: 150,
+        metric3: 180,
+        metric4: 200,
+        metric5: 160,
+        metric6: 190,
+        metric7: 220,
+        metric8: 240,
+        metric9: 210,
+        metric10: 230,
+        metric11: 250,
+        metric12: 270,
+        metric13: 260,
+        metric14: 280,
+        metric15: 300,
+      },
+      {
+        quarter: "Q2",
+        metric1: 140,
+        metric2: 170,
+        metric3: 200,
+        metric4: 220,
+        metric5: 180,
+        metric6: 210,
+        metric7: 240,
+        metric8: 260,
+        metric9: 230,
+        metric10: 250,
+        metric11: 270,
+        metric12: 290,
+        metric13: 280,
+        metric14: 300,
+        metric15: 320,
+      },
+      {
+        quarter: "Q3",
+        metric1: 160,
+        metric2: 190,
+        metric3: 220,
+        metric4: 240,
+        metric5: 200,
+        metric6: 230,
+        metric7: 260,
+        metric8: 280,
+        metric9: 250,
+        metric10: 270,
+        metric11: 290,
+        metric12: 310,
+        metric13: 300,
+        metric14: 320,
+        metric15: 340,
+      },
+      {
+        quarter: "Q4",
+        metric1: 180,
+        metric2: 210,
+        metric3: 240,
+        metric4: 260,
+        metric5: 220,
+        metric6: 250,
+        metric7: 280,
+        metric8: 300,
+        metric9: 270,
+        metric10: 290,
+        metric11: 310,
+        metric12: 330,
+        metric13: 320,
+        metric14: 340,
+        metric15: 360,
+      },
+    ] as any,
+    categoryKey: "quarter" as any,
+    theme: "ocean",
+    variant: "grouped",
+    tickVariant: "singleLine",
+    grid: true,
+    isAnimationActive: false,
+    showYAxis: true,
+    xAxisLabel: "Quarters",
+    yAxisLabel: "Performance Metrics",
+    height: 300,
+  },
+  render: (args: any) => (
+    <div>
+      <div
+        style={{
+          marginBottom: "16px",
+          padding: "16px",
+          background: "#e3f2fd",
+          borderRadius: "8px",
+          border: "2px solid #2196f3",
+          maxWidth: "700px",
+        }}
+      >
+        <div style={{ fontSize: "14px", marginBottom: "8px" }}>
+          <strong>🎯 Sidebar Tooltip Demo</strong>
+        </div>
+        <div style={{ fontSize: "13px", color: "#1565c0", lineHeight: "1.6" }}>
+          This chart has <strong>15 data series</strong> (more than 10). <br />
+          <strong>✨ Click on any bar</strong> in the chart to open the sidebar tooltip on the right
+          side.
+          <br />
+          The sidebar provides a scrollable list of all series values at that quarter, making it
+          easy to view large datasets.
+          <br />
+          <em>
+            💡 Try hovering first (shows inline tooltip), then click to see the sidebar version!
+          </em>
+        </div>
+      </div>
+      <Card style={{ width: "700px" }}>
+        <BarChartCondensed {...args} />
+      </Card>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "**🎯 Large Dataset Handling:** When your chart has more than 10 data series, the inline tooltip becomes too crowded. This story demonstrates the sidebar tooltip feature:\n\n**Features:**\n- **15 data series** to showcase the sidebar tooltip\n- **Click interaction:** Click any bar to open the sidebar\n- **Scrollable view:** All series values in an organized, scrollable list\n- **Better UX:** Cleaner way to view many data points simultaneously\n- **Color-coded:** Each series maintains its color for easy identification\n- **Works with both variants:** Try switching between grouped and stacked variants\n\n**Usage:**\n1. Hover over the chart to see the inline tooltip (works for smaller datasets)\n2. Click on any bar to open the sidebar tooltip\n3. Scroll through all 15 series values\n4. Click outside or on the X button to close the sidebar",
       },
     },
   },
@@ -1265,6 +1403,369 @@ export const ResponsiveBehaviorDemo: Story = {
             }}
           >
             {dimensions.width}px
+          </div>
+        </Card>
+      </div>
+    );
+  },
+};
+
+/**
+ * 🎯 Bar Width Testing Playground
+ * Interactive story to test bar width calculations with various configurations:
+ * - Different data set sizes (few bars vs many bars)
+ * - Grouped vs Stacked variants
+ * - Max bar width constraint (prevents bars from being too wide)
+ * - Container width variations
+ */
+export const BarWidthPlayground: StoryObj<typeof BarChartCondensed> = {
+  render: () => {
+    const [variant, setVariant] = useState<"grouped" | "stacked">("grouped");
+    const [dataSize, setDataSize] = useState<"small" | "medium" | "large" | "xlarge">("medium");
+    const [maxBarWidth, setMaxBarWidth] = useState(60);
+    const [containerWidth, setContainerWidth] = useState<number | undefined>(undefined);
+
+    // Generate data based on size selection
+    const generateData = () => {
+      const sizes = {
+        small: 4,
+        medium: 12,
+        large: 24,
+        xlarge: 50,
+      };
+
+      const count = sizes[dataSize];
+      return Array.from({ length: count }, (_, i) => ({
+        quarter: `Q${(i % 4) + 1} FY${2022 + Math.floor(i / 4)}`,
+        revenue: Math.floor(Math.random() * 2000000) + 500000,
+        expenses: Math.floor(Math.random() * 1500000) + 300000,
+        profit: Math.floor(Math.random() * 800000) + 100000,
+      }));
+    };
+
+    const data = generateData();
+
+    return (
+      <div style={{ padding: "20px" }}>
+        {/* Control Panel */}
+        <Card style={{ marginBottom: "24px", padding: "20px" }}>
+          <h3 style={{ marginTop: 0, marginBottom: "20px", fontSize: "18px", fontWeight: 600 }}>
+            🎛️ Bar Width Controls
+          </h3>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
+            {/* Variant Control */}
+            <div>
+              <label style={{ display: "block", marginBottom: "8px", fontWeight: 500 }}>
+                Chart Variant
+              </label>
+              <div style={{ display: "flex", gap: "8px" }}>
+                <button
+                  onClick={() => setVariant("grouped")}
+                  style={{
+                    padding: "8px 16px",
+                    borderRadius: "6px",
+                    border: "1px solid",
+                    borderColor: variant === "grouped" ? "#6366f1" : "#e5e7eb",
+                    backgroundColor: variant === "grouped" ? "#6366f1" : "white",
+                    color: variant === "grouped" ? "white" : "#374151",
+                    cursor: "pointer",
+                    fontWeight: 500,
+                  }}
+                >
+                  Grouped
+                </button>
+                <button
+                  onClick={() => setVariant("stacked")}
+                  style={{
+                    padding: "8px 16px",
+                    borderRadius: "6px",
+                    border: "1px solid",
+                    borderColor: variant === "stacked" ? "#6366f1" : "#e5e7eb",
+                    backgroundColor: variant === "stacked" ? "#6366f1" : "white",
+                    color: variant === "stacked" ? "white" : "#374151",
+                    cursor: "pointer",
+                    fontWeight: 500,
+                  }}
+                >
+                  Stacked
+                </button>
+              </div>
+            </div>
+
+            {/* Data Size Control */}
+            <div>
+              <label style={{ display: "block", marginBottom: "8px", fontWeight: 500 }}>
+                Number of Data Points
+              </label>
+              <select
+                value={dataSize}
+                onChange={(e) => setDataSize(e.target.value as any)}
+                style={{
+                  width: "100%",
+                  padding: "8px 12px",
+                  borderRadius: "6px",
+                  border: "1px solid #e5e7eb",
+                  fontSize: "14px",
+                }}
+              >
+                <option value="small">Small (4 points)</option>
+                <option value="medium">Medium (12 points)</option>
+                <option value="large">Large (24 points)</option>
+                <option value="xlarge">X-Large (50 points)</option>
+              </select>
+            </div>
+
+            {/* Max Bar Width Control */}
+            <div style={{ gridColumn: "1 / -1" }}>
+              <label style={{ display: "block", marginBottom: "8px", fontWeight: 500 }}>
+                Max Bar Width: {maxBarWidth}px
+                <span style={{ fontWeight: 400, color: "#6b7280", marginLeft: "8px" }}>
+                  (Prevents bars from becoming too wide)
+                </span>
+              </label>
+              <input
+                type="range"
+                min="10"
+                max="120"
+                value={maxBarWidth}
+                onChange={(e) => setMaxBarWidth(Number(e.target.value))}
+                style={{ width: "100%" }}
+              />
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  fontSize: "11px",
+                  color: "#6b7280",
+                  marginTop: "4px",
+                }}
+              >
+                <span>10px</span>
+                <span>120px</span>
+              </div>
+            </div>
+
+            {/* Container Width Control */}
+            <div style={{ gridColumn: "1 / -1" }}>
+              <label style={{ display: "block", marginBottom: "8px", fontWeight: 500 }}>
+                Container Width: {containerWidth ? `${containerWidth}px` : "Auto (100%)"}
+              </label>
+              <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                <input
+                  type="range"
+                  min="400"
+                  max="1400"
+                  step="50"
+                  value={containerWidth || 1400}
+                  onChange={(e) => setContainerWidth(Number(e.target.value))}
+                  style={{ flex: 1 }}
+                  disabled={!containerWidth}
+                />
+                <button
+                  onClick={() => setContainerWidth(containerWidth ? undefined : 800)}
+                  style={{
+                    padding: "6px 12px",
+                    borderRadius: "6px",
+                    border: "1px solid #e5e7eb",
+                    backgroundColor: containerWidth ? "#ef4444" : "#10b981",
+                    color: "white",
+                    cursor: "pointer",
+                    fontSize: "12px",
+                    fontWeight: 500,
+                  }}
+                >
+                  {containerWidth ? "Auto" : "Fixed"}
+                </button>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  fontSize: "11px",
+                  color: "#6b7280",
+                  marginTop: "4px",
+                }}
+              >
+                <span>400px</span>
+                <span>1400px</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Info Display */}
+          <div
+            style={{
+              marginTop: "20px",
+              padding: "12px",
+              backgroundColor: "#f3f4f6",
+              borderRadius: "6px",
+              fontSize: "13px",
+            }}
+          >
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "12px" }}>
+              <div>
+                <strong>Data Points:</strong> {data.length}
+              </div>
+              <div>
+                <strong>Bars per Category:</strong> {variant === "stacked" ? 1 : 3}
+              </div>
+              <div>
+                <strong>Total Bars:</strong> {data.length * (variant === "stacked" ? 1 : 3)}
+              </div>
+            </div>
+          </div>
+        </Card>
+
+        {/* Chart Display */}
+        <Card>
+          <h3 style={{ marginTop: 0, marginBottom: "16px" }}>
+            {variant === "grouped" ? "📊 Grouped" : "📚 Stacked"} Bar Chart - Bar Width Test
+          </h3>
+          <div style={{ width: containerWidth ? `${containerWidth}px` : "100%" }}>
+            <BarChartCondensed
+              data={data}
+              categoryKey="quarter"
+              variant={variant}
+              maxBarWidth={maxBarWidth}
+              width={containerWidth}
+              height={400}
+              legend
+              grid
+              showYAxis
+              xAxisLabel="Fiscal Quarter"
+              yAxisLabel="Amount ($)"
+            />
+          </div>
+        </Card>
+
+        {/* Quick Test Presets */}
+        <Card style={{ marginTop: "24px", padding: "20px" }}>
+          <h3 style={{ marginTop: 0, marginBottom: "16px", fontSize: "16px", fontWeight: 600 }}>
+            🚀 Quick Test Presets
+          </h3>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "12px" }}>
+            <button
+              onClick={() => {
+                setDataSize("small");
+                setVariant("grouped");
+                setMaxBarWidth(60);
+                setContainerWidth(undefined);
+              }}
+              style={{
+                padding: "12px",
+                borderRadius: "6px",
+                border: "1px solid #e5e7eb",
+                backgroundColor: "white",
+                cursor: "pointer",
+                textAlign: "left",
+              }}
+            >
+              <div style={{ fontWeight: 600, marginBottom: "4px" }}>🎯 Few Bars (Wide)</div>
+              <div style={{ fontSize: "12px", color: "#6b7280" }}>4 points, max 60px cap</div>
+            </button>
+
+            <button
+              onClick={() => {
+                setDataSize("xlarge");
+                setVariant("grouped");
+                setMaxBarWidth(60);
+                setContainerWidth(undefined);
+              }}
+              style={{
+                padding: "12px",
+                borderRadius: "6px",
+                border: "1px solid #e5e7eb",
+                backgroundColor: "white",
+                cursor: "pointer",
+                textAlign: "left",
+              }}
+            >
+              <div style={{ fontWeight: 600, marginBottom: "4px" }}>📉 Many Bars (Thin)</div>
+              <div style={{ fontSize: "12px", color: "#6b7280" }}>
+                50 points, auto-sized thin bars
+              </div>
+            </button>
+
+            <button
+              onClick={() => {
+                setDataSize("large");
+                setVariant("stacked");
+                setMaxBarWidth(40);
+                setContainerWidth(800);
+              }}
+              style={{
+                padding: "12px",
+                borderRadius: "6px",
+                border: "1px solid #e5e7eb",
+                backgroundColor: "white",
+                cursor: "pointer",
+                textAlign: "left",
+              }}
+            >
+              <div style={{ fontWeight: 600, marginBottom: "4px" }}>🔄 Fixed Container</div>
+              <div style={{ fontSize: "12px", color: "#6b7280" }}>24 points, stacked, 800px</div>
+            </button>
+
+            <button
+              onClick={() => {
+                setDataSize("medium");
+                setVariant("grouped");
+                setMaxBarWidth(100);
+                setContainerWidth(undefined);
+              }}
+              style={{
+                padding: "12px",
+                borderRadius: "6px",
+                border: "1px solid #e5e7eb",
+                backgroundColor: "white",
+                cursor: "pointer",
+                textAlign: "left",
+              }}
+            >
+              <div style={{ fontWeight: 600, marginBottom: "4px" }}>🎨 Large Max Width</div>
+              <div style={{ fontSize: "12px", color: "#6b7280" }}>Medium data, max 100px</div>
+            </button>
+
+            <button
+              onClick={() => {
+                setDataSize("small");
+                setVariant("stacked");
+                setMaxBarWidth(30);
+                setContainerWidth(400);
+              }}
+              style={{
+                padding: "12px",
+                borderRadius: "6px",
+                border: "1px solid #e5e7eb",
+                backgroundColor: "white",
+                cursor: "pointer",
+                textAlign: "left",
+              }}
+            >
+              <div style={{ fontWeight: 600, marginBottom: "4px" }}>📱 Narrow Container</div>
+              <div style={{ fontSize: "12px", color: "#6b7280" }}>Small data, 400px width</div>
+            </button>
+
+            <button
+              onClick={() => {
+                setDataSize("xlarge");
+                setVariant("stacked");
+                setMaxBarWidth(20);
+                setContainerWidth(undefined);
+              }}
+              style={{
+                padding: "12px",
+                borderRadius: "6px",
+                border: "1px solid #e5e7eb",
+                backgroundColor: "white",
+                cursor: "pointer",
+                textAlign: "left",
+              }}
+            >
+              <div style={{ fontWeight: 600, marginBottom: "4px" }}>🔬 Ultra Condensed</div>
+              <div style={{ fontSize: "12px", color: "#6b7280" }}>50 points, stacked, max 20px</div>
+            </button>
           </div>
         </Card>
       </div>

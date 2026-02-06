@@ -1,11 +1,12 @@
 import clsx from "clsx";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Bar, BarChart as RechartsBarChart, XAxis, YAxis } from "recharts";
+import { usePrintContext } from "../../../context/PrintContext";
 import { useId } from "../../../polyfills";
 import { useTheme } from "../../ThemeProvider";
 import { ChartConfig, ChartContainer, ChartTooltip } from "../Charts";
 import { SideBarChartData, SideBarTooltipProvider } from "../context/SideBarTooltipContext";
-import { useTransformedKeys } from "../hooks";
+import { useExportChartData, useTransformedKeys } from "../hooks";
 import { useHorizontalBarLabelHeight } from "../hooks/useMaxLabelHeight";
 import {
   CustomTooltipContent,
@@ -90,6 +91,9 @@ const HorizontalBarChartComponent = <T extends HorizontalBarChartData>({
   height,
   width,
 }: HorizontalBarChartProps<T>) => {
+  const printContext = usePrintContext();
+  isAnimationActive = printContext ? false : isAnimationActive;
+
   const maxCategoryLabelWidth = useMaxCategoryLabelWidth(data, categoryKey as string);
 
   const chartContainerRef = useRef<HTMLDivElement>(null);
@@ -241,6 +245,20 @@ const HorizontalBarChartComponent = <T extends HorizontalBarChartData>({
     return getLegendItems(dataKeys, colors, icons);
   }, [dataKeys, colors, icons]);
 
+  const exportData = useExportChartData({
+    type: "bar",
+    data,
+    categoryKey: categoryKey as string,
+    dataKeys,
+    colors,
+    legend,
+    xAxisLabel,
+    yAxisLabel,
+    extraOptions: {
+      barDir: "bar",
+    },
+  });
+
   const id = useId();
 
   const xAxis = useMemo(() => {
@@ -343,7 +361,10 @@ const HorizontalBarChartComponent = <T extends HorizontalBarChartData>({
         data={sideBarTooltipData}
         setData={setSideBarTooltipData}
       >
-        <div className={clsx("crayon-horizontal-bar-chart-container", className)}>
+        <div
+          className={clsx("crayon-horizontal-bar-chart-container", className)}
+          data-crayon-chart={exportData}
+        >
           <div
             className="crayon-horizontal-bar-chart-container-inner-wrapper"
             style={{
