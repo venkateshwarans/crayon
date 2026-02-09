@@ -166,8 +166,8 @@ export const RadialChart = <T extends RadialChartData>({
   );
 
   const chartConfig = useMemo(
-    () => getCategoricalChartConfig(sortedProcessedData as T, categoryKey, colors, transformedKeys),
-    [sortedProcessedData, categoryKey, colors, transformedKeys],
+    () => getCategoricalChartConfig(sortedProcessedData as T, categoryKey, theme, colors, { [dataKeyString]: dataKeyString }),
+    [sortedProcessedData, categoryKey, theme, colors, dataKeyString],
   );
 
   const animationConfig = useMemo(

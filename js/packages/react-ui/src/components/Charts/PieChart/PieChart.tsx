@@ -161,9 +161,15 @@ const PieChartComponent = <T extends PieChartData>({
     [sortedProcessedData, dataKey],
   );
 
+  // data: T,
+  // categoryKey: keyof T[number],
+  // theme: PaletteName = "ocean",
+  // colors: string[], // Change this from 'theme: string' to 'colors: string[]'
+  // transformedKeys: Record<string, string>,
+
   const chartConfig = useMemo(
-    () => getCategoricalChartConfig(sortedProcessedData as T, categoryKey, colors, transformedKeys),
-    [sortedProcessedData, categoryKey, colors, transformedKeys],
+    () => getCategoricalChartConfig(sortedProcessedData as T, categoryKey, theme, colors, { [dataKeyString]: dataKeyString }),
+    [sortedProcessedData, categoryKey, theme, colors, dataKeyString],
   );
 
   const animationConfig = useMemo(
