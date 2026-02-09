@@ -519,3 +519,123 @@ export const ThemeVariants: Story = {
     </div>
   ),
 };
+
+export const CurrencyFormats: Story = {
+  name: "Currency Formats",
+  render: () => (
+    <div className="flex flex-wrap gap-6">
+      <Card className="inline-block">
+        <Scorecard 
+          value={1250000} 
+          title="Revenue (USD)" 
+          valueFormat="currency"
+          currency="USD"
+          comparisonValue={1000000}
+          comparisonFormat="currency"
+        />
+      </Card>
+      <Card className="inline-block">
+        <Scorecard 
+          value={950000} 
+          title="Revenue (EUR)" 
+          valueFormat="currency"
+          currency="EUR"
+          comparisonValue={800000}
+          comparisonFormat="currency"
+        />
+      </Card>
+      <Card className="inline-block">
+        <Scorecard 
+          value={875000} 
+          title="Revenue (GBP)" 
+          valueFormat="currency"
+          currency="GBP"
+          comparisonValue={750000}
+          comparisonFormat="currency"
+        />
+      </Card>
+      <Card className="inline-block">
+        <Scorecard 
+          value={150000000} 
+          title="Revenue (JPY)" 
+          valueFormat="currency"
+          currency="JPY"
+          comparisonValue={120000000}
+          comparisonFormat="currency"
+        />
+      </Card>
+      <Card className="inline-block">
+        <Scorecard 
+          value={95000000} 
+          title="Revenue (INR)" 
+          valueFormat="currency"
+          currency="INR"
+          comparisonValue={80000000}
+          comparisonFormat="currency"
+        />
+      </Card>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      source: {
+        code: `
+<Card>
+  <Scorecard 
+    value={1250000} 
+    title="Revenue (USD)" 
+    valueFormat="currency"
+    currency="USD"
+    comparisonValue={1000000}
+    comparisonFormat="currency"
+  />
+</Card>
+
+<Card>
+  <Scorecard 
+    value={950000} 
+    title="Revenue (EUR)" 
+    valueFormat="currency"
+    currency="EUR"
+    comparisonValue={800000}
+    comparisonFormat="currency"
+  />
+</Card>
+
+<Card>
+  <Scorecard 
+    value={875000} 
+    title="Revenue (GBP)" 
+    valueFormat="currency"
+    currency="GBP"
+    comparisonValue={750000}
+    comparisonFormat="currency"
+  />
+</Card>
+
+<Card>
+  <Scorecard 
+    value={150000000} 
+    title="Revenue (JPY)" 
+    valueFormat="currency"
+    currency="JPY"
+    comparisonValue={120000000}
+    comparisonFormat="currency"
+  />
+</Card>
+
+<Card>
+  <Scorecard 
+    value={95000000} 
+    title="Revenue (INR)" 
+    valueFormat="currency"
+    currency="INR"
+    comparisonValue={80000000}
+    comparisonFormat="currency"
+  />
+</Card>
+`,
+      },
+    },
+  },
+};

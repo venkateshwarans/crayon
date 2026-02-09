@@ -814,6 +814,11 @@ The Scorecard schema defines the data format for the `Scorecard` component, whic
           "enum": ["number", "currency", "percentage", "compact"],
           "description": "Format for displaying the comparison value",
           "default": "percentage"
+        },
+        "currency": {
+          "type": "string",
+          "description": "Currency code to use when valueFormat or comparisonFormat is 'currency'. Defaults to 'USD'. Examples: 'EUR', 'GBP', 'JPY', 'INR'",
+          "default": "USD"
         }
       },
       "required": ["value"],
