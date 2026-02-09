@@ -5,8 +5,7 @@ import {
   useThreadState,
 } from "@crayonai/react-core";
 import clsx from "clsx";
-import { ArrowRight, Square } from "lucide-react";
-import React, { memo, useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { memo, useEffect, useRef, useState } from "react";
 import { useLayoutContext } from "../../context/LayoutContext";
 import { ScrollVariant, useScrollToBottom } from "../../hooks/useScrollToBottom";
 import { MessageLoading as MessageLoadingComponent } from "../MessageLoading";

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
-import { Bar, LabelList, BarChart as RechartsBarChart, XAxis, YAxis } from "recharts";
+import { Bar, BarChart as RechartsBarChart, XAxis, YAxis } from "recharts";
 import { usePrintContext } from "../../../context/PrintContext";
 import { useId } from "../../../polyfills";
 import { useTheme } from "../../ThemeProvider";

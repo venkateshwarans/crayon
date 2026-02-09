@@ -168,8 +168,8 @@ const PieChartComponent = <T extends PieChartData>({
   // transformedKeys: Record<string, string>,
 
   const chartConfig = useMemo(
-    () => getCategoricalChartConfig(sortedProcessedData as T, categoryKey, theme, colors, { [dataKeyString]: dataKeyString }),
-    [sortedProcessedData, categoryKey, theme, colors, dataKeyString],
+    () => getCategoricalChartConfig(sortedProcessedData as T, categoryKey, colors, transformedKeys),
+    [sortedProcessedData, categoryKey, colors, transformedKeys],
   );
 
   const animationConfig = useMemo(
