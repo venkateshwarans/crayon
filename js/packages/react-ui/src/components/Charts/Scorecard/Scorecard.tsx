@@ -132,7 +132,11 @@ const formatValue = (
   
   switch (format) {
     case "currency":
-      return new Intl.NumberFormat("en-US", { style: "currency", currency }).format(valueToFormat);
+      // Validate currency code - must be a non-empty string, default to USD if invalid
+      const validCurrency = currency && typeof currency === "string" && currency.trim().length === 3 
+        ? currency.toUpperCase() 
+        : "USD";
+      return new Intl.NumberFormat("en-US", { style: "currency", currency: validCurrency }).format(valueToFormat);
     case "percentage":
       return new Intl.NumberFormat("en-US", { style: "percent", minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(valueToFormat / 100);
     case "compact":
