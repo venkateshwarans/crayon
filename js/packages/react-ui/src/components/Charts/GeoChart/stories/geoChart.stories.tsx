@@ -1,6 +1,7 @@
 import React from 'react';
 import { StoryObj, Meta } from '@storybook/react';
 import { GeoChart, GeoChartProps } from '../GeoChart';
+import { getPalette } from '../../utils';
 
 const meta: Meta<GeoChartProps> = {
   title: 'Components/Charts/GeoChart',
@@ -103,6 +104,14 @@ const geoChartData = [
   ['Germany', 40],
   ['France', 20],
   ['India', 90],
+];
+
+const geoChartData2 = [
+  ['Country', 'Population'],
+  ['IN', 13.9],
+  ['US', 3.2],
+  ['JP', 12.6],
+  ['CA', 14.2],
 ];
 
 /**

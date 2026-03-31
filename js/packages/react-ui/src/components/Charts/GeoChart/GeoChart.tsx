@@ -42,7 +42,10 @@ export const GeoChart: FC<GeoChartProps> = ({
   sizeAxis,
 }: GeoChartProps) => {
   const palette = getPalette(theme);
-  const colors = palette.colors;
+  const paletteColors = palette.colors;
+  const colors = colorAxis?.colors ?? paletteColors;
+  const resolvedDataless = datalessRegionColor ?? "#e0e0e0";
+  const resolvedDefault = defaultColor ?? paletteColors[2] ?? "#f5f5f5";
 
   const autoHeatColors = palette.lightFirst
     ? [colors[0], colors[colors.length - 1]]
@@ -59,8 +62,8 @@ export const GeoChart: FC<GeoChartProps> = ({
     region,
     colorAxis: resolvedColorAxis,
     backgroundColor,
-    datalessRegionColor: datalessRegionColor ?? "#e0e0e0",
-    defaultColor: defaultColor ?? colors[2],
+    datalessRegionColor: resolvedDataless,
+    defaultColor: resolvedDefault,
     legend,
   };
 
