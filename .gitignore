@@ -1,5 +1,18 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+.nuxt/
+
 # OS
 .DS_Store
+Thumbs.db
 
 
 # IDEs and editors

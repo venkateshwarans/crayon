@@ -6,6 +6,8 @@ export type ColorPalette = {
   name: string;
   // colors are used to display the palette
   colors: string[];
+  // if true, colors[0] is the lightest; used to correctly orient heat gradients
+  lightFirst?: boolean;
 };
 
 export type PaletteName = "ocean" | "orchid" | "emerald" | "spectrum" | "sunset" | "vivid" | "iq";
@@ -111,6 +113,7 @@ const colorPalettes: PaletteMap = {
   },
   iq: {
     name: "IQ",
+    lightFirst: true,
     colors: [
       "#e6f7f4",
       "#c1eee3",
