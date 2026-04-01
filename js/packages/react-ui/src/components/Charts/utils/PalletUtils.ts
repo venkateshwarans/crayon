@@ -6,6 +6,8 @@ export type ColorPalette = {
   name: string;
   // colors are used to display the palette
   colors: string[];
+  // if true, colors[0] is the lightest; used to correctly orient heat gradients
+  lightFirst?: boolean;
 };
 
 export type PaletteName = "ocean" | "orchid" | "emerald" | "spectrum" | "sunset" | "vivid" | "iq";
@@ -15,6 +17,7 @@ type PaletteMap = Record<string, ColorPalette>;
 const colorPalettes: PaletteMap = {
   ocean: {
     name: "Ocean",
+    lightFirst: false,
     colors: [
       "#0D47A1",
       "#1565C0",
@@ -31,6 +34,7 @@ const colorPalettes: PaletteMap = {
   },
   orchid: {
     name: "Orchid",
+    lightFirst: false,
     colors: [
       "#3A365B",
       "#482E77",
@@ -47,6 +51,7 @@ const colorPalettes: PaletteMap = {
   },
   emerald: {
     name: "Emerald",
+    lightFirst: false,
     colors: [
       "#10451D",
       "#155D27",
@@ -63,6 +68,7 @@ const colorPalettes: PaletteMap = {
   },
   spectrum: {
     name: "Spectrum",
+    lightFirst: false,
     colors: [
       "#2171BC",
       "#2681D7",
@@ -79,6 +85,7 @@ const colorPalettes: PaletteMap = {
   },
   sunset: {
     name: "Sunset",
+    lightFirst: false,
     colors: [
       "#0D0887",
       "#42049E",
@@ -95,6 +102,7 @@ const colorPalettes: PaletteMap = {
   },
   vivid: {
     name: "Vivid",
+    lightFirst: false,
     colors: [
       "#FF595E",
       "#FF924C",
@@ -111,6 +119,7 @@ const colorPalettes: PaletteMap = {
   },
   iq: {
     name: "IQ",
+    lightFirst: true,
     colors: [
       "#e6f7f4",
       "#c1eee3",

@@ -898,3 +898,170 @@ Another example with progress bar:
   "size": "large"
 }
 ```
+
+---
+
+## Geo Chart Schema
+
+### Schema Definition
+
+The Geo Chart schema defines the data format for the `GeoChart` component, which displays geographic data on a world or regional map. It supports three variants — `regions` (choropleth), `heat` (intensity choropleth), and `bubble` (coordinate markers) — each requiring a different data structure.
+
+#### Regions / Heat Variant Schema
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Title of the geo chart visualization"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of what the geo chart represents"
+    },
+    "data": {
+      "type": "array",
+      "description": "Google Charts array format: first row is column headers, subsequent rows are data entries. Each entry contains a country/region name and a numeric value used to shade the region.",
+      "items": {
+        "type": "array",
+        "items": [
+          {
+            "type": "string",
+            "description": "Header row: column label (e.g. 'Country'). Data rows: country or region name recognized by Google Charts (e.g. 'United States', 'Germany', 'IN')."
+          },
+          {
+            "oneOf": [
+              { "type": "string" },
+              { "type": "number" }
+            ],
+            "description": "Header row: value column label (e.g. 'Value'). Data rows: numeric value used to determine the fill color of the region."
+          }
+        ],
+        "minItems": 2,
+        "maxItems": 2
+      },
+      "minItems": 2
+    }
+  },
+  "required": ["title", "description", "data"],
+  "additionalProperties": false
+}
+```
+
+#### Bubble Variant Schema
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Title of the geo chart visualization"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of what the geo chart represents"
+    },
+    "data": {
+      "type": "array",
+      "description": "Google Charts array format: first row is column headers ['Lat', 'Long', 'Value'], subsequent rows are coordinate+value tuples. Latitude/longitude bypasses geocoding so markers render at exact coordinates.",
+      "items": {
+        "type": "array",
+        "items": [
+          {
+            "oneOf": [{ "type": "string" }, { "type": "number" }],
+            "description": "Header row: 'Lat'. Data rows: latitude as a decimal number (e.g. 39.83)."
+          },
+          {
+            "oneOf": [{ "type": "string" }, { "type": "number" }],
+            "description": "Header row: 'Long'. Data rows: longitude as a decimal number (e.g. -98.58)."
+          },
+          {
+            "oneOf": [{ "type": "string" }, { "type": "number" }],
+            "description": "Header row: value column label (e.g. 'Value'). Data rows: numeric value that controls bubble size and color."
+          }
+        ],
+        "minItems": 3,
+        "maxItems": 3
+      },
+      "minItems": 2
+    }
+  },
+  "required": ["title", "description", "data"],
+  "additionalProperties": false
+}
+```
+
+### Data Structure
+
+- **title** (string, required): Chart title
+- **description** (string, required): Chart description
+- **data** (array, required): Google Charts array-of-arrays format where:
+  - **Row 0** is always the header row (column labels as strings)
+  - **Rows 1+** are data rows
+
+  | Variant | Column 0 | Column 1 | Column 2 |
+  |---------|----------|----------|----------|
+  | `regions` | Country / region name (string) | Numeric value | — |
+  | `heat` | Country / region name (string) | Numeric intensity | — |
+  | `bubble` | Latitude (number) | Longitude (number) | Numeric value |
+
+  - Minimum 2 rows (1 header + 1 data row)
+
+### Sample Data
+
+#### Regions / Heat Variant
+
+```json
+{
+  "title": "Global Internet Penetration",
+  "description": "Percentage of population with internet access by country, visualized as a choropleth map",
+  "data": [
+    ["Country", "Internet Users (%)"],
+    ["United States", 92],
+    ["Germany", 90],
+    ["Brazil", 74],
+    ["India", 43],
+    ["Nigeria", 36],
+    ["China", 73],
+    ["Japan", 93],
+    ["France", 88],
+    ["Australia", 91],
+    ["South Africa", 62],
+    ["Russia", 85],
+    ["Mexico", 71],
+    ["Argentina", 79],
+    ["United Kingdom", 95],
+    ["Canada", 94]
+  ]
+}
+```
+
+#### Bubble Variant
+
+```json
+{
+  "title": "Global City Populations",
+  "description": "Major world cities plotted at exact coordinates with bubble size proportional to population",
+  "data": [
+    ["Lat", "Long", "Population (millions)"],
+    [35.68, 139.69, 37.4],
+    [19.08, 72.88, 20.7],
+    [23.13, 113.26, 16.1],
+    [40.71, -74.01, 18.8],
+    [-23.55, -46.63, 22.4],
+    [31.23, 121.47, 24.9],
+    [28.61, 77.21, 32.9],
+    [51.51, -0.13, 9.5],
+    [48.86, 2.35, 11.0],
+    [55.75, 37.62, 12.5],
+    [39.93, 116.40, 21.5],
+    [-33.87, 151.21, 5.3],
+    [6.52, 3.38, 15.9],
+    [30.04, 31.24, 21.3],
+    [34.05, -118.24, 13.1]
+  ]
+}
+```
