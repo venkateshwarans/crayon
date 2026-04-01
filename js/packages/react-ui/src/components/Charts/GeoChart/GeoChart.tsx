@@ -2,12 +2,30 @@ import { FC } from "react";
 import { Chart as GoogleGeoChart } from "react-google-charts";
 import { getPalette, PaletteName } from '../utils/PalletUtils';
 
+type GeoChartColorAxis = {
+  colors: string[];
+  minValue?: number;
+  maxValue?: number;
+};
+
+type GeoChartOptions = {
+  region: string;
+  colorAxis: GeoChartColorAxis;
+  backgroundColor: string;
+  datalessRegionColor: string;
+  defaultColor: string;
+  legend: string;
+  displayMode?: string;
+  markerOpacity?: number;
+  sizeAxis?: { minValue?: number; maxValue?: number; minSize?: number; maxSize?: number };
+};
+
 export type GeoChartProps = {
-  data: any;
+  data?: (string | number)[][];
   width?: number | string;
   height?: number | string;
   region?: string;
-  colorAxis?: { colors?: string[]; minValue?: number; maxValue?: number };
+  colorAxis?: GeoChartColorAxis;
   backgroundColor?: string;
   datalessRegionColor?: string;
   defaultColor?: string;
@@ -44,30 +62,30 @@ export const GeoChart: FC<GeoChartProps> = ({
   const palette = getPalette(theme);
   const colors = palette.colors;
 
-  const autoHeatColors = palette.lightFirst
-    ? [colors[0], colors[colors.length - 1]]
-    : [colors[colors.length - 1], colors[0]];
+  const first: string = colors[0] ?? "#cccccc";
+  const last: string = colors[colors.length - 1] ?? "#cccccc";
+  const autoHeatColors: string[] = palette.lightFirst ? [first, last] : [last, first];
   const autoAxisColors = variant === "heat" ? autoHeatColors : colors;
 
-  const resolvedColorAxis: Record<string, any> = {
+  const resolvedColorAxis: GeoChartColorAxis = {
     colors: colorAxis?.colors ?? autoAxisColors,
     ...(colorAxis?.minValue !== undefined && { minValue: colorAxis.minValue }),
     ...(colorAxis?.maxValue !== undefined && { maxValue: colorAxis.maxValue }),
   };
 
-  const options: Record<string, any> = {
+  const options: GeoChartOptions = {
     region,
     colorAxis: resolvedColorAxis,
     backgroundColor,
     datalessRegionColor: datalessRegionColor ?? "#e0e0e0",
-    defaultColor: defaultColor ?? colors[2],
+    defaultColor: defaultColor ?? colors[2] ?? colors[0] ?? "#cccccc",
     legend,
   };
 
   if (variant === "bubble") {
-    options["displayMode"] = "markers";
-    options["markerOpacity"] = markerOpacity;
-    options["sizeAxis"] = { minSize: 5, maxSize: 30, ...sizeAxis };
+    options.displayMode = "markers";
+    options.markerOpacity = markerOpacity;
+    options.sizeAxis = { minSize: 5, maxSize: 30, ...sizeAxis };
   }
 
   return (
