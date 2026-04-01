@@ -1,0 +1,25 @@
+js/packages/react-ui/src/components/Charts/utils/PalletUtils.ts
+  915247f60d772620 20,37,54,71,88,105
+js/packages/react-ui/src/components/Charts/GeoChart/GeoChart.tsx
+  915247f60d772620 5-9,11,13-21,24,28,65-67,70,76,81,86-88
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.23",
+  "base_commit_sha": "e3b3fd0803af2b441ab21c00ad2337c42450f6a0",
+  "prompts": {
+    "915247f60d772620": {
+      "agent_id": {
+        "tool": "windsurf",
+        "id": "82b51bc7-6b3a-4f7d-86cb-00ce6b1548a6",
+        "model": "unknown"
+      },
+      "human_author": "Ram Gupta",
+      "messages": [],
+      "total_additions": 319,
+      "total_deletions": 295,
+      "accepted_lines": 40,
+      "overriden_lines": 0
+    }
+  }
+}
