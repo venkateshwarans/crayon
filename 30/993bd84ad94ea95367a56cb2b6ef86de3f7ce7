@@ -1,0 +1,16 @@
+js/packages/react-ui/src/components/Charts/BarChart/stories/barChart.stories.tsx
+  h_e1e85ebcb7715d 823
+js/packages/react-ui/src/components/Charts/utils/PalletUtils.ts
+  h_e1e85ebcb7715d 15-38,138,166-175,177,180-186,232,234-239,241-242,245-246
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "30993bd84ad94ea95367a56cb2b6ef86de3f7ce7",
+  "prompts": {},
+  "humans": {
+    "h_e1e85ebcb7715d": {
+      "author": "jigar1909 <jigar.trivedi@sarasanalytics.com>"
+    }
+  }
+}
