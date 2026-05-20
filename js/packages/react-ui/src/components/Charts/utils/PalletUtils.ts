@@ -12,6 +12,30 @@ export type PaletteName = "ocean" | "orchid" | "emerald" | "spectrum" | "sunset"
 
 type PaletteMap = Record<string, ColorPalette>;
 
+const IQ_LIGHT_CHART_COLORS = [
+  "#00A97F",
+  "#825CEE",
+  "#3B82F6",
+  "#F2A309",
+  "#E0527A",
+  "#A92F00",
+  "#0891B2",
+  "#B05CB8",
+  "#64748B",
+];
+
+const IQ_DARK_CHART_COLORS = [
+  "#33CCA9",
+  "#9B7DF1",
+  "#60A5FA",
+  "#F5B53A",
+  "#F0628A",
+  "#BA5933",
+  "#2D3EEE",
+  "#C47DD0",
+  "#94A3B8",
+];
+
 const colorPalettes: PaletteMap = {
   ocean: {
     name: "Ocean",
@@ -111,18 +135,7 @@ const colorPalettes: PaletteMap = {
   },
   iq: {
     name: "IQ",
-    colors: [
-      "#e6f7f4",
-      "#c1eee3",
-      "#99e3d2",
-      "#66d7be",
-      "#33cca9",
-      "#00a97f",
-      "#009673",
-      "#007a60",
-      "#005e4c",
-      "#00413a",
-    ],
+    colors: IQ_LIGHT_CHART_COLORS,
   },
 }
 
@@ -150,7 +163,27 @@ export const getPaletteMap = (): PaletteMap => {
   return colorPalettes;
 };
 
-export const getDistributedColors = (colors: string[], dataLength: number): string[] => {
+type ColorDistributionStrategy = "centered" | "sequential";
+
+const getSequentialColors = (colors: string[], dataLength: number): string[] => {
+  const result: string[] = [];
+
+  for (let i = 0; i < dataLength; i++) {
+    result.push(colors[i % colors.length]!);
+  }
+
+  return result;
+};
+
+export const getDistributedColors = (
+  colors: string[],
+  dataLength: number,
+  strategy: ColorDistributionStrategy = "centered",
+): string[] => {
+  if (strategy === "sequential") {
+    return getSequentialColors(colors, dataLength);
+  }
+
   const midIndex = Math.floor(colors.length / 2);
 
   if (dataLength === 1) {
@@ -196,13 +229,19 @@ export const useChartPalette = ({
   themePaletteName: keyof ChartColorPalette;
   dataLength: number;
 }) => {
-  const { theme } = useTheme();
+  const { theme, mode } = useTheme();
   const paletteFromTheme = theme[themePaletteName] || theme.defaultChartPalette;
-  const paletteFromChartTheme = getPalette(chartThemeName);
+  const isIqDesignPalette = chartThemeName === "iq" && !customPalette && !paletteFromTheme;
+  const paletteFromChartTheme = isIqDesignPalette
+    ? mode === "dark"
+      ? IQ_DARK_CHART_COLORS
+      : IQ_LIGHT_CHART_COLORS
+    : getPalette(chartThemeName).colors;
 
-  const palette = customPalette || paletteFromTheme || paletteFromChartTheme.colors;
+  const palette = customPalette || paletteFromTheme || paletteFromChartTheme;
+  const strategy: ColorDistributionStrategy = chartThemeName === "iq" ? "sequential" : "centered";
 
   return useMemo(() => {
-    return getDistributedColors(palette, dataLength);
-  }, [palette, dataLength]);
+    return getDistributedColors(palette, dataLength, strategy);
+  }, [palette, dataLength, strategy]);
 };
