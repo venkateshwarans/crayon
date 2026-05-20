@@ -1,0 +1,28 @@
+js/packages/react-ui/src/components/Charts/utils/dataUtils.ts
+  h_e1e85ebcb7715d 62-63
+js/packages/react-ui/src/components/Charts/utils/PalletUtils.ts
+  h_e1e85ebcb7715d 34
+js/packages/react-ui/src/components/Charts/TreeMap/TreeMap.tsx
+  h_e1e85ebcb7715d 105-106
+js/packages/react-ui/src/components/Charts/RadialChart/utils/RadialChartUtils.ts
+  h_e1e85ebcb7715d 116-117
+js/packages/react-ui/src/components/Charts/BubbleChart/BubbleChart.tsx
+  h_e1e85ebcb7715d 101-102
+js/packages/react-ui/src/components/Charts/StackedAreaChart/StackedAreaChart.tsx
+  h_e1e85ebcb7715d 107-111
+js/packages/react-ui/src/components/Charts/SegmentedBarChart/SegmentedBarChart.tsx
+  h_e1e85ebcb7715d 41-42
+js/packages/react-ui/src/components/Charts/StackedColumnChart/StackedColumnChart.tsx
+  h_e1e85ebcb7715d 104-108
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "de44bd562bfe5813683932e2167e85f3dd9f7314",
+  "prompts": {},
+  "humans": {
+    "h_e1e85ebcb7715d": {
+      "author": "jigar1909 <jigar.trivedi@sarasanalytics.com>"
+    }
+  }
+}
