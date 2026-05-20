@@ -104,7 +104,11 @@ export const StackedAreaChart = <T extends StackedAreaChartData>({
   const dataKeys = Object.keys(data[0] || {}).filter((key) => key !== categoryKey);
 
   const palette = getPalette(theme);
-  const colors = getDistributedColors(palette.colors, dataKeys.length);
+  const colors = getDistributedColors(
+    palette.colors,
+    dataKeys.length,
+    theme === "iq" ? "sequential" : "centered",
+  );
   const { layout } = useLayoutContext();
 
   // Create Config

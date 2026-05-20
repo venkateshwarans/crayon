@@ -31,7 +31,7 @@ const IQ_DARK_CHART_COLORS = [
   "#F5B53A",
   "#F0628A",
   "#BA5933",
-  "#2D3EEE",
+  "#22D3EE",
   "#C47DD0",
   "#94A3B8",
 ];

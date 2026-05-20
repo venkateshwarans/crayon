@@ -100,7 +100,11 @@ export const TreeMap: React.FC<TreeMapProps> = ({
 
   // Create color palette
   const palette = getPalette(theme);
-  const colors = getDistributedColors(palette.colors, categoryNames.length);
+  const colors = getDistributedColors(
+    palette.colors,
+    categoryNames.length,
+    theme === "iq" ? "sequential" : "centered",
+  );
 
   // Create chart config
   const chartConfig: ChartConfig = categoryNames.reduce(

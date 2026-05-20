@@ -101,7 +101,11 @@ export const StackedColumnChart = <T extends StackedColumnChartData>({
 );
 
   const palette = getPalette(theme);
-  const colors = getDistributedColors(palette.colors, dataKeys.length);
+  const colors = getDistributedColors(
+    palette.colors,
+    dataKeys.length,
+    theme === "iq" ? "sequential" : "centered",
+  );
   const { layout } = useLayoutContext();
 
   // Create Config

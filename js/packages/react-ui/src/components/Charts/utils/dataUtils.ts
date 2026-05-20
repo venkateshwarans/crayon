@@ -57,7 +57,11 @@ export const getCategoricalChartConfig = <T extends CategoricalChartData>(
   transformedKeys: Record<string, string>,
 ): ChartConfig => {
   const palette = getPalette(theme);
-  const colors = getDistributedColors(palette.colors, data.length);
+  const colors = getDistributedColors(
+    palette.colors,
+    data.length,
+    theme === "iq" ? "sequential" : "centered",
+  );
 
   return data.reduce<ChartConfig>((config, item, index) => {
     const originalKey = String(item[categoryKey]);

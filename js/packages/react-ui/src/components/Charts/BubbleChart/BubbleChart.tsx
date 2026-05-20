@@ -96,7 +96,11 @@ export const BubbleChart = <T extends BubbleChartData>({
 
   const seriesNames = transformedData.map((series) => series.name);
   const palette = getPalette(theme);
-  const colors = getDistributedColors(palette.colors, seriesNames.length);
+  const colors = getDistributedColors(
+    palette.colors,
+    seriesNames.length,
+    theme === "iq" ? "sequential" : "centered",
+  );
   const { layout } = useLayoutContext();
 
   // Create Config
