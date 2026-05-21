@@ -165,16 +165,21 @@ export const getPaletteMap = (): PaletteMap => {
 
 type ColorDistributionStrategy = "centered" | "sequential";
 
-const getSequentialColors = (colors: string[], dataLength: number): string[] => {
-  const result: string[] = [];
+export const getIqPalette = (mode: "light" | "dark") =>
+  mode === "dark" ? IQ_DARK_CHART_COLORS : IQ_LIGHT_CHART_COLORS;
 
-  for (let i = 0; i < dataLength; i++) {
-    result.push(colors[i % colors.length]!);
-  }
+export const getColorStrategy = (theme: string): ColorDistributionStrategy =>
+  theme === "iq" ? "sequential" : "centered";
 
-  return result;
-};
+const getSequentialColors = (colors: string[], dataLength: number): string[] =>
+  Array.from({ length: dataLength }, (_, i) => colors[i % colors.length]!);
 
+/**
+ * Returns a subset of `colors` sized to `dataLength`.
+ * @param strategy - `"centered"` picks from the palette midpoint outward
+ *   (good for gradient palettes); `"sequential"` wraps from index 0 forward
+ *   (good for multi-hue categorical palettes like IQ). Defaults to `"centered"`.
+ */
 export const getDistributedColors = (
   colors: string[],
   dataLength: number,
@@ -230,18 +235,18 @@ export const useChartPalette = ({
   dataLength: number;
 }) => {
   const { theme, mode } = useTheme();
+  const iqMode: "light" | "dark" = mode === "dark" ? "dark" : "light";
   const paletteFromTheme = theme[themePaletteName] || theme.defaultChartPalette;
   const isIqDesignPalette = chartThemeName === "iq" && !customPalette && !paletteFromTheme;
   const paletteFromChartTheme = isIqDesignPalette
-    ? mode === "dark"
-      ? IQ_DARK_CHART_COLORS
-      : IQ_LIGHT_CHART_COLORS
+    ? getIqPalette(iqMode)
     : getPalette(chartThemeName).colors;
 
   const palette = customPalette || paletteFromTheme || paletteFromChartTheme;
-  const strategy: ColorDistributionStrategy = chartThemeName === "iq" ? "sequential" : "centered";
+  const paletteKey = palette.join(",");
+  const strategy = getColorStrategy(chartThemeName);
 
   return useMemo(() => {
     return getDistributedColors(palette, dataLength, strategy);
-  }, [palette, dataLength, strategy]);
+  }, [paletteKey, dataLength, strategy]);
 };

@@ -1,6 +1,7 @@
 import React from "react";
 import { ScatterChart as RechartsScatterChart, Scatter, XAxis, YAxis, ZAxis } from "recharts";
 import { useLayoutContext } from "../../../context/LayoutContext";
+import { useTheme } from "../../ThemeProvider";
 import {
   ChartConfig,
   ChartContainer,
@@ -11,7 +12,13 @@ import {
   keyTransform,
 } from "../Charts";
 import { cartesianGrid } from "../cartesianGrid";
-import { getDistributedColors, getPalette, PaletteName } from "../utils/PalletUtils";
+import {
+  getColorStrategy,
+  getDistributedColors,
+  getIqPalette,
+  getPalette,
+  PaletteName,
+} from "../utils/PalletUtils";
 
 export type BubbleChartData = Array<Record<string, string | number>>;
 
@@ -52,6 +59,8 @@ export const BubbleChart = <T extends BubbleChartData>({
   icons = {},
   seriesKey,
 }: BubbleChartProps<T>) => {
+  const { mode } = useTheme();
+
   // Transform data for bubble chart
   const transformedData = React.useMemo(() => {
     if (!seriesKey) {
@@ -75,11 +84,9 @@ export const BubbleChart = <T extends BubbleChartData>({
     
     data.forEach((item) => {
       const series = String(item[seriesKey as string] || "default");
-      if (!groupedData[series]) {
-        groupedData[series] = [];
-      }
-      
-      groupedData[series].push({
+      const seriesItems = groupedData[series] || (groupedData[series] = []);
+
+      seriesItems.push({
         x: item[xAxisKey as string],
         y: item[yAxisKey as string],
         z: zAxisKey ? item[zAxisKey as string] : 1,
@@ -95,11 +102,15 @@ export const BubbleChart = <T extends BubbleChartData>({
   }, [data, xAxisKey, yAxisKey, zAxisKey, nameKey, seriesKey]);
 
   const seriesNames = transformedData.map((series) => series.name);
-  const palette = getPalette(theme);
-  const colors = getDistributedColors(
-    palette.colors,
-    seriesNames.length,
-    theme === "iq" ? "sequential" : "centered",
+  const paletteColors = theme === "iq" ? getIqPalette(mode === "dark" ? "dark" : "light") : getPalette(theme).colors;
+  const colors = React.useMemo(
+    () =>
+      getDistributedColors(
+        paletteColors,
+        seriesNames.length,
+        getColorStrategy(theme),
+      ),
+    [paletteColors, seriesNames.length, theme],
   );
   const { layout } = useLayoutContext();
 

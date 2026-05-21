@@ -2,7 +2,13 @@ import { ChartConfig } from "../Charts";
 import { PieChartData } from "../PieChart";
 import { RadialChartData } from "../RadialChart";
 import { LegendItem } from "../types";
-import { getDistributedColors, getPalette, PaletteName } from "../utils/PalletUtils";
+import {
+  getColorStrategy,
+  getDistributedColors,
+  getIqPalette,
+  getPalette,
+  PaletteName,
+} from "../utils/PalletUtils";
 
 /**
  * This function returns the data keys for the chart, used for the data keys of the chart.
@@ -55,12 +61,13 @@ export const getCategoricalChartConfig = <T extends CategoricalChartData>(
   categoryKey: keyof T[number],
   theme: PaletteName = "ocean",
   transformedKeys: Record<string, string>,
+  mode: "light" | "dark" = "light",
 ): ChartConfig => {
-  const palette = getPalette(theme);
+  const paletteColors = theme === "iq" ? getIqPalette(mode) : getPalette(theme).colors;
   const colors = getDistributedColors(
-    palette.colors,
+    paletteColors,
     data.length,
-    theme === "iq" ? "sequential" : "centered",
+    getColorStrategy(theme),
   );
 
   return data.reduce<ChartConfig>((config, item, index) => {

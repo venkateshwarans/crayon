@@ -1,7 +1,14 @@
 import clsx from "clsx";
 import { useMemo } from "react";
+import { useTheme } from "../../ThemeProvider";
 import { SegmentedBarData } from ".";
-import { getDistributedColors, getPalette, PaletteName } from "../utils/PalletUtils";
+import {
+  getColorStrategy,
+  getDistributedColors,
+  getIqPalette,
+  getPalette,
+  PaletteName,
+} from "../utils/PalletUtils";
 
 export interface SegmentedBarProps {
   data: SegmentedBarData;
@@ -18,6 +25,8 @@ export const SegmentedBar = ({
   style,
   animated = true,
 }: SegmentedBarProps) => {
+  const { mode } = useTheme();
+
   // Calculate percentages
   const segments = useMemo(() => {
     if (!data || data.length === 0) {
@@ -34,14 +43,14 @@ export const SegmentedBar = ({
   }, [data]);
 
   // Get theme colors for each segment
+  const paletteColors = theme === "iq" ? getIqPalette(mode === "dark" ? "dark" : "light") : getPalette(theme).colors;
   const colors = useMemo(() => {
-    const palette = getPalette(theme);
     return getDistributedColors(
-      palette.colors,
+      paletteColors,
       Math.max(segments.length, 1),
-      theme === "iq" ? "sequential" : "centered",
+      getColorStrategy(theme),
     );
-  }, [theme, segments.length]);
+  }, [paletteColors, segments.length, theme]);
 
   // Segmented progress bar
   return (

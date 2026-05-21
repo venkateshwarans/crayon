@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { Treemap as RechartsTreemap, ResponsiveContainer, Tooltip } from "recharts";
 import { useLayoutContext } from "../../../context/LayoutContext";
+import { useTheme } from "../../ThemeProvider";
 import {
   ChartConfig,
   ChartContainer,
@@ -8,7 +9,13 @@ import {
   ChartLegendContent,
   keyTransform,
 } from "../Charts";
-import { getDistributedColors, getPalette, PaletteName } from "../utils/PalletUtils";
+import {
+  getColorStrategy,
+  getDistributedColors,
+  getIqPalette,
+  getPalette,
+  PaletteName,
+} from "../utils/PalletUtils";
 
 export type TreeMapData = Array<{
   name: string;
@@ -86,6 +93,7 @@ export const TreeMap: React.FC<TreeMapProps> = ({
   strokeWidth = 1,
 }) => {
   const { layout } = useLayoutContext();
+  const { mode } = useTheme();
 
   // Get unique category names for color assignment
   const categoryNames = useMemo(() => {
@@ -99,11 +107,10 @@ export const TreeMap: React.FC<TreeMapProps> = ({
   }, [data]);
 
   // Create color palette
-  const palette = getPalette(theme);
-  const colors = getDistributedColors(
-    palette.colors,
-    categoryNames.length,
-    theme === "iq" ? "sequential" : "centered",
+  const paletteColors = theme === "iq" ? getIqPalette(mode === "dark" ? "dark" : "light") : getPalette(theme).colors;
+  const colors = useMemo(
+    () => getDistributedColors(paletteColors, categoryNames.length, getColorStrategy(theme)),
+    [paletteColors, categoryNames.length, theme],
   );
 
   // Create chart config

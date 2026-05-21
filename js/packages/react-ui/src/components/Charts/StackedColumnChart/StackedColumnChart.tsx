@@ -1,6 +1,7 @@
 import React from "react";
 import { Bar, LabelList, BarChart as RechartsBarChart, XAxis, YAxis } from "recharts";
 import { useLayoutContext } from "../../../context/LayoutContext";
+import { useTheme } from "../../ThemeProvider";
 import {
   ChartConfig,
   ChartContainer,
@@ -11,7 +12,13 @@ import {
   keyTransform,
 } from "../Charts";
 import { cartesianGrid } from "../cartesianGrid";
-import { getDistributedColors, getPalette, PaletteName } from "../utils/PalletUtils";
+import {
+  getColorStrategy,
+  getDistributedColors,
+  getIqPalette,
+  getPalette,
+  PaletteName,
+} from "../utils/PalletUtils";
 
 export type StackedColumnChartData = Array<Record<string, string | number>>;
 
@@ -93,6 +100,8 @@ export const StackedColumnChart = <T extends StackedColumnChartData>({
   xAxisLabel,
   yAxisLabel,
 }: StackedColumnChartProps<T>) => {
+  const { mode } = useTheme();
+
   // excluding the categoryKey
   const dataKeys = Array.from(
   new Set(
@@ -100,11 +109,10 @@ export const StackedColumnChart = <T extends StackedColumnChartData>({
   )
 );
 
-  const palette = getPalette(theme);
-  const colors = getDistributedColors(
-    palette.colors,
-    dataKeys.length,
-    theme === "iq" ? "sequential" : "centered",
+  const paletteColors = theme === "iq" ? getIqPalette(mode === "dark" ? "dark" : "light") : getPalette(theme).colors;
+  const colors = React.useMemo(
+    () => getDistributedColors(paletteColors, dataKeys.length, getColorStrategy(theme)),
+    [paletteColors, dataKeys.length, theme],
   );
   const { layout } = useLayoutContext();
 

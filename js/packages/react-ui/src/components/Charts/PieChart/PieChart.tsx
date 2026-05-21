@@ -77,7 +77,8 @@ const PieChartComponent = <T extends PieChartData>({
   const [hoveredLegendKey, setHoveredLegendKey] = useState<string | null>(null);
   const [isLegendExpanded, setIsLegendExpanded] = useState(false);
   const { activeIndex, handleMouseEnter, handleMouseLeave } = useChartHover();
-  const { theme: userTheme } = useTheme();
+  const { theme: userTheme, mode } = useTheme();
+  const chartMode: "light" | "dark" = mode === "dark" ? "dark" : "light";
 
   // Determine layout mode based on container width
   const isRowLayout =
@@ -142,8 +143,8 @@ const PieChartComponent = <T extends PieChartData>({
   );
 
   const chartConfig = useMemo(
-    () => getCategoricalChartConfig(sortedProcessedData as T, categoryKey, theme, transformedKeys),
-    [sortedProcessedData, categoryKey, theme, transformedKeys],
+    () => getCategoricalChartConfig(sortedProcessedData as T, categoryKey, theme, transformedKeys, chartMode),
+    [sortedProcessedData, categoryKey, theme, transformedKeys, chartMode],
   );
 
   const animationConfig = useMemo(
