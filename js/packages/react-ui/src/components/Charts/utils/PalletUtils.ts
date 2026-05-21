@@ -12,6 +12,30 @@ export type PaletteName = "ocean" | "orchid" | "emerald" | "spectrum" | "sunset"
 
 type PaletteMap = Record<string, ColorPalette>;
 
+const IQ_LIGHT_CHART_COLORS = [
+  "#00A97F",
+  "#825CEE",
+  "#3B82F6",
+  "#F2A309",
+  "#E0527A",
+  "#A92F00",
+  "#0891B2",
+  "#B05CB8",
+  "#64748B",
+];
+
+const IQ_DARK_CHART_COLORS = [
+  "#33CCA9",
+  "#9B7DF1",
+  "#60A5FA",
+  "#F5B53A",
+  "#F0628A",
+  "#BA5933",
+  "#22D3EE",
+  "#C47DD0",
+  "#94A3B8",
+];
+
 const colorPalettes: PaletteMap = {
   ocean: {
     name: "Ocean",
@@ -111,18 +135,7 @@ const colorPalettes: PaletteMap = {
   },
   iq: {
     name: "IQ",
-    colors: [
-      "#e6f7f4",
-      "#c1eee3",
-      "#99e3d2",
-      "#66d7be",
-      "#33cca9",
-      "#00a97f",
-      "#009673",
-      "#007a60",
-      "#005e4c",
-      "#00413a",
-    ],
+    colors: IQ_LIGHT_CHART_COLORS,
   },
 }
 
@@ -150,7 +163,41 @@ export const getPaletteMap = (): PaletteMap => {
   return colorPalettes;
 };
 
-export const getDistributedColors = (colors: string[], dataLength: number): string[] => {
+type ColorDistributionStrategy = "centered" | "sequential";
+
+export const getIqPalette = (mode: "light" | "dark") =>
+  mode === "dark" ? IQ_DARK_CHART_COLORS : IQ_LIGHT_CHART_COLORS;
+
+export const getThemePaletteColors = (
+  theme: string,
+  mode: "light" | "dark" = "light",
+): string[] =>
+  theme === "iq" ? getIqPalette(mode) : getPalette(theme as PaletteName).colors;
+
+export const getColorStrategy = (theme: string): ColorDistributionStrategy =>
+  theme === "iq" ? "sequential" : "centered";
+
+const getSequentialColors = (colors: string[], dataLength: number): string[] => {
+  if (!colors.length) return [];
+  return Array.from({ length: dataLength }, (_, i) => colors[i % colors.length]!);
+};
+
+
+/**
+ * Returns a subset of `colors` sized to `dataLength`.
+ * @param strategy - `"centered"` picks from the palette midpoint outward
+ *   (good for gradient palettes); `"sequential"` wraps from index 0 forward
+ *   (good for multi-hue categorical palettes like IQ). Defaults to `"centered"`.
+ */
+export const getDistributedColors = (
+  colors: string[],
+  dataLength: number,
+  strategy: ColorDistributionStrategy = "centered",
+): string[] => {
+  if (strategy === "sequential") {
+    return getSequentialColors(colors, dataLength);
+  }
+
   const midIndex = Math.floor(colors.length / 2);
 
   if (dataLength === 1) {
@@ -196,13 +243,19 @@ export const useChartPalette = ({
   themePaletteName: keyof ChartColorPalette;
   dataLength: number;
 }) => {
-  const { theme } = useTheme();
+  const { theme, mode } = useTheme();
+  const iqMode: "light" | "dark" = mode === "dark" ? "dark" : "light";
   const paletteFromTheme = theme[themePaletteName] || theme.defaultChartPalette;
-  const paletteFromChartTheme = getPalette(chartThemeName);
+  const isIqDesignPalette = chartThemeName === "iq" && !customPalette && !paletteFromTheme;
+  const paletteFromChartTheme = isIqDesignPalette
+    ? getThemePaletteColors(chartThemeName, iqMode)
+    : getPalette(chartThemeName).colors;
 
-  const palette = customPalette || paletteFromTheme || paletteFromChartTheme.colors;
+  const palette = customPalette || paletteFromTheme || paletteFromChartTheme;
+  const paletteKey = palette.join(",");
+  const strategy = getColorStrategy(chartThemeName);
 
   return useMemo(() => {
-    return getDistributedColors(palette, dataLength);
-  }, [palette, dataLength]);
+    return getDistributedColors(palette, dataLength, strategy);
+  }, [paletteKey, dataLength, strategy]);
 };

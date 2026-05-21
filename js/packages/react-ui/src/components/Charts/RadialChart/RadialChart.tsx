@@ -8,6 +8,7 @@ import { StackedLegend } from "../shared/StackedLegend/StackedLegend";
 import { LegendItem } from "../types/Legend";
 import { getCategoricalChartConfig } from "../utils/dataUtils";
 import { PaletteName, useChartPalette } from "../utils/PalletUtils";
+import { useTheme } from "../../ThemeProvider";
 import { RadialChartData } from "./types";
 import {
   calculateRadialChartDimensions,
@@ -67,6 +68,8 @@ export const RadialChart = <T extends RadialChartData>({
   height,
   width,
 }: RadialChartProps<T>) => {
+  const { mode } = useTheme();
+  const chartMode: "light" | "dark" = mode === "dark" ? "dark" : "light";
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [wrapperRect, setWrapperRect] = useState({ width: 0, height: 0 });
   const [hoveredLegendKey, setHoveredLegendKey] = useState<string | null>(null);
@@ -140,13 +143,13 @@ export const RadialChart = <T extends RadialChartData>({
 
   // Memoize expensive data transformations and configurations
   const transformedData = useMemo(
-    () => transformRadialDataWithPercentages(sortedProcessedData as T, dataKey, theme),
-    [sortedProcessedData, dataKey, theme],
+    () => transformRadialDataWithPercentages(sortedProcessedData as T, dataKey, theme, chartMode),
+    [sortedProcessedData, dataKey, theme, chartMode],
   );
 
   const chartConfig = useMemo(
-    () => getCategoricalChartConfig(sortedProcessedData as T, categoryKey, theme, transformedKeys),
-    [sortedProcessedData, categoryKey, theme, transformedKeys],
+    () => getCategoricalChartConfig(sortedProcessedData as T, categoryKey, theme, transformedKeys, chartMode),
+    [sortedProcessedData, categoryKey, theme, transformedKeys, chartMode],
   );
 
   const animationConfig = useMemo(

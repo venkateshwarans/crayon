@@ -433,7 +433,7 @@ export const DataExplorer: Story = {
   args: {
     data: barChartCondensedData,
     categoryKey: "month",
-    theme: "ocean",
+    theme: "iq",
     variant: "grouped",
     tickVariant: "singleLine",
     radius: 4,

@@ -2,7 +2,12 @@
  * Utility functions for radial charts
  */
 import { useState } from "react";
-import { getDistributedColors, getPalette } from "../../utils/PalletUtils";
+import {
+  getColorStrategy,
+  getDistributedColors,
+  getThemePaletteColors,
+  PaletteName,
+} from "../../utils/PalletUtils";
 import { RadialChartData } from "../types";
 
 // ==========================================
@@ -107,11 +112,16 @@ export const getRadialHoverStyles = (
 export const transformRadialDataWithPercentages = <T extends RadialChartData>(
   data: T,
   dataKey: keyof T[number],
-  theme: string = "ocean",
+  theme: PaletteName = "ocean",
+  mode: "light" | "dark" = "light",
 ) => {
   const total = data.reduce((sum, item) => sum + Number(item[dataKey]), 0);
-  const palette = getPalette(theme);
-  const colors = getDistributedColors(palette.colors, data.length);
+  const paletteColors = getThemePaletteColors(theme, mode);
+  const colors = getDistributedColors(
+    paletteColors,
+    data.length,
+    getColorStrategy(theme),
+  );
 
   return data.map((item, index) => ({
     ...item,

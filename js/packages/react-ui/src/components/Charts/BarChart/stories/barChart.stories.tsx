@@ -820,7 +820,7 @@ export const DataExplorer: Story = {
   args: {
     data: barChartData,
     categoryKey: "month",
-    theme: "ocean",
+    theme: "iq",
     variant: "grouped",
     radius: 4,
     grid: true,
