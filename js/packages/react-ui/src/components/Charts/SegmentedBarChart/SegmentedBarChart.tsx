@@ -5,8 +5,7 @@ import { SegmentedBarData } from ".";
 import {
   getColorStrategy,
   getDistributedColors,
-  getIqPalette,
-  getPalette,
+  getThemePaletteColors,
   PaletteName,
 } from "../utils/PalletUtils";
 
@@ -43,7 +42,7 @@ export const SegmentedBar = ({
   }, [data]);
 
   // Get theme colors for each segment
-  const paletteColors = theme === "iq" ? getIqPalette(mode === "dark" ? "dark" : "light") : getPalette(theme).colors;
+  const paletteColors = getThemePaletteColors(theme, mode === "dark" ? "dark" : "light");
   const colors = useMemo(() => {
     return getDistributedColors(
       paletteColors,

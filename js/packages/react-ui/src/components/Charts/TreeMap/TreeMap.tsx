@@ -12,8 +12,7 @@ import {
 import {
   getColorStrategy,
   getDistributedColors,
-  getIqPalette,
-  getPalette,
+  getThemePaletteColors,
   PaletteName,
 } from "../utils/PalletUtils";
 
@@ -107,7 +106,7 @@ export const TreeMap: React.FC<TreeMapProps> = ({
   }, [data]);
 
   // Create color palette
-  const paletteColors = theme === "iq" ? getIqPalette(mode === "dark" ? "dark" : "light") : getPalette(theme).colors;
+  const paletteColors = getThemePaletteColors(theme, mode === "dark" ? "dark" : "light");
   const colors = useMemo(
     () => getDistributedColors(paletteColors, categoryNames.length, getColorStrategy(theme)),
     [paletteColors, categoryNames.length, theme],

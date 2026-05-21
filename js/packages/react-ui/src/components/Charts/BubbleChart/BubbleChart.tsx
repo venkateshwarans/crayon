@@ -15,8 +15,7 @@ import { cartesianGrid } from "../cartesianGrid";
 import {
   getColorStrategy,
   getDistributedColors,
-  getIqPalette,
-  getPalette,
+  getThemePaletteColors,
   PaletteName,
 } from "../utils/PalletUtils";
 
@@ -102,7 +101,7 @@ export const BubbleChart = <T extends BubbleChartData>({
   }, [data, xAxisKey, yAxisKey, zAxisKey, nameKey, seriesKey]);
 
   const seriesNames = transformedData.map((series) => series.name);
-  const paletteColors = theme === "iq" ? getIqPalette(mode === "dark" ? "dark" : "light") : getPalette(theme).colors;
+  const paletteColors = getThemePaletteColors(theme, mode === "dark" ? "dark" : "light");
   const colors = React.useMemo(
     () =>
       getDistributedColors(

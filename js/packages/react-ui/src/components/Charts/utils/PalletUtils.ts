@@ -168,11 +168,20 @@ type ColorDistributionStrategy = "centered" | "sequential";
 export const getIqPalette = (mode: "light" | "dark") =>
   mode === "dark" ? IQ_DARK_CHART_COLORS : IQ_LIGHT_CHART_COLORS;
 
+export const getThemePaletteColors = (
+  theme: string,
+  mode: "light" | "dark" = "light",
+): string[] =>
+  theme === "iq" ? getIqPalette(mode) : getPalette(theme as PaletteName).colors;
+
 export const getColorStrategy = (theme: string): ColorDistributionStrategy =>
   theme === "iq" ? "sequential" : "centered";
 
-const getSequentialColors = (colors: string[], dataLength: number): string[] =>
-  Array.from({ length: dataLength }, (_, i) => colors[i % colors.length]!);
+const getSequentialColors = (colors: string[], dataLength: number): string[] => {
+  if (!colors.length) return [];
+  return Array.from({ length: dataLength }, (_, i) => colors[i % colors.length]!);
+};
+
 
 /**
  * Returns a subset of `colors` sized to `dataLength`.
@@ -239,7 +248,7 @@ export const useChartPalette = ({
   const paletteFromTheme = theme[themePaletteName] || theme.defaultChartPalette;
   const isIqDesignPalette = chartThemeName === "iq" && !customPalette && !paletteFromTheme;
   const paletteFromChartTheme = isIqDesignPalette
-    ? getIqPalette(iqMode)
+    ? getThemePaletteColors(chartThemeName, iqMode)
     : getPalette(chartThemeName).colors;
 
   const palette = customPalette || paletteFromTheme || paletteFromChartTheme;

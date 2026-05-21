@@ -5,8 +5,7 @@ import { useState } from "react";
 import {
   getColorStrategy,
   getDistributedColors,
-  getIqPalette,
-  getPalette,
+  getThemePaletteColors,
   PaletteName,
 } from "../../utils/PalletUtils";
 import { RadialChartData } from "../types";
@@ -117,7 +116,7 @@ export const transformRadialDataWithPercentages = <T extends RadialChartData>(
   mode: "light" | "dark" = "light",
 ) => {
   const total = data.reduce((sum, item) => sum + Number(item[dataKey]), 0);
-  const paletteColors = theme === "iq" ? getIqPalette(mode) : getPalette(theme).colors;
+  const paletteColors = getThemePaletteColors(theme, mode);
   const colors = getDistributedColors(
     paletteColors,
     data.length,

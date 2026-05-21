@@ -5,8 +5,7 @@ import { LegendItem } from "../types";
 import {
   getColorStrategy,
   getDistributedColors,
-  getIqPalette,
-  getPalette,
+  getThemePaletteColors,
   PaletteName,
 } from "../utils/PalletUtils";
 
@@ -63,7 +62,7 @@ export const getCategoricalChartConfig = <T extends CategoricalChartData>(
   transformedKeys: Record<string, string>,
   mode: "light" | "dark" = "light",
 ): ChartConfig => {
-  const paletteColors = theme === "iq" ? getIqPalette(mode) : getPalette(theme).colors;
+  const paletteColors = getThemePaletteColors(theme, mode);
   const colors = getDistributedColors(
     paletteColors,
     data.length,
