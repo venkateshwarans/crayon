@@ -36,6 +36,12 @@ export interface ScorecardProps {
   comparisonFormat?: "number" | "currency" | "percentage" | "compact" | ((value: number) => string);
   
   /**
+   * Currency code to use when valueFormat or comparisonFormat is "currency"
+   * Defaults to "USD". Examples: "EUR", "GBP", "JPY", "INR"
+   */
+  currency?: string;
+  
+  /**
    * Whether to show the comparison as progress towards a target
    * If true, displays as progress percentage
    * If false, displays as percentage change
@@ -105,7 +111,8 @@ export interface ScorecardProps {
  */
 const formatValue = (
   value: number | string,
-  format: ScorecardProps["valueFormat"] | ScorecardProps["comparisonFormat"]
+  format: ScorecardProps["valueFormat"] | ScorecardProps["comparisonFormat"],
+  currency: string = "USD"
 ): string => {
   if (typeof format === "function") {
     // Use type assertion to handle the function call properly
@@ -125,7 +132,11 @@ const formatValue = (
   
   switch (format) {
     case "currency":
-      return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(valueToFormat);
+      // Validate currency code - must be a non-empty string, default to USD if invalid
+      const validCurrency = currency && typeof currency === "string" && currency.trim().length === 3
+        ? currency.toUpperCase()
+        : "USD";
+      return new Intl.NumberFormat("en-US", { style: "currency", currency: validCurrency }).format(valueToFormat);
     case "percentage":
       return new Intl.NumberFormat("en-US", { style: "percent", minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(valueToFormat / 100);
     case "compact":
@@ -166,6 +177,7 @@ export const Scorecard: React.FC<ScorecardProps> = ({
   comparisonLabel,
   valueFormat = "number",
   comparisonFormat = "percentage",
+  currency = "USD",
   showAsProgress = false,
   showStaticComparison = false,
   showSparkline = false,
@@ -201,7 +213,7 @@ export const Scorecard: React.FC<ScorecardProps> = ({
   const actualValueColor = valueColor || defaultValueColor;
   
   // Format the main value
-  const formattedValue = formatValue(value, valueFormat);
+  const formattedValue = formatValue(value, valueFormat, currency);
   
   // Calculate and format comparison if available
   let percentageChange: number | null = null;
@@ -211,7 +223,7 @@ export const Scorecard: React.FC<ScorecardProps> = ({
   if (comparisonValue !== undefined && !hideComparison) {
     if (showStaticComparison) {
       // Display the comparison value as-is without calculating percentage change
-      formattedComparison = formatValue(comparisonValue, comparisonFormat);
+      formattedComparison = formatValue(comparisonValue, comparisonFormat, currency);
       // For static comparisons, always show as positive (green/upward)
       comparisonDirection = "positive";
       // Store the raw value for potential use
@@ -235,7 +247,8 @@ export const Scorecard: React.FC<ScorecardProps> = ({
       // Format the comparison value
       formattedComparison = formatValue(
         Math.abs(percentageChange), 
-        comparisonFormat
+        comparisonFormat,
+        currency
       );
       
       // Add sign for percentage change (not for progress)
